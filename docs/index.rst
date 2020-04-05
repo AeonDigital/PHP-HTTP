@@ -47,8 +47,4 @@ Namespaces
 .. toctree::
 	:maxdepth: 6
 
-	Traits <AeonDigital/Http/Traits/index>
-	Stream <AeonDigital/Http/Stream/index>
-	Uri <AeonDigital/Http/Uri/index>
-	Data <AeonDigital/Http/Data/index>
-	Message <AeonDigital/Http/Message/index>
+	AeonDigital <AeonDigital/index>
