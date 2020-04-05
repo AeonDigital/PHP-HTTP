@@ -52,7 +52,7 @@ class Stream implements iStream
      *
      * @var     bool
      */
-    protected $isPipe = false;
+    protected bool $isPipe = false;
 
 
 
@@ -62,7 +62,7 @@ class Stream implements iStream
      *
      * @var     ?int
      */
-    protected $size = null;
+    protected ?int $size = null;
 
 
 
@@ -71,7 +71,7 @@ class Stream implements iStream
      *
      * @var     ?array
      */
-    protected $metaData = null;
+    protected ?array $metaData = null;
 
 
 
@@ -80,7 +80,7 @@ class Stream implements iStream
      *
      * @var     bool
      */
-    protected $seekable = false;
+    protected bool $seekable = false;
 
 
 
@@ -89,7 +89,7 @@ class Stream implements iStream
      *
      * @var     bool
      */
-    protected $writable = false;
+    protected bool $writable = false;
 
 
 
@@ -98,7 +98,7 @@ class Stream implements iStream
      *
      * @var     bool
      */
-    protected $readable = false;
+    protected bool $readable = false;
 
 
 

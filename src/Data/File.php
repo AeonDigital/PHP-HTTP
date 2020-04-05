@@ -35,7 +35,7 @@ class File implements iFile
      *
      * @var         bool
      */
-    protected $isMoved = false;
+    protected bool $isMoved = false;
 
 
 
@@ -44,7 +44,7 @@ class File implements iFile
      *
      * @var         ?string
      */
-    protected $clientFilename = null;
+    protected ?string $clientFilename = null;
 
 
 
@@ -60,7 +60,7 @@ class File implements iFile
      *
      * @var         iFileStream
      */
-    protected $fileStream = null;
+    protected iFileStream $fileStream;
     /**
      * Retorna o caminho completo até onde o arquivo está no momento.
      *
@@ -153,9 +153,9 @@ class File implements iFile
     /**
      * Código de erro ao efetuar o upload do arquivo.
      *
-     * @var         int
+     * @var         ?int
      */
-    protected $uploadError = null;
+    protected int $uploadError = \UPLOAD_ERR_OK;
     /**
      * Retorna o erro ao efetuar o upload do arquivo, se houver.
      * Não havendo erro o valor retornado é equivalente a constante ``UPLOAD_ERR_OK``
@@ -213,7 +213,7 @@ class File implements iFile
     function __construct(
         iFileStream $fileStream,
         ?string $clientFilename = null,
-        int $uploadError = UPLOAD_ERR_OK
+        int $uploadError = \UPLOAD_ERR_OK
     ) {
         $this->fileStream = $fileStream;
         $this->clientFilename = $clientFilename;

@@ -327,7 +327,7 @@ abstract class aMessage implements MessageInterface
      *
      * @var         iStream
      */
-    protected $body = null;
+    protected iStream $body;
     /**
      * Retorna o objeto "Stream" que forma o corpo da mensagem HTTP.
      * O objeto deve implementar a interface "iStream".

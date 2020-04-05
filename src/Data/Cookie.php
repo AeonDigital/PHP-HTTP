@@ -34,7 +34,7 @@ class Cookie implements iCookie
      *
      * @var         string
      */
-    protected $name = null;
+    protected string $name = "";
     /**
      * Define o nome do cookie.
      *
@@ -73,7 +73,7 @@ class Cookie implements iCookie
      *
      * @var         string
      */
-    protected $value = "";
+    protected string $value = "";
     /**
      * Define o valor do cookie.
      * O valor será armazenado em ``percent-encode``.
@@ -112,7 +112,7 @@ class Cookie implements iCookie
      *
      * @var         ?\DateTime
      */
-    protected $expires = null;
+    protected ?\DateTime $expires = null;
     /**
      * Define o ``Expires`` do cookie.
      *
@@ -164,7 +164,7 @@ class Cookie implements iCookie
      *
      * @var         ?string
      */
-    protected $domain = null;
+    protected ?string $domain = null;
     /**
      * Define o ``Domain`` do cookie.
      *
@@ -201,7 +201,7 @@ class Cookie implements iCookie
      *
      * @var         string
      */
-    protected $path = "/";
+    protected string $path = "/";
     /**
      * Define o ``Path`` do cookie.
      *
@@ -240,7 +240,7 @@ class Cookie implements iCookie
      *
      * @var         bool
      */
-    protected $secure = false;
+    protected bool $secure = false;
     /**
      * Define se o cookie é do tipo ``Secure``.
      *
@@ -280,7 +280,7 @@ class Cookie implements iCookie
      *
      * @var         bool
      */
-    protected $httpOnly = false;
+    protected bool $httpOnly = false;
     /**
      * Define se o cookie é do tipo ``HttpOnly``.
      *

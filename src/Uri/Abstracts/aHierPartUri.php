@@ -45,7 +45,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      *
      * @var         array
      */
-    protected $defaultSchemePort = [
+    protected array $defaultSchemePort = [
         ""              => null,
         "http"          => 80,
         "https"         => 433,
@@ -72,7 +72,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      *
      * @var         string
      */
-    protected $user = "";
+    protected string $user = "";
     /**
      * Retorna o componente ``user`` da ``URI`` ou ``''`` caso ele não esteja especificado.
      * O valor será retornado usando ``percent-encoding``.
@@ -159,7 +159,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      *
      * @var         ?string
      */
-    protected $password = null;
+    protected ?string $password = null;
     /**
      * Retorna o componente ``password`` da ``URI``.
      * Uma ``password`` pode ser uma string vazia, portanto o valor ``null`` indica quando ela
@@ -251,7 +251,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      *
      * @var         string
      */
-    protected $host = "";
+    protected string $host = "";
     /**
      * Retorna o componente ``host`` da ``URI`` ou ``''`` caso ele não esteja especificado.
      *
@@ -335,7 +335,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      *
      * @var         ?int
      */
-    protected $port = null;
+    protected ?int $port = null;
     /**
      * Retorna o componente ``port`` da ``URI`` ou ``null`` caso a porta definida seja a padrão
      * para o ``scheme`` que está sendo usado.
@@ -558,7 +558,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      *
      * @var         string
      */
-    protected $path = "";
+    protected string $path = "";
     /**
      * Retorna o componente ``path`` da ``URI`` ou ``''`` caso ele não esteja especificado.
      * O valor será retornado usando ``percent-encoding``.

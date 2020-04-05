@@ -119,7 +119,7 @@ class Response extends aMessage implements iResponse
      *
      * @var         int
      */
-    protected $statusCode = null;
+    protected int $statusCode;
     /**
      * Retorna o código do status ``HTTP`` que está definido para esta resposta.
      *
@@ -203,7 +203,7 @@ class Response extends aMessage implements iResponse
      *
      * @var         string
      */
-    protected $reasonPhrase = "";
+    protected string $reasonPhrase = "";
     /**
      * Retorna a ``frase razão`` para o código de status definido nesta instância.
      *
@@ -228,7 +228,7 @@ class Response extends aMessage implements iResponse
      *
      * @var         ?\StdClass
      */
-    protected $viewData = null;
+    protected ?\StdClass $viewData = null;
     /**
      * Retorna o objeto ``viewData`` contendo as informações obtidas durante o processamento da
      * rota alvo.
@@ -269,7 +269,7 @@ class Response extends aMessage implements iResponse
      *
      * @var         ?\StdClass
      */
-    protected $viewConfig = null;
+    protected ?\StdClass $viewConfig = null;
     /**
      * Retorna o objeto ``viewConfig`` contendo as informações obtidas durante o processamento da
      * rota alvo.

@@ -33,7 +33,7 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
      *
      * @var         bool
      */
-    protected $isUsePercentEncode = true;
+    protected bool $isUsePercentEncode = true;
 
 
 

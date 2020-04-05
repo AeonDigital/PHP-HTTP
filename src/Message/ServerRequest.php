@@ -45,9 +45,9 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Data e hora do instante da criação desta instância.
      *
-     * @var         DateTime
+     * @var         \DateTime
      */
-    protected $now = null;
+    protected \DateTime $now;
 
 
 
@@ -56,7 +56,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @var         array
      */
-    protected $serverParans = [];
+    protected array $serverParans = [];
 
 
 
@@ -65,7 +65,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @var         iCookieCollection
      */
-    protected $cookies = null;
+    protected iCookieCollection $cookies;
 
 
 
@@ -74,7 +74,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @var         iQueryStringCollection
      */
-    protected $queryStrings = null;
+    protected iQueryStringCollection $queryStrings;
 
 
 
@@ -83,7 +83,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @var         iFileCollection
      */
-    protected $files = null;
+    protected iFileCollection $files;
 
 
 
@@ -92,7 +92,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @var         ?string
      */
-    protected $contentType = null;
+    protected ?string $contentType = null;
 
 
     /**
@@ -102,7 +102,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @var         ?string
      */
-    protected $boundary = null;
+    protected ?string $boundary = null;
 
 
     /**
@@ -120,7 +120,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @var         bool
      */
-    protected $hasParsedBody = false;
+    protected bool $hasParsedBody = false;
 
 
 
@@ -129,7 +129,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @var         iCollection
      */
-    protected $attributes = null;
+    protected iCollection $attributes;
 
 
 
@@ -149,9 +149,9 @@ class ServerRequest extends Request implements iServerRequest
      *  function $closure (string $body) : mixed
      * ```
      *
-     * @var         iCollection
+     * @var         ?iCollection
      */
-    protected $bodyParsers = null;
+    protected ?iCollection $bodyParsers;
 
 
 
@@ -478,7 +478,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Chaves de mesmo nome são sobrescritas na ordem apresentada.
      */
-    protected $parans = null;
+    protected ?array $parans = null;
     /**
      * Redefine a propriedade ``parans`` para estar de acordo com os dados definidos para a
      * instância.
@@ -913,9 +913,9 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Coleção qualitativa de mimetypes que podem ser usados para responder a esta requisição.
      *
-     * @var         string
+     * @var         ?array
      */
-    protected $responseMimes = null;
+    protected ?array $responseMimes = null;
     /**
      * Retorna uma coleção de mimetypes que o ``UA`` definiu como opções válidas para responder
      * a esta requisição.
@@ -980,9 +980,9 @@ class ServerRequest extends Request implements iServerRequest
      * Coleção qualificada de locales e languages que o ``UA`` definiu como aqueles que ele
      * prefere receber como resposta.
      *
-     * @var         array
+     * @var         ?array
      */
-    protected $responseAcceptLanguage = null;
+    protected ?array $responseAcceptLanguage = null;
     /**
      * Retorna uma coleção de locales que o ``UA`` definiu como opções válidas para responder
      * a esta requisição.

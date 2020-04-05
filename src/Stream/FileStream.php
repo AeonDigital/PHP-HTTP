@@ -32,7 +32,7 @@ class FileStream extends Stream implements iFileStream
      *
      * @var         string
      */
-    protected $openMode = "";
+    protected string $openMode = "";
 
 
 
@@ -43,7 +43,7 @@ class FileStream extends Stream implements iFileStream
      *
      * @var         string
      */
-    protected $pathToFile = null;
+    protected string $pathToFile = "";
     /**
      * Retorna o caminho completo até onde o arquivo está no momento.
      *
@@ -63,7 +63,7 @@ class FileStream extends Stream implements iFileStream
      *
      * @var         string
      */
-    protected $fileName = null;
+    protected string $fileName = "";
     /**
      * Retorna o nome do arquivo.
      *
@@ -83,7 +83,7 @@ class FileStream extends Stream implements iFileStream
      *
      * @var         string
      */
-    protected $mimeType = null;
+    protected string $mimeType = "";
     /**
      * Resgata o mimetype do arquivo.
      *

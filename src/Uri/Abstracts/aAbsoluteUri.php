@@ -32,7 +32,7 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      *
      * @var         string
      */
-    protected $query = "";
+    protected string $query = "";
     /**
      * Retorna o componente ``query`` da ``URI`` ou ``''`` caso ele não esteja especificado.
      * O caracter ``?`` não faz parte do componente ``query``.
@@ -139,7 +139,7 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      *
      * @var         string
      */
-    protected $fragment = "";
+    protected string $fragment = "";
     /**
      * Retorna o componente ``fragment`` da ``URI`` ou ``''`` caso ele não esteja especificado.
      * O caracter ``#`` não faz parte do componente ``fragment``.

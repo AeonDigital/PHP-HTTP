@@ -41,7 +41,7 @@ class Request extends aMessage implements iRequest
      *
      * @var     array
      */
-    protected $validMethod = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "CONNECT", "OPTIONS", "TRACE"];
+    protected array $validMethod = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "CONNECT", "OPTIONS", "TRACE"];
 
 
 
@@ -87,7 +87,7 @@ class Request extends aMessage implements iRequest
      *
      * @var         string
      */
-    protected $method = null;
+    protected string $method = "";
     /**
      * Retorna o método ``HTTP`` que está sendo usado na requisição.
      *
@@ -138,7 +138,7 @@ class Request extends aMessage implements iRequest
      *
      * @var         iUrl
      */
-    protected $uri = null;
+    protected iUrl $uri;
     /**
      * Retorna a instância ``iUrl`` que está sendo executada.
      *

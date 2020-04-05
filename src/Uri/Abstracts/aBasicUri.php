@@ -38,7 +38,7 @@ abstract class aBasicUri implements iBasicUri
      *
      * @var         array
      */
-    protected $acceptSchemes = [];
+    protected array $acceptSchemes = [];
 
 
 
@@ -61,7 +61,7 @@ abstract class aBasicUri implements iBasicUri
      *
      * @var         string
      */
-    protected $scheme = "";
+    protected string $scheme = "";
     /**
      * Retorna o nome do ``scheme`` que o ``URI`` da classe está usando.
      *
