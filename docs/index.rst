@@ -41,10 +41,14 @@ Instale em seu projeto usando o composer:
 
 _______________________________________________________________________________
 
-Namespaces
-----------
+Classes
+-------
 
 .. toctree::
 	:maxdepth: 6
 
-	AeonDigital <AeonDigital/index>
+	Traits <AeonDigital/Http/Traits/index>
+	Stream <AeonDigital/Http/Stream/index>
+    Uri <AeonDigital/Http/Uri/index>
+    Data <AeonDigital/Http/Data/index>
+    Message <AeonDigital/Http/Message/index>
