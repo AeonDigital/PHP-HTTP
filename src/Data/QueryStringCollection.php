@@ -56,7 +56,7 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
             $r[] = $k . "=" . $v;
         }
 
-        return implode("&", $r);
+        return \implode("&", $r);
     }
 
 
@@ -138,12 +138,12 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
     protected function percentEncode(string $value) : string
     {
         // Se o valor já está encodado... remove encoding
-        $value = str_replace("+", "%20", $value);
-        while ((strpos($value, "%") !== false && rawurlencode(rawurldecode($value)) === $value)) {
-            $value = rawurldecode($value);
+        $value = \str_replace("+", "%20", $value);
+        while ((\strpos($value, "%") !== false && \rawurlencode(\rawurldecode($value)) === $value)) {
+            $value = \rawurldecode($value);
         }
 
-        return rawurlencode($value);
+        return \rawurlencode($value);
     }
     /**
      * Antes de inserir o valor da ``querystring`` na coleção efetua a conversão de seus
@@ -162,7 +162,7 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
     {
         $useVal = $value;
 
-        if (is_string($value) === true) {
+        if (\is_string($value) === true) {
             $useVal = $this->percentEncode($value);
         }
 
@@ -184,7 +184,7 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
     public function get(string $key)
     {
         $v = $this->beforeGet($key);
-        return (($this->isUsePercentEncode === true || $v === null) ? $v : rawurldecode($v));
+        return (($this->isUsePercentEncode === true || $v === null) ? $v : \rawurldecode($v));
     }
 
 
@@ -207,7 +207,7 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
      */
     protected function isValidType($value) : bool
     {
-        $r = (is_string($value) === true);
+        $r = (\is_string($value) === true);
 
         if ($r === false) {
             $this->messageInvalidValue = "Invalid querystring value. Only accept string.";
@@ -238,7 +238,7 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
      */
     public static function fromString(string $str) : QueryStringCollection
     {
-        parse_str($str, $initialValues);
+        \parse_str($str, $initialValues);
         return new QueryStringCollection($initialValues);
     }
 }

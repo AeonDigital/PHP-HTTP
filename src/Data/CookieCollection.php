@@ -48,7 +48,7 @@ class CookieCollection extends aHttpDataCollection implements iCookieCollection
             $r[] = $v->toString();
         }
 
-        return implode(" ", $r);
+        return \implode(" ", $r);
     }
     /**
      * Retorna toda a coleção atualmente armazenada em um array associativo [ string => mixed ].
@@ -150,7 +150,7 @@ class CookieCollection extends aHttpDataCollection implements iCookieCollection
      */
     protected function isValidType($value) : bool
     {
-        $r = (is_object($value) === true && in_array(iCookie::class, class_implements($value)) === true);
+        $r = (\is_object($value) === true && \in_array(iCookie::class, \class_implements($value)) === true);
 
         if ($r === false) {
             $this->messageInvalidValue = "Invalid value. Expected instance to implement interface " . iCookie::class . ".";

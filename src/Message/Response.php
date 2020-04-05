@@ -150,7 +150,7 @@ class Response extends aMessage implements iResponse
      */
     protected function validateStatusCode($statusCode, bool $throw = false) : bool
     {
-        $r = (is_int($statusCode) === true && $statusCode >= 100 && $statusCode <= 599);
+        $r = (\is_int($statusCode) === true && $statusCode >= 100 && $statusCode <= 599);
         if ($r === false && $throw === true) {
             throw new \InvalidArgumentException("Invalid given \"statusCode\" value. Must be an int between 100 and 599.");
         }

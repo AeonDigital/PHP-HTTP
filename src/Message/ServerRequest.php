@@ -345,7 +345,7 @@ class ServerRequest extends Request implements iServerRequest
      */
     public function withQueryParams(array $query)
     {
-        $cloneUri = $this->uri->withQuery(http_build_query($query));
+        $cloneUri = $this->uri->withQuery(\http_build_query($query));
 
         $clone = $this->cloneThisInstance($cloneUri);
         $clone->queryStrings->clean();
@@ -490,7 +490,7 @@ class ServerRequest extends Request implements iServerRequest
         $postDataArr = [];
         if ($this->contentType === "multipart/form-data" ||
             $this->contentType === "application/x-www-form-urlencoded") {
-            $postDataArr = ((is_array($this->parsedBody) === true) ? $this->parsedBody : []);
+            $postDataArr = ((\is_array($this->parsedBody) === true) ? $this->parsedBody : []);
         }
 
 
@@ -500,7 +500,7 @@ class ServerRequest extends Request implements iServerRequest
             $cookieArr[$cookie->getName()] = $cookie->getValue();
         }
 
-        $this->parans = array_merge(
+        $this->parans = \array_merge(
             $postDataArr,
             $this->queryStrings->toArray(true),
             $this->attributes->toArray(),
@@ -614,13 +614,13 @@ class ServerRequest extends Request implements iServerRequest
 
 
         $cttType = $this->headers->get("Content-Type");
-        $cttType = ((count($cttType) > 0) ? $cttType[0] : null);
-        if ($cttType !== null && strpos($cttType, ";") !== false) {
-            $cttTypeVal = array_map("trim", explode(";", (string)$cttType));
+        $cttType = (($cttType !== null && \count($cttType) > 0) ? $cttType[0] : null);
+        if ($cttType !== null && \strpos($cttType, ";") !== false) {
+            $cttTypeVal = \array_map("trim", \explode(";", (string)$cttType));
             $cttType = $cttTypeVal[0];
 
-            if (strpos($cttTypeVal[1], "boundary=") !== false) {
-                $this->boundary = str_replace("boundary=", "", $cttTypeVal[1]);
+            if (\strpos($cttTypeVal[1], "boundary=") !== false) {
+                $this->boundary = \str_replace("boundary=", "", $cttTypeVal[1]);
             }
         }
         $this->contentType = $cttType;
@@ -664,34 +664,34 @@ class ServerRequest extends Request implements iServerRequest
         $r = null;
         $useType = $mime;
 
-        $parts = explode("/", $useType);
-        if (count($parts) >= 2) {
-            $useType = $parts[count($parts) - 1];
+        $parts = \explode("/", $useType);
+        if (\count($parts) >= 2) {
+            $useType = $parts[\count($parts) - 1];
         }
 
-        $parts = explode("+", $useType);
-        if (count($parts) >= 2) {
-            $useType = $parts[count($parts) - 1];
+        $parts = \explode("+", $useType);
+        if (\count($parts) >= 2) {
+            $useType = $parts[\count($parts) - 1];
         }
 
 
 
         switch ($useType) {
             case "json":
-                $r = json_decode($body, true);
-                if (is_array($r) === false) {
+                $r = \json_decode($body, true);
+                if (\is_array($r) === false) {
                     $r = null;
                 }
 
                 break;
 
             case "xml":
-                $backup = libxml_disable_entity_loader(true);
-                $backup_errors = libxml_use_internal_errors(true);
-                $r = simplexml_load_string($body);
-                libxml_disable_entity_loader($backup);
-                libxml_clear_errors();
-                libxml_use_internal_errors($backup_errors);
+                $backup = \libxml_disable_entity_loader(true);
+                $backup_errors = \libxml_use_internal_errors(true);
+                $r = \simplexml_load_string($body);
+                \libxml_disable_entity_loader($backup);
+                \libxml_clear_errors();
+                \libxml_use_internal_errors($backup_errors);
 
                 if ($r === false) {
                     $r = null;
@@ -702,22 +702,22 @@ class ServerRequest extends Request implements iServerRequest
             case "form-data":
             case "x-www-form-urlencoded":
                 if ($boundary === "") {
-                    parse_str($body, $r);
+                    \parse_str($body, $r);
                 }
                 else {
 
-                    $multipartDataFields = preg_split("/-+$boundary/", $body);
-                    array_pop($multipartDataFields);
+                    $multipartDataFields = \preg_split("/-+$boundary/", $body);
+                    \array_pop($multipartDataFields);
                     $selectedUploadedFiles = [];
 
                     foreach ($multipartDataFields as $i => $rawFieldData) {
                         $fieldData = $this->parseMultipartField($rawFieldData);
 
                         if ($fieldData !== null) {
-                            extract($fieldData);
+                            \extract($fieldData);
 
                             if ($fieldFile === null) {
-                                if (ends_with($fieldName, "[]") === true) {
+                                if (\ends_with($fieldName, "[]") === true) {
                                     if (isset($r[$fieldName]) === false) { $r[$fieldName] = []; }
                                     $r[$fieldName][] = $fieldValue;
                                 }
@@ -727,8 +727,8 @@ class ServerRequest extends Request implements iServerRequest
                             }
                             else {
                                 // prosseguir daqui e ver o que fazer quando um arquivo vier vazio.
-                                $tempFile = tempnam(ini_get("upload_tmp_dir"), "tmp");
-                                $bytes = file_put_contents($tempFile, $fieldValue);
+                                $tempFile = \tempnam(\ini_get("upload_tmp_dir"), "tmp");
+                                $bytes = \file_put_contents($tempFile, $fieldValue);
                                 if ($bytes !== false) {
                                     if (isset($selectedUploadedFiles[$fieldName]) === false) {
                                         $selectedUploadedFiles[$fieldName] = [];
@@ -772,7 +772,7 @@ class ServerRequest extends Request implements iServerRequest
     {
         $r = null;
         $lineSep = "\r\n";
-        $rawFieldData = substr_replace(ltrim($rawFieldData), "", -2);
+        $rawFieldData = \substr_replace(\ltrim($rawFieldData), "", -2);
 
         if ($rawFieldData !== "") {
 
@@ -784,44 +784,44 @@ class ServerRequest extends Request implements iServerRequest
             $fieldMime = null;
             $fieldValue = "";
 
-            $endOfFirstLine = strpos($rawFieldData, $lineSep);
+            $endOfFirstLine = \strpos($rawFieldData, $lineSep);
             if ($endOfFirstLine === false) {
                 $contentDisposition = $rawFieldData;
             }
             else {
-                $contentDisposition = substr($rawFieldData, 0, $endOfFirstLine);
+                $contentDisposition = \substr($rawFieldData, 0, $endOfFirstLine);
             }
 
 
-            preg_match('/^(.+); *name="([^"]+)"(; *filename="([^"]+)")?/i', $contentDisposition, $cdMatches);
-            if (count($cdMatches) > 0) {
-                $fieldName = trim($cdMatches[2]);
+            \preg_match('/^(.+); *name="([^"]+)"(; *filename="([^"]+)")?/i', $contentDisposition, $cdMatches);
+            if (\count($cdMatches) > 0) {
+                $fieldName = \trim($cdMatches[2]);
 
                 if ($fieldName === "") {
                     $fieldName = null;
                 }
                 else {
-                    $fieldFile = (count($cdMatches) === 5) ? trim($cdMatches[4]) : null;
-                    if ($fieldFile === null && strpos($contentDisposition, "; filename=\"") !== false) {
+                    $fieldFile = (\count($cdMatches) === 5) ? \trim($cdMatches[4]) : null;
+                    if ($fieldFile === null && \strpos($contentDisposition, "; filename=\"") !== false) {
                         $fieldFile = "";
                     }
 
                     $c = 1;
                     if ($fieldFile === null) {
-                        $fieldValue = str_replace($contentDisposition . $lineSep . $lineSep, "", $rawFieldData, $c);
+                        $fieldValue = \str_replace($contentDisposition . $lineSep . $lineSep, "", $rawFieldData, $c);
                     }
                     else {
-                        $rawFieldData = str_replace($contentDisposition . $lineSep, "", $rawFieldData, $c);
-                        $endOfSecondLine = strpos($rawFieldData, $lineSep);
+                        $rawFieldData = \str_replace($contentDisposition . $lineSep, "", $rawFieldData, $c);
+                        $endOfSecondLine = \strpos($rawFieldData, $lineSep);
 
 
                         if ($endOfSecondLine !== false) {
-                            $contentType = substr($rawFieldData, 0, $endOfSecondLine);
+                            $contentType = \substr($rawFieldData, 0, $endOfSecondLine);
 
-                            preg_match('/content-type:([ \S]+)/i', $contentType, $ctMatches);
-                            if (count($ctMatches) > 0) {
-                                $fieldMime = trim($ctMatches[1]);
-                                $fieldValue = str_replace($ctMatches[0] . $lineSep . $lineSep, "", $rawFieldData, $c);
+                            \preg_match('/content-type:([ \S]+)/i', $contentType, $ctMatches);
+                            if (\count($ctMatches) > 0) {
+                                $fieldMime = \trim($ctMatches[1]);
+                                $fieldValue = \str_replace($ctMatches[0] . $lineSep . $lineSep, "", $rawFieldData, $c);
                             }
                         }
                     }
@@ -861,7 +861,11 @@ class ServerRequest extends Request implements iServerRequest
 
             $body = (string)$this->getBody();
             if ($this->bodyParsers === null || $this->bodyParsers->has((string)$this->contentType) === false) {
-                $this->parsedBody = $this->internalParseBody($body, (string)$this->contentType, (string)$this->boundary);
+                $this->parsedBody = $this->internalParseBody(
+                    $body,
+                    (string)$this->contentType,
+                    (string)$this->boundary
+                );
             } else {
                 $closure = $this->bodyParsers->get((string)$this->contentType);
                 $this->parsedBody = $closure($body);
@@ -884,7 +888,7 @@ class ServerRequest extends Request implements iServerRequest
      */
     public function withParsedBody($data)
     {
-        if ($data !== null && is_array($data) === false && is_object($data) === false) {
+        if ($data !== null && \is_array($data) === false && \is_object($data) === false) {
             throw new \InvalidArgumentException("The given body is invalid. Expected associative array, object or \"null\".");
         }
 
@@ -933,11 +937,11 @@ class ServerRequest extends Request implements iServerRequest
     public function getResponseMimes() : ?array
     {
         if ($this->responseMimes === null) {
-            $rMimes     = array_flip($this->responseMimeTypes);
+            $rMimes     = \array_flip($this->responseMimeTypes);
             $qMimes     = $this->parseRawLineOfQualityHeaders($this->getHeaderLine("accept"));
             $useMimes   = [];
 
-            if (is_array($qMimes) === true) {
+            if (\is_array($qMimes) === true) {
                 foreach ($qMimes as $qualityMime) {
                     $mt = $qualityMime["value"];
                     if ($mt === "*/*") {
@@ -995,7 +999,9 @@ class ServerRequest extends Request implements iServerRequest
     public function getResponseLocales() : ?array
     {
         if ($this->responseAcceptLanguage === null) {
-            $this->responseAcceptLanguage = $this->parseRawLineOfHeaderAcceptLanguage($this->getHeaderLine("accept-language"));
+            $this->responseAcceptLanguage = $this->parseRawLineOfHeaderAcceptLanguage(
+                $this->getHeaderLine("accept-language")
+            );
         }
 
         return $this->responseAcceptLanguage["locales"];
@@ -1016,7 +1022,9 @@ class ServerRequest extends Request implements iServerRequest
     public function getResponseLanguages() : ?array
     {
         if ($this->responseAcceptLanguage === null) {
-            $this->responseAcceptLanguage = $this->parseRawLineOfHeaderAcceptLanguage($this->getHeaderLine("accept-language"));
+            $this->responseAcceptLanguage = $this->parseRawLineOfHeaderAcceptLanguage(
+                $this->getHeaderLine("accept-language")
+            );
         }
 
         return $this->responseAcceptLanguage["languages"];

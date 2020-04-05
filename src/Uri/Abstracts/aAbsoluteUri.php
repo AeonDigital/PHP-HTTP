@@ -68,7 +68,7 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      */
     protected function validateQuery($query, bool $throw = false) : bool
     {
-        $r = (is_string($query) === true);
+        $r = (\is_string($query) === true);
         if ($r === false && $throw === true) {
             throw new \InvalidArgumentException("Invalid given \"query\" value. Must be an string.");
         }
@@ -92,17 +92,17 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
         $nQuery = [];
 
         // Divide a query em cada um de seus componentes chave=valor
-        $queryParts = explode("&", $query);
+        $queryParts = \explode("&", $query);
 
         foreach ($queryParts as $q) {
-            $keyVal = explode("=", $q);
+            $keyVal = \explode("=", $q);
 
             if ($keyVal[0] !== "") {
-                $nQuery[] = $keyVal[0] . "=" . ((count($keyVal) === 2) ? $this->percentEncode($keyVal[1]) : "");
+                $nQuery[] = $keyVal[0] . "=" . ((\count($keyVal) === 2) ? $this->percentEncode($keyVal[1]) : "");
             }
         }
 
-        return implode("&", $nQuery);
+        return \implode("&", $nQuery);
     }
     /**
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
@@ -175,7 +175,7 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      */
     protected function validateFragment($fragment, bool $throw = false) : bool
     {
-        $r = (is_string($fragment) === true);
+        $r = (\is_string($fragment) === true);
         if ($r === false && $throw === true) {
             throw new \InvalidArgumentException("Invalid given \"fragment\" value. Must be an string.");
         }
@@ -403,7 +403,7 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      */
     public static function fromString(string $uri)
     {
-        $components = parse_url($uri);
+        $components = \parse_url($uri);
 
         $scheme = ($components["scheme"] ?? "");
         $host = ($components["host"] ?? "");

@@ -63,7 +63,7 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
         $files = $this->toArray();
 
         foreach ($files as $k => $v) {
-            if (is_array($v) === false) {
+            if (\is_array($v) === false) {
                 $v->dropStream();
             } else {
                 foreach ($v as $f) {
@@ -99,16 +99,16 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
      */
     protected function isValidType($value) : bool
     {
-        if (is_array($value) === false) {
-            $r = (is_object($value) === true && in_array(iFile::class, class_implements($value)) === true);
+        if (\is_array($value) === false) {
+            $r = (\is_object($value) === true && \in_array(iFile::class, \class_implements($value)) === true);
         } else {
             $c = 0;
             foreach ($value as $v) {
-                if (is_object($v) === true && in_array(iFile::class, class_implements($v)) === true) {
+                if (\is_object($v) === true && \in_array(iFile::class, \class_implements($v)) === true) {
                     $c++;
                 }
             }
-            $r = (count($value) === $c);
+            $r = (\count($value) === $c);
         }
 
 

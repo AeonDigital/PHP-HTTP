@@ -117,7 +117,11 @@ class File implements iFile
      */
     public function getClientMediaType() : string
     {
-        return ($this->clientFilename === null) ? $this->fileStream->getMimeType() : $this->retrieveFileMimeType($this->clientFilename);
+        return (
+            ($this->clientFilename === null) ?
+            $this->fileStream->getMimeType() :
+            $this->retrieveFileMimeType($this->clientFilename)
+        );
     }
 
 
@@ -179,7 +183,7 @@ class File implements iFile
      */
     protected function isSapi() : bool
     {
-        return (substr(php_sapi_name(), 0, 3) == "cgi");
+        return (\substr(\php_sapi_name(), 0, 3) == "cgi");
     }
 
 
@@ -244,8 +248,8 @@ class File implements iFile
      */
     public function moveTo($targetPath) : void
     {
-        $isStream = strpos($targetPath, '://') > 0;
-        if ($isStream === false && is_writable(dirname($targetPath)) === false) {
+        $isStream = \strpos($targetPath, '://') > 0;
+        if ($isStream === false && \is_writable(\dirname($targetPath)) === false) {
             throw new \InvalidArgumentException("Upload target path is not writable.");
         } else {
             $errMsg = null;
@@ -256,15 +260,15 @@ class File implements iFile
                 $errMsg = "Target uploaded file already moved.";
             } else {
                 if ($isStream === true || $this->isSapi() === true) {
-                    if (copy($this->getPathToFile(), $targetPath) === false) {
+                    if (\copy($this->getPathToFile(), $targetPath) === false) {
                         $errMsg = "Can not move the uploaded file.";
                     }
-                    if (unlink($this->getPathToFile()) === false) {
+                    if (\unlink($this->getPathToFile()) === false) {
                         $errMsg = "Can not remove uploaded file from original location.";
                     }
                 }
                 else {
-                    if (rename($this->getPathToFile(), $targetPath) === false) {
+                    if (\rename($this->getPathToFile(), $targetPath) === false) {
                         $errMsg = "Can not remove uploaded file from original location.";
                     }
                 }

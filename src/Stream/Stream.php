@@ -137,12 +137,12 @@ class Stream implements iStream
      */
     protected function attachResource($stream) : void
     {
-        if (is_resource($stream) === false) {
+        if (\is_resource($stream) === false) {
             throw new \InvalidArgumentException("Argument must be a valid resource type.");
         }
 
         $this->stream = $stream;
-        $stats = fstat($this->stream);
+        $stats = \fstat($this->stream);
 
 
         // Identifica se o "Stream" é "pipe"
@@ -153,7 +153,7 @@ class Stream implements iStream
         $this->size = ((isset($stats["size"]) && $this->isPipe === false) ? $stats["size"] : null);
 
         // Resgata os metadados do "Stream"
-        $this->metaData = stream_get_meta_data($this->stream);
+        $this->metaData = \stream_get_meta_data($this->stream);
 
         // Verifica se o "Stream" é "pesquisável"
         $this->seekable = ($this->isPipe === false && $this->metaData["seekable"]);
@@ -167,7 +167,7 @@ class Stream implements iStream
 
         // Verifica se é possível alterar o "Stream"
         foreach ($streamModes["writable"] as $mode) {
-            if (strpos($this->metaData["mode"], $mode) === 0) {
+            if (\strpos($this->metaData["mode"], $mode) === 0) {
                 $this->writable = true;
                 break;
             }
@@ -176,7 +176,7 @@ class Stream implements iStream
 
         // Verifica se é possível ler o "Stream"
         foreach ($streamModes["readable"] as $mode) {
-            if (strpos($this->metaData["mode"], $mode) === 0) {
+            if (\strpos($this->metaData["mode"], $mode) === 0) {
                 $this->readable = true;
                 break;
             }
@@ -204,7 +204,7 @@ class Stream implements iStream
     public function getMetadata($key = null)
     {
         $r = null;
-        if ($this->stream !== null && $key !== null && is_string($key) === true) {
+        if ($this->stream !== null && $key !== null && \is_string($key) === true) {
             $r = ((isset($this->metaData[$key]) === false) ? null : $this->metaData[$key]);
         }
         return $r;
@@ -285,7 +285,7 @@ class Stream implements iStream
      */
     public function eof() : bool
     {
-        return (($this->stream === null) ? true : feof($this->stream));
+        return (($this->stream === null) ? true : \feof($this->stream));
     }
 
 
@@ -305,7 +305,7 @@ class Stream implements iStream
         $err = ($this->stream === null || $this->isPipe === true);
 
         if ($err === false) {
-            $pos = ftell($this->stream);
+            $pos = \ftell($this->stream);
             $err = ($pos === false);
         }
 
@@ -347,7 +347,7 @@ class Stream implements iStream
         $err = ($this->stream === null || $this->seekable === false);
 
         if ($err === false) {
-            $r = fseek($this->stream, $offset, $whence);
+            $r = \fseek($this->stream, $offset, $whence);
         }
 
         if ($err === true || $r === -1) {
@@ -377,7 +377,7 @@ class Stream implements iStream
         $err = ($this->stream === null || $this->seekable === false);
 
         if ($err === false) {
-            $r = rewind($this->stream);
+            $r = \rewind($this->stream);
         }
 
         if ($err === true || $r === false) {
@@ -408,7 +408,7 @@ class Stream implements iStream
         $err = ($this->stream === null || $this->readable === false);
 
         if ($err === false) {
-            $r = fread($this->stream, $length);
+            $r = \fread($this->stream, $length);
         }
 
         if ($err === true || $r === false) {
@@ -441,8 +441,8 @@ class Stream implements iStream
         $err = ($this->stream === null || $this->writable === false);
 
         if ($err === false) {
-            $r = fwrite($this->stream, $string);
-            $stats = fstat($this->stream);
+            $r = \fwrite($this->stream, $string);
+            $stats = \fstat($this->stream);
 
             // Identifica o novo tamanho do "Stream" (se possível).
             $this->size = ((isset($stats["size"]) && $this->isPipe === false) ? $stats["size"] : null);
@@ -475,7 +475,7 @@ class Stream implements iStream
         $err = ($this->stream === null || $this->readable === false);
 
         if ($err === false) {
-            $r = stream_get_contents($this->stream);
+            $r = \stream_get_contents($this->stream);
         }
 
         if ($err === true || $r === false) {
@@ -533,10 +533,10 @@ class Stream implements iStream
         if ($this->stream !== null) {
             if ($this->isPipe === true) {
                 // @codeCoverageIgnoreStart
-                pclose($this->stream);
+                \pclose($this->stream);
                 // @codeCoverageIgnoreEnd
             } else {
-                fclose($this->stream);
+                \fclose($this->stream);
             }
         }
 

@@ -92,9 +92,9 @@ abstract class aBasicUri implements iBasicUri
      */
     protected function validateScheme($scheme, bool $throw = false) : bool
     {
-        $r = (is_string($scheme) === true && in_array(strtolower($scheme), $this->acceptSchemes) === true);
+        $r = (\is_string($scheme) === true && \in_array(\strtolower($scheme), $this->acceptSchemes) === true);
         if ($throw === true && $r === false) {
-            if (is_string($scheme) === false) {
+            if (\is_string($scheme) === false) {
                 throw new \InvalidArgumentException("Invalid given \"scheme\" value. Must be an string.");
             } else {
                 throw new \InvalidArgumentException("Invalid given \"scheme\" value [ \"" . $scheme . "\" ].");
@@ -112,7 +112,7 @@ abstract class aBasicUri implements iBasicUri
      */
     protected function normalizeScheme(string $scheme) : string
     {
-        return strtolower($scheme);
+        return \strtolower($scheme);
     }
     /**
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
@@ -158,12 +158,12 @@ abstract class aBasicUri implements iBasicUri
     protected function percentEncode(string $value) : string
     {
         // Se o valor já está encodado... remove encoding
-        $value = str_replace("+", "%20", $value);
-        while ((strpos($value, "%") !== false && rawurlencode(rawurldecode($value)) === $value)) {
-            $value = rawurldecode($value);
+        $value = \str_replace("+", "%20", $value);
+        while ((\strpos($value, "%") !== false && \rawurlencode(\rawurldecode($value)) === $value)) {
+            $value = \rawurldecode($value);
         }
 
-        return rawurlencode($value);
+        return \rawurlencode($value);
     }
 
 

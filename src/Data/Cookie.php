@@ -48,7 +48,7 @@ class Cookie implements iCookie
      */
     public function setName(string $name) : void
     {
-        if ($name === "" || preg_match("/^([a-zA-Z0-9_])+$/", $name) !== 1) {
+        if ($name === "" || \preg_match("/^([a-zA-Z0-9_])+$/", $name) !== 1) {
             throw new \InvalidArgumentException("Invalid cookie name. Use only a-zA-Z0-9 characters.");
         }
 
@@ -99,7 +99,7 @@ class Cookie implements iCookie
      */
     public function getValue(bool $urldecoded = true) : string
     {
-        return (($urldecoded === true) ? rawurldecode($this->value) : $this->value);
+        return (($urldecoded === true) ? \rawurldecode($this->value) : $this->value);
     }
 
 
@@ -177,7 +177,7 @@ class Cookie implements iCookie
      */
     public function setDomain(?string $domain) : void
     {
-        $this->domain = (($domain === null) ? null : strtolower($domain));
+        $this->domain = (($domain === null) ? null : \strtolower($domain));
     }
     /**
      * Retorna o ``Domain`` definido para este cookie.
@@ -214,7 +214,7 @@ class Cookie implements iCookie
      */
     public function setPath(?string $path) : void
     {
-        if (strpos($path, "/") !== 0) {
+        if (\strpos($path, "/") !== 0) {
             $path = "/" . $path;
         }
         $this->path = $path;
@@ -388,12 +388,12 @@ class Cookie implements iCookie
     protected function percentEncode(string $value) : string
     {
         // Se o valor já está encodado... remove encoding
-        $value = str_replace("+", "%20", $value);
-        while ((strpos($value, "%") !== false && rawurlencode(rawurldecode($value)) === $value)) {
-            $value = rawurldecode($value);
+        $value = \str_replace("+", "%20", $value);
+        while ((\strpos($value, "%") !== false && \rawurlencode(\rawurldecode($value)) === $value)) {
+            $value = \rawurldecode($value);
         }
 
-        return rawurlencode($value);
+        return \rawurlencode($value);
     }
 
 
@@ -455,7 +455,15 @@ class Cookie implements iCookie
     public function defineCookie() : bool
     {
         $timeStamp = (($this->expires === null) ? null : $this->expires->getTimestamp());
-        return setcookie($this->name, $this->value, $timeStamp, $this->path, $this->domain, $this->secure, $this->httpOnly);
+        return \setcookie(
+            $this->name,
+            $this->value,
+            $timeStamp,
+            $this->path,
+            $this->domain,
+            $this->secure,
+            $this->httpOnly
+        );
     }
 
 
@@ -472,7 +480,15 @@ class Cookie implements iCookie
      */
     public function removeCookie() : bool
     {
-        return setcookie($this->name, false, -1, $this->path, $this->domain, $this->secure, $this->httpOnly);
+        return \setcookie(
+            $this->name,
+            false,
+            -1,
+            $this->path,
+            $this->domain,
+            $this->secure,
+            $this->httpOnly
+        );
     }
 
 
@@ -512,34 +528,34 @@ class Cookie implements iCookie
 
 
         if ($err === false) {
-            $parts = array_map("trim", explode(";", $str));
+            $parts = \array_map("trim", \explode(";", $str));
 
-            $nameValue = explode("=", $parts[0]);
+            $nameValue = \explode("=", $parts[0]);
 
             $name = $nameValue[0];
-            $value = ((count($nameValue) === 2) ? $nameValue[1] : "");
+            $value = ((\count($nameValue) === 2) ? $nameValue[1] : "");
 
-            if (count($parts) > 1) {
-                array_shift($parts);
+            if (\count($parts) > 1) {
+                \array_shift($parts);
 
                 foreach ($parts as $p) {
-                    $keyPair = array_map("trim", explode("=", $p));
-                    if (count($keyPair) === 1) {
+                    $keyPair = \array_map("trim", \explode("=", $p));
+                    if (\count($keyPair) === 1) {
                         $keyPair[] = null;
                     }
 
                     $val = $keyPair[1];
 
-                    switch (strtolower($keyPair[0])) {
+                    switch (\strtolower($keyPair[0])) {
                         case "expires":
                             if ($val !== null) {
-                                if (is_numeric($val) === true) {
+                                if (\is_numeric($val) === true) {
                                     $expires = new \DateTime();
                                     $expires->setTimestamp((int)$val);
                                 } else {
-                                    if (strpos(strtolower($val), " utc") !== false ||
-                                        strpos(strtolower($val), " gmt") !== false) {
-                                        $val = substr($val, 0, strlen($val) - 4);
+                                    if (\strpos(\strtolower($val), " utc") !== false ||
+                                        \strpos(\strtolower($val), " gmt") !== false) {
+                                        $val = \substr($val, 0, \strlen($val) - 4);
                                     }
                                     $expires = \DateTime::createFromFormat("D, d M Y H:i:s", $val);
                                 }
@@ -597,20 +613,20 @@ class Cookie implements iCookie
     {
         $coll = [];
 
-        $parts = array_map("trim", explode(";", $str));
+        $parts = \array_map("trim", \explode(";", $str));
         $cookies = [];
 
         foreach ($parts as $part) {
             if ($part !== "") {
-                $s = explode("=", $part);
+                $s = \explode("=", $part);
 
-                switch (strtolower($s[0])) {
+                switch (\strtolower($s[0])) {
                     case "expires":
                     case "domain":
                     case "path":
                     case "secure":
                     case "httponly":
-                        $i = count($cookies) - 1;
+                        $i = \count($cookies) - 1;
                         $cookies[$i][] = $part;
                         break;
 
@@ -623,7 +639,7 @@ class Cookie implements iCookie
 
 
         foreach ($cookies as $cookie) {
-            $str = implode(";", $cookie) . ";";
+            $str = \implode(";", $cookie) . ";";
             $nC = self::fromString($str);
             $coll[$nC->getName()] = $nC;
         }

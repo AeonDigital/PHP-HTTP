@@ -169,15 +169,15 @@ class FileStream extends Stream implements iFileStream
     {
         $pathToFile = $this->normalizePathToFile($pathToFile);
 
-        if (file_exists($pathToFile) === false) {
+        if (\file_exists($pathToFile) === false) {
             throw new \InvalidArgumentException("The target file does not exists [ \"" . $pathToFile . "\" ].");
         }
 
-        parent::__construct(fopen($pathToFile, $openMode));
+        parent::__construct(\fopen($pathToFile, $openMode));
 
         $this->openMode = $openMode;
         $this->pathToFile = $pathToFile;
-        $this->fileName = basename($pathToFile);
+        $this->fileName = \basename($pathToFile);
         $this->mimeType = $this->retrieveFileMimeType($pathToFile);
     }
 
@@ -205,13 +205,13 @@ class FileStream extends Stream implements iFileStream
         $wrong = ($ds == "/") ? "\\" : "/";
 
         // Substitui separadores errados
-        $pathToFile = str_replace($wrong, $ds, $pathToFile);
+        $pathToFile = \str_replace($wrong, $ds, $pathToFile);
 
         // Remove duplicação dos separadores
-        while (mb_strpos($pathToFile, $ds . $ds) !== false) {
-            $pathToFile = str_replace($ds . $ds, $ds, $pathToFile);
+        while (\mb_strpos($pathToFile, $ds . $ds) !== false) {
+            $pathToFile = \str_replace($ds . $ds, $ds, $pathToFile);
         }
 
-        return rtrim($pathToFile, $ds);
+        return \rtrim($pathToFile, $ds);
     }
 }

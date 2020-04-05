@@ -104,8 +104,8 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function validateUser($user, bool $throw = false) : bool
     {
-        $r = is_string($user);
-        if (is_string($user) === false && $throw === true) {
+        $r = \is_string($user);
+        if (\is_string($user) === false && $throw === true) {
             throw new \InvalidArgumentException("Invalid given \"user\" value. Must be an string.");
         }
         return $r;
@@ -194,7 +194,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
     protected function validatePassword($password, bool $throw = false) : bool
     {
         // Aceita apenas NULL ou valores que são String
-        $r = ($password === null || is_string($password) === true);
+        $r = ($password === null || \is_string($password) === true);
         if ($r === false && $throw === true) {
             throw new \InvalidArgumentException("Invalid given \"password\" value. Must be an string or \"null\".");
         }
@@ -282,7 +282,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function validateHost($host, bool $throw = false) : bool
     {
-        $r = is_string($host);
+        $r = \is_string($host);
         if ($r === false && $throw === true) {
             throw new \InvalidArgumentException("Invalid given \"host\" value. Must be an string.");
         }
@@ -298,7 +298,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function normalizeHost(string $host) : string
     {
-        return strtolower($host);
+        return \strtolower($host);
     }
     /**
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
@@ -378,7 +378,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
     protected function validatePort($port, bool $throw = false) : bool
     {
         $r = ($port === null);
-        if ($r === false && is_int($port) === true) {
+        if ($r === false && \is_int($port) === true) {
             $r = ($port >= 1 && $port <= 65535);
         }
 
@@ -591,7 +591,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function validatePath($path, bool $throw = false) : bool
     {
-        $r = is_string($path);
+        $r = \is_string($path);
         if ($r === false && $throw === true) {
             throw new \InvalidArgumentException("Invalid given \"path\" value. Must be an string.");
         }
@@ -607,7 +607,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function normalizePath(string $path) : string
     {
-        return implode("/", array_map("rawurlencode", explode("/", $path)));
+        return \implode("/", \array_map("rawurlencode", \explode("/", $path)));
     }
     /**
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
@@ -673,7 +673,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
         ?int $port = null,
         string $path = ""
     ) {
-        parent::__construct($scheme, array_keys($this->defaultSchemePort));
+        parent::__construct($scheme, \array_keys($this->defaultSchemePort));
 
         $this->validateUser($user, true);
         $this->validatePassword($password, true);
@@ -735,7 +735,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
     public function getBasePath() : string
     {
         $baseUri = $this->getBase();
-        $path = ltrim($this->getPath(), "/");
+        $path = \ltrim($this->getPath(), "/");
 
         $absoluteUri = $baseUri . (($path === "") ? "" : "/" . $path);
 

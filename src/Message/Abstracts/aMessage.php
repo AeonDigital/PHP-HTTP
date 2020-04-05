@@ -109,10 +109,10 @@ abstract class aMessage implements MessageInterface
      */
     protected function validateProtocolVersion($protocolVersion, bool $throw = false) : bool
     {
-        $r = (is_string($protocolVersion) === true);
+        $r = (\is_string($protocolVersion) === true);
         if ($r === false && $throw === true) {
             throw new \InvalidArgumentException("Invalid given \"protocolVersion\" value. Must be an string.");
-        } elseif (in_array($protocolVersion, ["1.0", "1.1", "2.0", "2"]) === false) {
+        } elseif (\in_array($protocolVersion, ["1.0", "1.1", "2.0", "2"]) === false) {
             throw new \InvalidArgumentException("Invalid given \"protocolVersion\" value. [ \"" . $protocolVersion . "\" ].");
         }
         return $r;
@@ -217,7 +217,7 @@ abstract class aMessage implements MessageInterface
         $str = "";
 
         $r = $this->getHeader($name);
-        $str = implode(", ", $r);
+        $str = \implode(", ", $r);
 
         return $str;
     }
@@ -247,7 +247,7 @@ abstract class aMessage implements MessageInterface
      */
     public function withHeader($name, $value)
     {
-        if (is_string($name) === false || $name === "") {
+        if (\is_string($name) === false || $name === "") {
             throw new \InvalidArgumentException("Invalid given \"name\" value. Must be a non empty string.");
         }
 
@@ -280,7 +280,7 @@ abstract class aMessage implements MessageInterface
      */
     public function withAddedHeader($name, $value)
     {
-        if (is_string($name) === false || $name === "") {
+        if (\is_string($name) === false || $name === "") {
             throw new \InvalidArgumentException("Invalid given \"name\" value. Must be a non empty string.");
         }
 
@@ -303,7 +303,7 @@ abstract class aMessage implements MessageInterface
      */
     public function withoutHeader($name)
     {
-        if (is_string($name) === false || $name === "") {
+        if (\is_string($name) === false || $name === "") {
             throw new \InvalidArgumentException("Invalid given \"name\" value. Must be a non empty string.");
         }
 

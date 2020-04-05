@@ -28,33 +28,6 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
 
 
     /**
-     * Verifica se o objeto passado é um array associativo.
-     *
-     * @codeCoverageIgnore
-     *
-     * @param       mixed $o
-     *              Objeto que será testado.
-     *
-     * @return      bool
-     */
-    protected function isAssoc($o) : bool
-    {
-        if (is_array($o) === true && $o !== []) {
-            return array_keys($o) !== range(0, count($o) - 1);
-        }
-        return false;
-    }
-
-
-
-
-
-
-
-
-
-
-    /**
      * Ajusta o nome das chaves dos headers para o armazenamento padrão.
      * Como esta classe é ``case insensitive`` os valores serão armazenados sempre em
      * ``lowercase`` mas qualquer ``_`` será convertido em ``-`` que é o separador padrão
@@ -70,8 +43,8 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      */
     protected function useKey(string $key, $value = null) : string
     {
-        $k = (($this->isCaseInsensitive() === false) ? $key : strtolower($key));
-        return str_replace(["_", " "], "-", $k);
+        $k = (($this->isCaseInsensitive() === false) ? $key : \strtolower($key));
+        return \str_replace(["_", " "], "-", $k);
     }
 
 
@@ -94,10 +67,10 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
         $coll = $this->toArray($originalKeys);
 
         foreach ($coll as $k => $v) {
-            $r[] = $k . ": " . implode(", ", $v);
+            $r[] = $k . ": " . \implode(", ", $v);
         }
 
-        return implode("\n", $r);
+        return \implode("\n", $r);
     }
     /**
      * Retorna toda a coleção atualmente armazenada em um array associativo [ string => mixed ].
@@ -128,7 +101,7 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      */
     protected function prettyHeaderKey(string $key) : string
     {
-        return strtr(ucwords(strtr(strtr(strtolower($key), "_", " "), "-", " ")), " ", "-");
+        return \strtr(\ucwords(\strtr(\strtr(\strtolower($key), "_", " "), "-", " ")), " ", "-");
     }
 
 
@@ -188,19 +161,19 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
     {
         $useVal = $value;
 
-        if (is_string($useVal) === true || is_numeric($useVal) === true) {
-            $useVal = array_map("trim", explode(",", (string)$useVal));
+        if (\is_string($useVal) === true || \is_numeric($useVal) === true) {
+            $useVal = \array_map("trim", \explode(",", (string)$useVal));
         }
 
-        if (is_array($useVal) === true) {
-            $useVal = (($oldValue === null) ? $useVal : array_merge($oldValue, $useVal));
-            $useVal = array_values(array_unique($useVal, SORT_REGULAR));
+        if (\is_array($useVal) === true) {
+            $useVal = (($oldValue === null) ? $useVal : \array_merge($oldValue, $useVal));
+            $useVal = \array_values(\array_unique($useVal, SORT_REGULAR));
         }
 
         if ($this->isProtected() === true) {
-            if (is_array($useVal) === true) {
-                $useVal = array_merge($useVal, []);
-            } elseif (is_object($useVal) === true) {
+            if (\is_array($useVal) === true) {
+                $useVal = \array_merge($useVal, []);
+            } elseif (\is_object($useVal) === true) {
                 $useVal = clone $useVal;
             }
         }
@@ -229,13 +202,13 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      */
     protected function isValidType($value) : bool
     {
-        $r = (is_string($value) === true || (is_array($value) === true && $this->isAssoc($value) === false));
+        $r = (\is_string($value) === true || (\is_array($value) === true && \array_is_assoc($value) === false));
 
         // Se for um array de valores, o array
         // só pode conter strings
-        if ($r === true && is_array($value) === true) {
+        if ($r === true && \is_array($value) === true) {
             foreach ($value as $v) {
-                if (is_string($v) === false && is_numeric($v) === false) {
+                if (\is_string($v) === false && \is_numeric($v) === false) {
                     $r = false;
                     break;
                 }
@@ -273,15 +246,15 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
     public static function fromString(string $str) : HeaderCollection
     {
         $h = [];
-        $lines = explode("\n", $str);
+        $lines = \explode("\n", $str);
 
         foreach ($lines as $line) {
-            $kp = array_map("trim", explode(":", $line));
-            if (count($kp) !== 2) {
+            $kp = \array_map("trim", \explode(":", $line));
+            if (\count($kp) !== 2) {
                 throw new \InvalidArgumentException("Invalid given value. Cant convert to headers collection.");
             } else {
                 $k = $kp[0];
-                $v = array_map("trim", explode(",", $kp[1]));
+                $v = \array_map("trim", \explode(",", $kp[1]));
                 $h[$k] = $v;
             }
         }
@@ -309,7 +282,7 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
         $str = "";
 
         if ($this->has($key) === true) {
-            $str = implode(", ", $this->get($key));
+            $str = \implode(", ", $this->get($key));
         }
 
         return $str;

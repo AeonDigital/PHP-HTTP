@@ -225,8 +225,8 @@ class Request extends aMessage implements iRequest
      */
     public function withRequestTarget($requestTarget)
     {
-        $split = explode("?", $requestTarget);
-        if (count($split) === 1) {
+        $split = \explode("?", $requestTarget);
+        if (\count($split) === 1) {
             $split[] = "";
         }
 
@@ -300,10 +300,10 @@ class Request extends aMessage implements iRequest
      */
     protected function checkMethod(string $method) : string
     {
-        $method = mb_strtoupper($method);
+        $method = \mb_strtoupper($method);
 
         // Verifica se o "method" informado é válido.
-        if (!in_array($method, $this->validMethod)) {
+        if (\in_array($method, $this->validMethod) === false) {
             throw new \InvalidArgumentException("Invalid HTTP method [ \"" . $method . "\" ].");
         }
 
