@@ -13,8 +13,8 @@ AeonDigital
 \AeonDigital\Http
 
 
-Namespaces
-----------
+Classes
+-------
 
 .. toctree::
 	:maxdepth: 6
