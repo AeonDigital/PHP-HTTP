@@ -21,9 +21,9 @@ class ResponseTest extends TestCase
 
     public function test_constructor_code_status_fail()
     {
-        $headers    = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $oHeaders   = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
-        $oBody      = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
+        $headers    = prov_assocArray_to_Http_Header_01();
+        $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
+        $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
 
         $fail = false;
         try {
@@ -40,9 +40,9 @@ class ResponseTest extends TestCase
 
     public function test_constructor_ok()
     {
-        $headers    = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $oHeaders   = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
-        $oBody      = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
+        $headers    = prov_assocArray_to_Http_Header_01();
+        $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
+        $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
 
         $res = new Response(200, "", "1.0", $oHeaders, $oBody);
         $this->assertTrue(is_a($res, Response::class));
@@ -51,17 +51,17 @@ class ResponseTest extends TestCase
 
     public function test_method_get_status_code()
     {
-        $res = provider_PHPHTTPMessage_InstanceOf_Response(200);
+        $res = prov_instanceOf_Http_Response(200);
         $this->assertSame(200, $res->getStatusCode());
     }
 
 
     public function test_method_get_reason_phrase()
     {
-        $res = provider_PHPHTTPMessage_InstanceOf_Response(200, "");
+        $res = prov_instanceOf_Http_Response(200, "");
         $this->assertSame("OK", $res->getReasonPhrase());
 
-        $res = provider_PHPHTTPMessage_InstanceOf_Response(200, "Teste");
+        $res = prov_instanceOf_Http_Response(200, "Teste");
         $this->assertSame("Teste", $res->getReasonPhrase());
     }
 
@@ -71,7 +71,7 @@ class ResponseTest extends TestCase
 
     public function test_method_clone_with_status()
     {
-        $res = provider_PHPHTTPMessage_InstanceOf_Response();
+        $res = prov_instanceOf_Http_Response();
         $this->assertSame(200, $res->getStatusCode());
         $this->assertSame("OK", $res->getReasonPhrase());
 
@@ -89,7 +89,7 @@ class ResponseTest extends TestCase
 
     public function test_method_clone_with_viewdata()
     {
-        $res = provider_PHPHTTPMessage_InstanceOf_Response();
+        $res = prov_instanceOf_Http_Response();
         $this->assertSame(null, $res->getViewData());
 
         $viewData = (object)["key1" => "val1", "key2" => "val2"];
@@ -103,7 +103,7 @@ class ResponseTest extends TestCase
 
     public function test_method_clone_with_viewconfig()
     {
-        $res = provider_PHPHTTPMessage_InstanceOf_Response();
+        $res = prov_instanceOf_Http_Response();
         $this->assertSame(null, $res->getViewConfig());
 
         $viewConfig = (object)["key1" => "val1", "key2" => "val2", "responseMime" => "text/plain"];
@@ -118,11 +118,11 @@ class ResponseTest extends TestCase
 
     public function test_method_clone_with_headers()
     {
-        $headers    = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_02();
-        $oHeaders   = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
-        $oBody      = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
+        $headers    = prov_assocArray_to_Http_Header_02();
+        $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
+        $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
 
-        $res = provider_PHPHTTPMessage_InstanceOf_Response(200, "", "1.1", $oHeaders, $oBody);
+        $res = prov_instanceOf_Http_Response(200, "", "1.1", $oHeaders, $oBody);
         $this->assertTrue($res->hasHeader("CONTENT_TYPE"));
         $this->assertTrue($res->hasHeader("teste"));
         $this->assertTrue($res->hasHeader("unique"));
@@ -131,8 +131,8 @@ class ResponseTest extends TestCase
 
 
         // Subtitui integralmente os headers
-        $headers    = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_03();
-        $oHeaders02 = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $headers    = prov_assocArray_to_Http_Header_03();
+        $oHeaders02 = prov_instanceOf_Http_HeaderCollection_01($headers);
         $res1 = $res->withHeaders($oHeaders02->toArray());
         $this->assertTrue($res1->hasHeader("CONTENT_TYPE"));
         $this->assertTrue($res1->hasHeader("teste"));
@@ -144,11 +144,11 @@ class ResponseTest extends TestCase
 
     public function test_method_clone_with_headers_merge()
     {
-        $headers    = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_02();
-        $oHeaders   = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
-        $oBody      = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
+        $headers    = prov_assocArray_to_Http_Header_02();
+        $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
+        $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
 
-        $res = provider_PHPHTTPMessage_InstanceOf_Response(200, "", "1.1", $oHeaders, $oBody);
+        $res = prov_instanceOf_Http_Response(200, "", "1.1", $oHeaders, $oBody);
         $this->assertTrue($res->hasHeader("CONTENT_TYPE"));
         $this->assertTrue($res->hasHeader("teste"));
         $this->assertTrue($res->hasHeader("unique"));
@@ -157,8 +157,8 @@ class ResponseTest extends TestCase
 
 
         // Efetua o merge entre os arrays existentes e os definidos
-        $headers    = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_03();
-        $oHeaders02 = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $headers    = prov_assocArray_to_Http_Header_03();
+        $oHeaders02 = prov_instanceOf_Http_HeaderCollection_01($headers);
         $res1 = $res->withHeaders($oHeaders02->toArray(), true);
         $this->assertTrue($res1->hasHeader("CONTENT_TYPE"));
         $this->assertTrue($res1->hasHeader("teste"));
@@ -170,11 +170,11 @@ class ResponseTest extends TestCase
 
     public function test_method_clone_with_action_properties()
     {
-        $headers    = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_02();
-        $oHeaders   = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
-        $oBody      = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
+        $headers    = prov_assocArray_to_Http_Header_02();
+        $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
+        $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
 
-        $res = provider_PHPHTTPMessage_InstanceOf_Response(200, "", "1.1", $oHeaders, $oBody);
+        $res = prov_instanceOf_Http_Response(200, "", "1.1", $oHeaders, $oBody);
         $this->assertSame(null, $res->getViewData());
         $this->assertSame(null, $res->getViewConfig());
 
@@ -187,8 +187,8 @@ class ResponseTest extends TestCase
 
 
         // Efetua o merge entre os arrays existentes e os definidos
-        $headers    = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_03();
-        $oHeaders02 = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $headers    = prov_assocArray_to_Http_Header_03();
+        $oHeaders02 = prov_instanceOf_Http_HeaderCollection_01($headers);
         $viewData = (object)["key1" => "val1", "key2" => "val2"];
         $viewConfig = (object)["key1" => "val1", "key2" => "val2", "responseMime" => "text/plain"];
 

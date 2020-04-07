@@ -27,10 +27,10 @@ class FileCollectionTest extends TestCase
 
     public function test_constructor_ok_with_values()
     {
-        $fs1 = provider_PHPStream_InstanceOf_FileStream("upload-image-1.jpg");
-        $f1 = provider_PHPHTTPData_InstanceOf_File($fs1);
-        $fs2 = provider_PHPStream_InstanceOf_FileStream("upload-image-2.jpg");
-        $f2 = provider_PHPHTTPData_InstanceOf_File($fs2);
+        $fs1 = prov_instanceOf_Http_FileStream_fromFile("upload-image-1.jpg");
+        $f1 = prov_instanceOf_Http_File($fs1);
+        $fs2 = prov_instanceOf_Http_FileStream_fromFile("upload-image-2.jpg");
+        $f2 = prov_instanceOf_Http_File($fs2);
 
 
         $files = new FileCollection(["file1" => $f1, "file2" => $f2]);
@@ -47,12 +47,12 @@ class FileCollectionTest extends TestCase
 
     public function test_method_get()
     {
-        $fs1 = provider_PHPStream_InstanceOf_FileStream("upload-image-1.jpg");
-        $f1 = provider_PHPHTTPData_InstanceOf_File($fs1);
-        $fs2 = provider_PHPStream_InstanceOf_FileStream("upload-image-2.jpg");
-        $f2 = provider_PHPHTTPData_InstanceOf_File($fs2);
+        $fs1 = prov_instanceOf_Http_FileStream_fromFile("upload-image-1.jpg");
+        $f1 = prov_instanceOf_Http_File($fs1);
+        $fs2 = prov_instanceOf_Http_FileStream_fromFile("upload-image-2.jpg");
+        $f2 = prov_instanceOf_Http_File($fs2);
 
-        $files = provider_PHPHTTPData_InstanceOf_FileCollection(["file1" => $f1, "file2" => $f2]);
+        $files = prov_instanceOf_Http_FileCollection_01(["file1" => $f1, "file2" => $f2]);
 
         $this->assertSame($f1, $files->get("file1"));
         $this->assertSame($f2, $files->get("file2"));
@@ -61,12 +61,12 @@ class FileCollectionTest extends TestCase
 
     public function test_method_set_values_on_same_keyname()
     {
-        $fs1 = provider_PHPStream_InstanceOf_FileStream("upload-image-1.jpg");
-        $f1 = provider_PHPHTTPData_InstanceOf_File($fs1);
-        $fs2 = provider_PHPStream_InstanceOf_FileStream("upload-image-2.jpg");
-        $f2 = provider_PHPHTTPData_InstanceOf_File($fs2);
+        $fs1 = prov_instanceOf_Http_FileStream_fromFile("upload-image-1.jpg");
+        $f1 = prov_instanceOf_Http_File($fs1);
+        $fs2 = prov_instanceOf_Http_FileStream_fromFile("upload-image-2.jpg");
+        $f2 = prov_instanceOf_Http_File($fs2);
 
-        $files = provider_PHPHTTPData_InstanceOf_FileCollection(["uploadField" => [$f1, $f2]]);
+        $files = prov_instanceOf_Http_FileCollection_01(["uploadField" => [$f1, $f2]]);
 
         $oFiles = $files->get("uploadField");
         $this->assertTrue(is_array($oFiles));
@@ -79,12 +79,12 @@ class FileCollectionTest extends TestCase
 
     public function test_method_drop_streams()
     {
-        $fs1 = provider_PHPStream_InstanceOf_FileStream("upload-image-1.jpg");
-        $f1 = provider_PHPHTTPData_InstanceOf_File($fs1);
-        $fs2 = provider_PHPStream_InstanceOf_FileStream("upload-image-2.jpg");
-        $f2 = provider_PHPHTTPData_InstanceOf_File($fs2);
+        $fs1 = prov_instanceOf_Http_FileStream_fromFile("upload-image-1.jpg");
+        $f1 = prov_instanceOf_Http_File($fs1);
+        $fs2 = prov_instanceOf_Http_FileStream_fromFile("upload-image-2.jpg");
+        $f2 = prov_instanceOf_Http_File($fs2);
 
-        $files = provider_PHPHTTPData_InstanceOf_FileCollection(["file1" => $f1, "file2" => $f2]);
+        $files = prov_instanceOf_Http_FileCollection_01(["file1" => $f1, "file2" => $f2]);
 
         $this->assertSame(10552, $files->get("file1")->getSize());
         $this->assertSame(10552, $files->get("file2")->getSize());

@@ -20,9 +20,9 @@ class AbsoluteUri extends aAbsoluteUri
     function __construct(
         string $scheme = "",
         string $user = "",
-        ? string $password = null,
+        ?string $password = null,
         string $host = "",
-        ? int $port = null,
+        ?int $port = null,
         string $path = "",
         string $query = "",
         string $fragment = ""

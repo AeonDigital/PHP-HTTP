@@ -34,7 +34,7 @@ class StreamTest extends TestCase
 
     public function test_constructor_ok()
     {
-        $fileTest = provider_PHPStream_ObjectStreamFromText();
+        $fileTest = prov_instanceOf_PHPStream_fromString();
         $obj = new Stream($fileTest);
 
         $this->assertTrue(is_a($obj, Stream::class));
@@ -46,15 +46,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "rw", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "rw", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertSame($stats["size"], $obj->getSize());
         $obj->detach();
         $this->assertNull($obj->getSize());
@@ -66,15 +66,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "rw", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "rw", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertSame($stats["size"], $obj->getSize());
 
         $obj->close();
@@ -87,15 +87,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "rw", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "rw", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertNull($obj->getMetadata("unexist"));
         foreach ($meta as $key => $value) {
             $result = $obj->getMetadata($key);
@@ -111,15 +111,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "rw", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "rw", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isSeekable());
         $obj->close();
     }
@@ -127,15 +127,15 @@ class StreamTest extends TestCase
 
     public function test_method_isSeekable_false()
     {
-        provider_copyFile("image-resource.jpg", "test-image.jpg");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-image.jpg", "rw", $stats, $meta);
+        prov_copyFile_To_Http_Stream("image-resource.jpg", "test-image.jpg");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-image.jpg", "rw", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isSeekable());
         $obj->close();
     }
@@ -146,15 +146,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "r", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "r", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isReadable());
         $obj->close();
     }
@@ -165,15 +165,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "a", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "a", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertFalse($obj->isReadable());
         $obj->close();
     }
@@ -184,15 +184,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "a", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "a", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isWritable());
         $obj->close();
     }
@@ -203,15 +203,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "r", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "r", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertFalse($obj->isWritable());
         $obj->close();
     }
@@ -222,15 +222,15 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "r", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "r", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
         $this->assertNotNull($meta);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertSame($stats["size"], $obj->getSize());
         $obj->close();
     }
@@ -241,8 +241,8 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "r", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "r", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
@@ -255,7 +255,7 @@ class StreamTest extends TestCase
         $this->assertSame(true, feof($fileTest));
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertSame(true, $obj->eof());
         $obj->close();
     }
@@ -266,8 +266,8 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "r", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "r", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
@@ -278,7 +278,7 @@ class StreamTest extends TestCase
         fread($fileTest, 16);
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertSame(16, $obj->tell());
         $obj->close();
     }
@@ -289,8 +289,8 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "rw", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "rw", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
@@ -298,7 +298,7 @@ class StreamTest extends TestCase
 
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isSeekable());
         $obj->seek(50);
         $this->assertSame(50, $obj->tell());
@@ -311,8 +311,8 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "rw", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "rw", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
@@ -320,7 +320,7 @@ class StreamTest extends TestCase
 
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isSeekable());
         $obj->seek(50);
         $this->assertSame(50, $obj->tell());
@@ -335,8 +335,8 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "rw", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "rw", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
@@ -344,7 +344,7 @@ class StreamTest extends TestCase
 
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isReadable());
         $this->assertSame(" Code Craft PHP Framework", $obj->read(25));
         $obj->close();
@@ -356,8 +356,8 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "r+", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "r+", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
@@ -365,7 +365,7 @@ class StreamTest extends TestCase
 
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isWritable());
         $str = "Phrase to test the method \"write\". This method is binary-safe\n";
         $this->assertSame(62, $obj->write($str));
@@ -378,8 +378,8 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "r+", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "r+", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
@@ -389,7 +389,7 @@ class StreamTest extends TestCase
         // retrieve the full contents of test file
         $fullFile = stream_get_contents($fileTest);
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
 
         // set the cursor back to start position.
         $obj->rewind();
@@ -403,8 +403,8 @@ class StreamTest extends TestCase
         $stats = null;
         $meta = null;
 
-        provider_copyFile("original-resource.md", "test-file.md");
-        $fileTest = provider_PHPStream_ObjectStreamFromFile("test-file.md", "r+", $stats, $meta);
+        prov_copyFile_To_Http_Stream("original-resource.md", "test-file.md");
+        $fileTest = prov_instanceOf_PHPStream_fromFile("test-file.md", "r+", $stats, $meta);
 
         $this->assertNotNull($fileTest);
         $this->assertNotNull($stats);
@@ -412,7 +412,7 @@ class StreamTest extends TestCase
 
 
 
-        $obj = provider_PHPStream_InstanceOf_Stream($fileTest);
+        $obj = prov_instanceOf_Http_Stream_from_PHPStream($fileTest);
         $this->assertTrue($obj->isReadable());
 
 

@@ -33,8 +33,8 @@ class QueryStringCollectionTest extends TestCase
 
     public function test_method_get_querystrings()
     {
-        $baseQS = provider_PHPHTTPData_AssocArrayOf_HTTPQueryStrings_To_AbstractTest_01();
-        $qs = provider_PHPHTTPData_InstanceOf_QueryStringCollection($baseQS);
+        $baseQS = prov_assocArray_to_Http_QueryString_01();
+        $qs = prov_instanceOf_Http_QueryStringCollection_01($baseQS);
 
         $arrQS = $qs->toArray();
         $this->assertTrue(is_array($arrQS));
@@ -72,8 +72,8 @@ class QueryStringCollectionTest extends TestCase
 
     public function test_method_not_use_percent_encode()
     {
-        $baseQS = provider_PHPHTTPData_AssocArrayOf_HTTPQueryStrings_To_AbstractTest_01();
-        $qs = provider_PHPHTTPData_InstanceOf_QueryStringCollection($baseQS);
+        $baseQS = prov_assocArray_to_Http_QueryString_01();
+        $qs = prov_instanceOf_Http_QueryStringCollection_01($baseQS);
 
         $arrQS = $qs->toArray();
         $this->assertSame("acentua%C3%A7%C3%A3o%20e%20espa%C3%A7os", $qs->get("qs1"));
@@ -85,8 +85,8 @@ class QueryStringCollectionTest extends TestCase
 
     public function test_method_has_querystrings()
     {
-        $baseQS = provider_PHPHTTPData_AssocArrayOf_HTTPQueryStrings_To_AbstractTest_01();
-        $qs = provider_PHPHTTPData_InstanceOf_QueryStringCollection($baseQS);
+        $baseQS = prov_assocArray_to_Http_QueryString_01();
+        $qs = prov_instanceOf_Http_QueryStringCollection_01($baseQS);
 
         $this->assertTrue($qs->has("qs1"));
         $this->assertTrue($qs->has("qs2"));
@@ -99,8 +99,8 @@ class QueryStringCollectionTest extends TestCase
 
     public function test_method_to_string()
     {
-        $baseQS = provider_PHPHTTPData_AssocArrayOf_HTTPQueryStrings_To_AbstractTest_01();
-        $qs = provider_PHPHTTPData_InstanceOf_QueryStringCollection($baseQS);
+        $baseQS = prov_assocArray_to_Http_QueryString_01();
+        $qs = prov_instanceOf_Http_QueryStringCollection_01($baseQS);
 
         $expected = "qs1=acentua%C3%A7%C3%A3o%20e%20espa%C3%A7os&qs2=value2&qs3=value3&qs4=value4&QS4=value4.1%20and";
 

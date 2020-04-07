@@ -28,8 +28,8 @@ class CookieCollectionTest extends TestCase
 
     public function test_constructor_ok_with_values()
     {
-        $ck1 = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
-        $ck2 = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ck1 = prov_instanceOf_Http_Cookie_autoset();
+        $ck2 = prov_instanceOf_Http_Cookie_autoset();
 
         $ck1->setName("cookie1");
         $ck2->setName("cookie2");
@@ -57,7 +57,7 @@ class CookieCollectionTest extends TestCase
 
     public function test_method_get()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_CookieCollection_AutoSet();
+        $ckie = prov_instanceOf_Http_CookieCollection_autoSet_01();
 
         $this->assertSame("value 1", $ckie->get("cookie1")->getValue());
         $this->assertSame("value 2", $ckie->get("cookie2")->getValue());
@@ -66,7 +66,7 @@ class CookieCollectionTest extends TestCase
 
     public function test_method_to_string()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_CookieCollection_AutoSet();
+        $ckie = prov_instanceOf_Http_CookieCollection_autoSet_01();
         $exp = $ckie->get("cookie1")->getStrExpires();
 
         $expected = "cookie1=value 1; Expires=$exp; Domain=domain.com; Path=/path; Secure; HttpOnly; ";
@@ -78,7 +78,7 @@ class CookieCollectionTest extends TestCase
 
     public function test_method_to_array()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_CookieCollection_AutoSet();
+        $ckie = prov_instanceOf_Http_CookieCollection_autoSet_01();
         $cookies = $ckie->toArray(true);
 
         $this->assertSame(2, count($cookies));

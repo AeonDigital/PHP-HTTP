@@ -1,27 +1,8 @@
 <?php
-$rootDir    = realpath(__DIR__ . "/..");
-$tstSrcDir  = $rootDir . "/tests/src";
-$tstFileDir = str_replace("/", DIRECTORY_SEPARATOR, $rootDir . "/tests/files");
-
-require_once $rootDir . "/vendor/autoload.php";
+$dirRoot        = str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__ . "/.."));
+$dirResources   = str_replace("/", DIRECTORY_SEPARATOR, $dirRoot . "/tests/resources");
+$dirFiles       = str_replace("/", DIRECTORY_SEPARATOR, $dirResources . "/files");
 
 
-
-// Stream
-require_once $tstSrcDir . "/Stream/__provider.php";
-
-
-// Uri
-require_once $tstSrcDir . "/Uri/__provider.php";
-require_once $tstSrcDir . "/Uri/concrete/BasicUri.php";
-require_once $tstSrcDir . "/Uri/concrete/HierPartUri.php";
-require_once $tstSrcDir . "/Uri/concrete/AbsoluteUri.php";
-
-
-// Data
-require_once $tstSrcDir . "/Data/__provider.php";
-
-
-// Message
-require_once $tstSrcDir . "/Message/__provider.php";
-require_once $tstSrcDir . "/Message/concrete/Message.php";
+require_once $dirRoot . "/vendor/autoload.php";
+require_once $dirResources . "/load_providers.php";

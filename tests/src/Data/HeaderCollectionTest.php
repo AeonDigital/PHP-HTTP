@@ -37,8 +37,8 @@ class HeaderCollectionTest extends TestCase
 
     public function test_method_get_headers()
     {
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $head = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $headers = prov_assocArray_to_Http_Header_01();
+        $head = prov_instanceOf_Http_HeaderCollection_01($headers);
 
         $oHeaders = $head->toArray();
         $this->assertTrue(is_array($oHeaders));
@@ -59,8 +59,8 @@ class HeaderCollectionTest extends TestCase
 
     public function test_method_get_header_line()
     {
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $head = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $headers = prov_assocArray_to_Http_Header_01();
+        $head = prov_instanceOf_Http_HeaderCollection_01($headers);
 
         $this->assertSame("value1, value2", $head->getHeaderLine("Content-Type"));
         $this->assertSame("text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8", $head->getHeaderLine("teste"));
@@ -69,8 +69,8 @@ class HeaderCollectionTest extends TestCase
 
     public function test_method_has_headers()
     {
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $head = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $headers = prov_assocArray_to_Http_Header_01();
+        $head = prov_instanceOf_Http_HeaderCollection_01($headers);
 
         $this->assertTrue($head->has("CONTENT-TYPE"));
         $this->assertTrue($head->has("teste"));
@@ -84,7 +84,7 @@ class HeaderCollectionTest extends TestCase
 
     public function test_method_set_headers()
     {
-        $head = provider_PHPHTTPData_InstanceOf_HeaderCollection();
+        $head = prov_instanceOf_Http_HeaderCollection_01();
         $head->set("Teste", "valor1, valor2");
         $this->assertSame(["valor1", "valor2"], $head->get("teste"));
 
@@ -95,10 +95,10 @@ class HeaderCollectionTest extends TestCase
 
     public function test_method_to_string()
     {
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
+        $headers = prov_assocArray_to_Http_Header_01();
         $expected = "Content-Type: value1, value2\nTeste: text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8";
 
-        $head = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $head = prov_instanceOf_Http_HeaderCollection_01($headers);
         $this->assertSame($expected, $head->toString());
     }
 

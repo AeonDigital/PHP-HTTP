@@ -26,15 +26,15 @@ class ServerRequestTest extends TestCase
 
     protected function retrieveMockClassToTest($body = null, $contentType = null, $withBodyParser = false)
     {
-        $oUri           = provider_PHPHTTPURI_InstanceOf_Url($this->defaultURLToTest01);
-        $oHeaders       = provider_PHPHTTPMessage_InstanceOf_HeaderCollection($contentType);
-        $oBody          = provider_PHPStream_InstanceOf_Stream_FromText($body);
-        $oCookies       = provider_PHPHTTPData_InstanceOf_CookieCollection_AutoSet();
-        $oQuery         = provider_PHPHTTPMessage_InstanceOf_QueryStringCollection($oUri);
-        $oFiles         = provider_PHPHTTPMessage_InstanceOf_FileCollection(["upload-image-1.jpg", "upload-image-2.jpg"]);
-        $oServerParans  = provider_PHPHTTPMessage_AssocArrayOf_ServerParans_To_AbstractTest_01();
-        $oAttr          = provider_PHPHTTPMessage_InstanceOf_Collection_Attributes_To_AbstractTest_01();
-        $oParsers       = (($withBodyParser === true) ? provider_PHPHTTPMessage_InstanceOf_Collection_BodyParsers_To_AbstractTest_01() : null);
+        $oUri           = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oHeaders       = prov_instanceOf_Http_HeaderCollection_02($contentType);
+        $oBody          = prov_instanceOf_Http_Stream_fromString($body);
+        $oCookies       = prov_instanceOf_Http_CookieCollection_autoSet_01();
+        $oQuery         = prov_instanceOf_Http_QueryStringCollection_02($oUri);
+        $oFiles         = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $oServerParans  = prov_assocArray_to_Http_ServerRequest();
+        $oAttr          = prov_instanceOf_Collection_Collection_02();
+        $oParsers       = (($withBodyParser === true) ? prov_instanceOf_Collection_Collection_03() : null);
 
         return new ServerRequest("get", $oUri, "1.0", $oHeaders, $oBody, $oCookies, $oQuery, $oFiles, $oServerParans, $oAttr, $oParsers);
     }
@@ -52,14 +52,14 @@ class ServerRequestTest extends TestCase
 
     public function test_constructor_ok()
     {
-        $oUri           = provider_PHPHTTPURI_InstanceOf_Url($this->defaultURLToTest01);
-        $oHeaders       = provider_PHPHTTPMessage_InstanceOf_HeaderCollection();
-        $oBody          = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
-        $oCookies       = provider_PHPHTTPData_InstanceOf_CookieCollection_AutoSet();
-        $oQuery         = provider_PHPHTTPMessage_InstanceOf_QueryStringCollection($oUri);
-        $oFiles         = provider_PHPHTTPMessage_InstanceOf_FileCollection(["upload-image-1.jpg", "upload-image-2.jpg"]);
-        $oServerParans  = provider_PHPHTTPMessage_AssocArrayOf_ServerParans_To_AbstractTest_01();
-        $oAttr          = provider_PHPHTTPMessage_InstanceOf_Collection_Attributes_To_AbstractTest_01();
+        $oUri           = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oHeaders       = prov_instanceOf_Http_HeaderCollection_02();
+        $oBody          = prov_instanceOf_Http_Stream_fromString("Test stream object");
+        $oCookies       = prov_instanceOf_Http_CookieCollection_autoSet_01();
+        $oQuery         = prov_instanceOf_Http_QueryStringCollection_02($oUri);
+        $oFiles         = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $oServerParans  = prov_assocArray_to_Http_ServerRequest();
+        $oAttr          = prov_instanceOf_Collection_Collection_02();
 
         $req = new ServerRequest("get", $oUri, "1.0", $oHeaders, $oBody, $oCookies, $oQuery, $oFiles, $oServerParans, $oAttr);
         $this->assertTrue(is_a($req, ServerRequest::class));
@@ -71,14 +71,14 @@ class ServerRequestTest extends TestCase
 
     public function test_constructor_fails_querystring_error()
     {
-        $oUri           = provider_PHPHTTPURI_InstanceOf_Url($this->defaultURLToTest01);
-        $oHeaders       = provider_PHPHTTPMessage_InstanceOf_HeaderCollection();
-        $oBody          = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
-        $oCookies       = provider_PHPHTTPData_InstanceOf_CookieCollection_AutoSet();
-        $oQuery         = provider_PHPHTTPMessage_InstanceOf_QueryStringCollection();
-        $oFiles         = provider_PHPHTTPMessage_InstanceOf_FileCollection(["upload-image-1.jpg", "upload-image-2.jpg"]);
-        $oServerParans  = provider_PHPHTTPMessage_AssocArrayOf_ServerParans_To_AbstractTest_01();
-        $oAttr          = provider_PHPHTTPMessage_InstanceOf_Collection_Attributes_To_AbstractTest_01();
+        $oUri           = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oHeaders       = prov_instanceOf_Http_HeaderCollection_02();
+        $oBody          = prov_instanceOf_Http_Stream_fromString("Test stream object");
+        $oCookies       = prov_instanceOf_Http_CookieCollection_autoSet_01();
+        $oQuery         = prov_instanceOf_Http_QueryStringCollection_02();
+        $oFiles         = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $oServerParans  = prov_assocArray_to_Http_ServerRequest();
+        $oAttr          = prov_instanceOf_Collection_Collection_02();
 
 
         $fail = false;
@@ -94,8 +94,8 @@ class ServerRequestTest extends TestCase
 
     public function test_method_get_server_parans()
     {
-        $expected = provider_PHPHTTPMessage_AssocArrayOf_ServerParans_To_AbstractTest_01();
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $expected = prov_assocArray_to_Http_ServerRequest();
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame($expected, $req->getServerParams());
     }
 
@@ -103,7 +103,7 @@ class ServerRequestTest extends TestCase
     public function test_method_get_cookie_parans()
     {
         $expected = ["cookie1" => "value 1", "cookie2" => "value 2"];
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame($expected, $req->getCookieParams());
     }
 
@@ -111,15 +111,15 @@ class ServerRequestTest extends TestCase
     public function test_method_get_query_parans()
     {
         $expected = ["param1" => "value1", "param2" => "acentuação"];
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame($expected, $req->getQueryParams());
     }
 
 
     public function test_method_get_uploaded_files()
     {
-        $oFiles = provider_PHPHTTPMessage_InstanceOf_FileCollection(["upload-image-1.jpg", "upload-image-2.jpg"]);
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $oFiles = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $result = $req->getUploadedFiles();
 
         $expected = $oFiles->toArray(true);
@@ -132,11 +132,11 @@ class ServerRequestTest extends TestCase
 
     public function test_method_get_parsed_body_empty()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "");
         $this->assertSame(null, $req->getParsedBody());
 
         $useBody = '{"par1":"var1","par2":"var2"}';
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, $useBody, "application/json", true);
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, $useBody, "application/json", true);
         $this->assertSame(["par1" => "var1", "par2" => "var2"], $req->getParsedBody());
     }
 
@@ -145,7 +145,7 @@ class ServerRequestTest extends TestCase
     {
         $json = '{"param1": "value1", "param2": "value2"}';
         $expected = json_decode($json, true);
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, $json, "application/json");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, $json, "application/json");
         $this->assertNotNull($req->getParsedBody());
         $this->assertSame($expected, $req->getParsedBody());
     }
@@ -155,7 +155,7 @@ class ServerRequestTest extends TestCase
     {
         $xml = "<root><param>valor1</param><param>valor2</param></root>";
         $expected = simplexml_load_string($xml);
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, $xml, "application/xml");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, $xml, "application/xml");
         $this->assertEquals($expected, $req->getParsedBody());
     }
 
@@ -165,7 +165,7 @@ class ServerRequestTest extends TestCase
         $data = "field1=value1&field2=valor e acentuação&field3=outro valor";
         parse_str($data, $expected);
 
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, $data, "application/x-www-form-urlencoded");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, $data, "application/x-www-form-urlencoded");
         $this->assertEquals($expected, $req->getParsedBody());
     }
 
@@ -174,14 +174,14 @@ class ServerRequestTest extends TestCase
     {
         $expected = ["attribute1" => "value1", "attribute2" => "value2"];
 
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame($expected, $req->getAttributes());
     }
 
 
     public function test_method_get_attribute()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame("value1", $req->getAttribute("attribute1"));
     }
 
@@ -193,13 +193,13 @@ class ServerRequestTest extends TestCase
     {
         $expected = ["cookie1" => "value 1", "cookie2" => "value 2"];
 
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame($expected, $req->getCookieParams());
 
 
 
-        $nCk1 = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
-        $nCk2 = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $nCk1 = prov_instanceOf_Http_Cookie_autoset();
+        $nCk2 = prov_instanceOf_Http_Cookie_autoset();
 
         $nCk1->setName("newCookie1");
         $nCk2->setName("newCookie2");
@@ -219,7 +219,7 @@ class ServerRequestTest extends TestCase
     {
         $expected = ["param1" => "value1", "param2" => "acentuação"];
 
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame($expected, $req->getQueryParams());
         $this->assertSame("param1=value1&param2=acentua%C3%A7%C3%A3o", $req->getUri()->getQuery());
 
@@ -242,8 +242,8 @@ class ServerRequestTest extends TestCase
 
     public function test_method_clone_with_uploades_files()
     {
-        $oFiles = provider_PHPHTTPMessage_InstanceOf_FileCollection(["upload-image-1.jpg", "upload-image-2.jpg"]);
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $oFiles = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $result = $req->getUploadedFiles();
 
         $expected = $oFiles->toArray(true);
@@ -254,7 +254,7 @@ class ServerRequestTest extends TestCase
 
 
 
-        $newFiles = provider_PHPHTTPMessage_InstanceOf_FileCollection(["upload-image-1-with.jpg", "upload-image-2-with.jpg"]);
+        $newFiles = prov_instanceOf_Http_FileCollection_02(["upload-image-1-with.jpg", "upload-image-2-with.jpg"]);
         $req1 = $req->withUploadedFiles($newFiles->toArray());
 
         $newResult = $req1->getUploadedFiles();
@@ -274,7 +274,7 @@ class ServerRequestTest extends TestCase
     {
         $json = '{"param1": "value1", "param2": "value2"}';
         $expected = json_decode($json, true);
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, $json, "application/json", true);
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, $json, "application/json", true);
         $this->assertNotNull($req->getParsedBody());
         $this->assertSame($expected, $req->getParsedBody());
 
@@ -295,7 +295,7 @@ class ServerRequestTest extends TestCase
     {
         $json = '{"param1": "value1", "param2": "value2"}';
         $expected = json_decode($json, true);
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, $json, "application/json");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, $json, "application/json");
         $this->assertNotNull($req->getParsedBody());
         $this->assertSame($expected, $req->getParsedBody());
 
@@ -315,7 +315,7 @@ class ServerRequestTest extends TestCase
     {
         $expected = ["attribute1" => "value1", "attribute2" => "value2"];
 
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame($expected, $req->getAttributes());
 
         $expected1 = ["attribute1" => "value1", "attribute2" => "value2", "attribute3" => "value3"];
@@ -329,7 +329,7 @@ class ServerRequestTest extends TestCase
     {
         $expected = ["attribute1" => "value1", "attribute2" => "value2"];
 
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
+        $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $this->assertSame($expected, $req->getAttributes());
 
         $expected1 = ["attribute2" => "value2"];
@@ -352,17 +352,17 @@ class ServerRequestTest extends TestCase
 
     public function test_method_get_method()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02);
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
         $this->assertSame("GET", $req->getMethod());
 
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", "http://aeondigital.com.br/path/to/resource?_method=POST");
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", "http://aeondigital.com.br/path/to/resource?_method=POST");
         $this->assertSame("POST", $req->getMethod());
     }
 
 
     public function test_method_get_querystrings()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02);
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
 
         $this->assertSame("first value", $req->getQueryString("param1"));
         $this->assertSame("second", $req->getQueryString("param2"));
@@ -375,7 +375,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_get_posted_fields()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02, $this->defaultBodyValue01, "application/x-www-form-urlencoded; charset=utf-8");
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02, $this->defaultBodyValue01, "application/x-www-form-urlencoded; charset=utf-8");
 
         $postParans = $req->getPostedFields();
         $this->assertSame("valor 1", $postParans["field1"]);
@@ -387,7 +387,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_get_post()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02, $this->defaultBodyValue01, "application/x-www-form-urlencoded; charset=utf-8");
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02, $this->defaultBodyValue01, "application/x-www-form-urlencoded; charset=utf-8");
 
         $this->assertSame("valor 1", $req->getPost("field1"));
         $this->assertSame("value 2", $req->getPost("field2"));
@@ -399,7 +399,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_get_cookie()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02);
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
 
         $this->assertSame("value 1", $req->getCookie("cookie1"));
         $this->assertSame("value 2", $req->getCookie("cookie2"));
@@ -410,7 +410,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_get_param()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02(
+        $req = prov_instanceOf_Http_ServerRequest_02(
             "GET",
             $this->defaultURlToTest02,
             $this->defaultBodyValue01,
@@ -454,7 +454,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_set_initial_attributes()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02);
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
         $req->setInitialAttributes([
             "attr1" => "value1",
             "attr2" => "value2",
@@ -485,7 +485,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_clone_with_attribute_02()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02);
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
         $req->setInitialAttributes([
             "attr1" => "value1",
             "attr2" => "value2",
@@ -510,7 +510,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_clone_without_attribute_02()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02);
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
         $req->setInitialAttributes([
             "attr1" => "value1",
             "attr2" => "value2",
@@ -535,7 +535,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_getset_response_mimes()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02, null, "application/xhtml+xml");
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02, null, "application/xhtml+xml");
 
         $headerLineAccept = "text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8";
         $this->assertSame($headerLineAccept, $req->getHeaderLine("accept"));
@@ -552,7 +552,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_getset_response_locales()
     {
-        $req = provider_PHPHTTPMessage_InstanceOf_ServerRequest_02("GET", $this->defaultURlToTest02);
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
 
         $headerLineAcceptLanguage = "pt-BR, pt;q=0.8, en-US;q=0.5, en;q=0.3";
         $this->assertSame($headerLineAcceptLanguage, $req->getHeaderLine("accept-language"));

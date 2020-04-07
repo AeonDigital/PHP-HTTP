@@ -21,9 +21,9 @@ class aMessageTest extends TestCase
 
     public function test_constructor_http_version_fail()
     {
-        $oStream = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $oHeaders = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $oStream = prov_instanceOf_Http_Stream_fromString("Test stream object");
+        $headers = prov_assocArray_to_Http_Header_01();
+        $oHeaders = prov_instanceOf_Http_HeaderCollection_01($headers);
 
         $fail = false;
         try {
@@ -38,9 +38,9 @@ class aMessageTest extends TestCase
 
     public function test_constructor_ok()
     {
-        $oStream = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $oHeaders = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $oStream = prov_instanceOf_Http_Stream_fromString("Test stream object");
+        $headers = prov_assocArray_to_Http_Header_01();
+        $oHeaders = prov_instanceOf_Http_HeaderCollection_01($headers);
 
         $httpMsg = new Message("1.1", $oHeaders, $oStream);
         $this->assertTrue(is_a($httpMsg, Message::class));
@@ -49,18 +49,18 @@ class aMessageTest extends TestCase
 
     public function test_method_get_protocol_version()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message("1.1");
+        $httpMsg = prov_instanceOf_Http_Message("1.1");
         $this->assertSame("1.1", $httpMsg->getProtocolVersion());
     }
 
 
     public function test_method_get_headers()
     {
-        $oStream = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $oHeaders = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $oStream = prov_instanceOf_Http_Stream_fromString("Test stream object");
+        $headers = prov_assocArray_to_Http_Header_01();
+        $oHeaders = prov_instanceOf_Http_HeaderCollection_01($headers);
 
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message("1.1", $oHeaders, $oStream);
+        $httpMsg = prov_instanceOf_Http_Message("1.1", $oHeaders, $oStream);
         $oHeaders = $httpMsg->getHeaders();
 
         $this->assertTrue(is_array($oHeaders));
@@ -73,7 +73,7 @@ class aMessageTest extends TestCase
 
     public function test_method_has_headers()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
 
         $this->assertTrue($httpMsg->hasHeader("CONTENT_TYPE"));
         $this->assertTrue($httpMsg->hasHeader("teste"));
@@ -87,7 +87,7 @@ class aMessageTest extends TestCase
 
     public function test_method_get_header()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
         $this->assertSame(["value1", "value2"], $httpMsg->getHeader("Content-Type"));
         $this->assertSame([], $httpMsg->getHeader("Content-Types"));
     }
@@ -95,7 +95,7 @@ class aMessageTest extends TestCase
 
     public function test_method_get_header_line()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
         $this->assertSame("value1, value2", $httpMsg->getHeaderLine("Content-Type"));
         $this->assertSame("", $httpMsg->getHeaderLine("Content-Types"));
         $this->assertSame("text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8", $httpMsg->getHeaderLine("TESTE"));
@@ -104,18 +104,18 @@ class aMessageTest extends TestCase
 
     public function test_method_get_body()
     {
-        $oStream = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $oHeaders = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $oStream = prov_instanceOf_Http_Stream_fromString("Test stream object");
+        $headers = prov_assocArray_to_Http_Header_01();
+        $oHeaders = prov_instanceOf_Http_HeaderCollection_01($headers);
 
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message("1.1", $oHeaders, $oStream);
+        $httpMsg = prov_instanceOf_Http_Message("1.1", $oHeaders, $oStream);
         $this->assertSame($oStream, $httpMsg->getBody());
     }
 
 
     public function test_method_clone_with_protocol_version()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
         $this->assertSame("1.1", $httpMsg->getProtocolVersion());
 
         $httpMsg1 = $httpMsg->withProtocolVersion("2.0");
@@ -126,7 +126,7 @@ class aMessageTest extends TestCase
 
     public function test_method_clone_with_protocol_version_fail()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
 
         $fail = false;
         try {
@@ -141,7 +141,7 @@ class aMessageTest extends TestCase
 
     public function test_method_clone_with_header()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
         $this->assertSame(["value1", "value2"], $httpMsg->getHeader("Content-Type"));
 
         $httpMsg1 = $httpMsg->withHeader("Content-Type", "novovalor, outrovalor");
@@ -152,7 +152,7 @@ class aMessageTest extends TestCase
 
     public function test_method_clone_with_header_fail()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
 
         $fail = false;
         try {
@@ -167,7 +167,7 @@ class aMessageTest extends TestCase
 
     public function test_method_clone_with_added_header()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
         $this->assertSame(["value1", "value2"], $httpMsg->getHeader("Content-Type"));
 
 
@@ -192,7 +192,7 @@ class aMessageTest extends TestCase
 
     public function test_method_clone_with_added_header_fail()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
 
         $fail = false;
         try {
@@ -207,7 +207,7 @@ class aMessageTest extends TestCase
 
     public function test_method_clone_without_header()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
         $this->assertSame(["value1", "value2"], $httpMsg->getHeader("Content-Type"));
 
 
@@ -223,7 +223,7 @@ class aMessageTest extends TestCase
 
     public function test_method_clone_without_header_fail()
     {
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message();
+        $httpMsg = prov_instanceOf_Http_Message();
 
         $fail = false;
         try {
@@ -238,12 +238,12 @@ class aMessageTest extends TestCase
 
     public function test_method_clone_with_body()
     {
-        $oStream = provider_PHPStream_InstanceOf_Stream_FromText("Test stream object");
-        $headers = provider_PHPHTTPData_AssocArrayOf_HTTPHeaders_To_AbstractTest_01();
-        $oHeaders = provider_PHPHTTPData_InstanceOf_HeaderCollection($headers);
+        $oStream = prov_instanceOf_Http_Stream_fromString("Test stream object");
+        $headers = prov_assocArray_to_Http_Header_01();
+        $oHeaders = prov_instanceOf_Http_HeaderCollection_01($headers);
 
-        $httpMsg = provider_PHPHTTPMessage_InstanceOf_Message("1.1", $oHeaders, $oStream);
-        $oStream1 = provider_PHPStream_InstanceOf_Stream_FromText("Another test stream object.");
+        $httpMsg = prov_instanceOf_Http_Message("1.1", $oHeaders, $oStream);
+        $oStream1 = prov_instanceOf_Http_Stream_fromString("Another test stream object.");
 
         $this->assertSame($oStream, $httpMsg->getBody());
         $httpMsg1 = $httpMsg->withBody($oStream1);

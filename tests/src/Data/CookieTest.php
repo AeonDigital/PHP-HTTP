@@ -41,14 +41,14 @@ class CookieTest extends TestCase
 
     public function test_method_get_name()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $this->assertSame("name", $ckie->getName());
     }
 
 
     public function test_method_get_value()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $this->assertSame("acentuação", $ckie->getValue());
         $this->assertSame("acentua%C3%A7%C3%A3o", $ckie->getValue(false));
     }
@@ -59,7 +59,7 @@ class CookieTest extends TestCase
         $exp = new \DateTime();
         $exp->add(new DateInterval('P1D'));
 
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $this->assertSame($exp->format("Y-m-d"), $ckie->getExpires()->format("Y-m-d"));
     }
 
@@ -69,42 +69,42 @@ class CookieTest extends TestCase
         $exp = new \DateTime();
         $exp->add(new DateInterval('P1D'));
 
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $this->assertSame($exp->format("D, d M Y H:i:s") . " UTC", $ckie->getStrExpires());
     }
 
 
     public function test_method_get_domain()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $this->assertSame("domain.com", $ckie->getDomain());
     }
 
 
     public function test_method_get_path()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $this->assertSame("/path", $ckie->getPath());
     }
 
 
     public function test_method_get_secure()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $this->assertSame(true, $ckie->getSecure());
     }
 
 
     public function test_method_get_httponly()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $this->assertSame(true, $ckie->getHttpOnly());
     }
 
 
     public function test_method_to_string()
     {
-        $ckie = provider_PHPHTTPData_InstanceOf_Cookie_AutoSet();
+        $ckie = prov_instanceOf_Http_Cookie_autoset();
         $exp = $ckie->getStrExpires();
 
         $expected = "name=acentuação; Expires=$exp; Domain=domain.com; Path=/path; Secure; HttpOnly;";
