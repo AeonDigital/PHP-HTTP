@@ -42,6 +42,10 @@
             <file>src/Message/RequestTest.php</file>
             <file>src/Message/ResponseTest.php</file>
             <file>src/Message/ServerRequestTest.php</file>
+
+
+            <file>src/FactoryTest.php</file>
+            <file>src/ExecuteTest.php</file>
         </testsuite>
     </testsuites>
     <filter>
