@@ -35,7 +35,7 @@ class RequestTest extends TestCase
             $req = new Request("gett", $oUri, "1.0", $oHeaders, $oBody);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid value defined for \"method\". Expected [ GET, HEAD, POST, PUT, PATCH, DELETE, CONNECT, OPTIONS, TRACE]. Given: [ gett ]", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"method\". Expected [ GET, HEAD, POST, PUT, PATCH, DELETE, CONNECT, OPTIONS, TRACE ]. Given: [ gett ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }

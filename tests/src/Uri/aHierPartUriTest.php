@@ -24,7 +24,7 @@ class aHierPartUriTest extends TestCase
             $nMock = new HierPartUri("htt");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid value defined for \"scheme\". Expected [ , http, https, ftp, ssh, urn, view-source, ws, wss, file]. Given: [ htt ]", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"scheme\". Expected [ , http, https, ftp, ssh, urn, view-source, ws, wss, file ]. Given: [ htt ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
