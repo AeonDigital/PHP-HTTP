@@ -4,7 +4,8 @@ declare (strict_types=1);
 namespace AeonDigital\Http\Stream;
 
 use AeonDigital\Interfaces\Stream\iStream as iStream;
-
+use AeonDigital\BObject as BObject;
+use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
 
 
 
@@ -31,9 +32,9 @@ use AeonDigital\Interfaces\Stream\iStream as iStream;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-class Stream implements iStream
+class Stream extends BObject implements iStream
 {
-
+    use MainCheckArgumentException;
 
 
 
@@ -137,9 +138,9 @@ class Stream implements iStream
      */
     protected function attachResource($stream) : void
     {
-        if (\is_resource($stream) === false) {
-            throw new \InvalidArgumentException("Argument must be a valid resource type.");
-        }
+        $this->mainCheckForInvalidArgumentException(
+            "stream", $stream, [ "is resource" ]
+        );
 
         $this->stream = $stream;
         $stats = \fstat($this->stream);

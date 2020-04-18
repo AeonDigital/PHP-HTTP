@@ -4,8 +4,8 @@ declare (strict_types = 1);
 namespace AeonDigital\Http\Data;
 
 use AeonDigital\Interfaces\Http\Data\iCookie as iCookie;
-
-
+use AeonDigital\BObject as BObject;
+use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
 
 
 
@@ -23,9 +23,9 @@ use AeonDigital\Interfaces\Http\Data\iCookie as iCookie;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-class Cookie implements iCookie
+class Cookie extends BObject implements iCookie
 {
-
+    use MainCheckArgumentException;
 
 
 
@@ -48,10 +48,15 @@ class Cookie implements iCookie
      */
     public function setName(string $name) : void
     {
-        if ($name === "" || \preg_match("/^([a-zA-Z0-9_])+$/", $name) !== 1) {
-            throw new \InvalidArgumentException("Invalid cookie name. Use only a-zA-Z0-9 characters.");
-        }
-
+        $this->mainCheckForInvalidArgumentException(
+            "name", $name, [
+                [
+                    "validate"          => "is string matches pattern",
+                    "patternPregMatch"  => "/^([a-zA-Z0-9_])+$/",
+                    "errorShowPattern"  => "a-zA-Z0-9_"
+                ]
+            ]
+        );
         $this->name = $name;
     }
     /**

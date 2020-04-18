@@ -106,7 +106,7 @@ class aAbsoluteUriTest extends TestCase
             $nMock2 = $nMock->withQuery(1);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"query\" value. Must be an string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"query\". Expected string. Given: [ 1 ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -153,7 +153,7 @@ class aAbsoluteUriTest extends TestCase
             $nMock2 = $nMock->withFragment(["fragment"]);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"fragment\" value. Must be an string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"fragment\". Expected string. Given: [ fragment ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }

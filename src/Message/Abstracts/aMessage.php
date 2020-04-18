@@ -7,8 +7,8 @@ use Psr\Http\Message\MessageInterface as MessageInterface;
 use Psr\Http\Message\StreamInterface as StreamInterface;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
-
-
+use AeonDigital\BObject as BObject;
+use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
 
 
 
@@ -33,9 +33,9 @@ use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-abstract class aMessage implements MessageInterface
+abstract class aMessage extends BObject implements MessageInterface
 {
-
+    use MainCheckArgumentException;
 
 
 
@@ -109,13 +109,18 @@ abstract class aMessage implements MessageInterface
      */
     protected function validateProtocolVersion($protocolVersion, bool $throw = false) : bool
     {
-        $r = (\is_string($protocolVersion) === true);
-        if ($r === false && $throw === true) {
-            throw new \InvalidArgumentException("Invalid given \"protocolVersion\" value. Must be an string.");
-        } elseif (\in_array($protocolVersion, ["1.0", "1.1", "2.0", "2"]) === false) {
-            throw new \InvalidArgumentException("Invalid given \"protocolVersion\" value. [ \"" . $protocolVersion . "\" ].");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "protocolVersion", $protocolVersion,
+            [
+                ["validate" => "is string"],
+                [
+                    "validate" => "is allowed value",
+                    "allowedValues" => ["1.0", "1.1", "2.0", "2"]
+                ],
+            ],
+            $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Este método DEVE manter o estado da instância atual e retornar
@@ -247,9 +252,9 @@ abstract class aMessage implements MessageInterface
      */
     public function withHeader($name, $value)
     {
-        if (\is_string($name) === false || $name === "") {
-            throw new \InvalidArgumentException("Invalid given \"name\" value. Must be a non empty string.");
-        }
+        $this->mainCheckForInvalidArgumentException(
+            "name", $name, ["is string not empty"]
+        );
 
         $clone = $this->cloneThisInstance();
 
@@ -280,9 +285,9 @@ abstract class aMessage implements MessageInterface
      */
     public function withAddedHeader($name, $value)
     {
-        if (\is_string($name) === false || $name === "") {
-            throw new \InvalidArgumentException("Invalid given \"name\" value. Must be a non empty string.");
-        }
+        $this->mainCheckForInvalidArgumentException(
+            "name", $name, ["is string not empty"]
+        );
 
         $clone = $this->cloneThisInstance();
         $clone->headers->set($name, $value);
@@ -303,9 +308,9 @@ abstract class aMessage implements MessageInterface
      */
     public function withoutHeader($name)
     {
-        if (\is_string($name) === false || $name === "") {
-            throw new \InvalidArgumentException("Invalid given \"name\" value. Must be a non empty string.");
-        }
+        $this->mainCheckForInvalidArgumentException(
+            "name", $name, ["is string not empty"]
+        );
 
         $clone = $this->cloneThisInstance();
         $clone->headers->remove($name);

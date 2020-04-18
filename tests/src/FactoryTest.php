@@ -289,7 +289,7 @@ class FactoryTest extends TestCase
             $newObj = $nMock->createRequest("INVALID", "test.server.com.br");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid method [ \"INVALID\" ].", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"method\". Expected [ GET, HEAD, POST, PUT, PATCH, DELETE, CONNECT, OPTIONS, TRACE]. Given: [ INVALID ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -315,7 +315,7 @@ class FactoryTest extends TestCase
             $newObj = $nMock->createServerRequest("INVALID", "test.server.com.br?qskey1=valor 1&qskey2=valor 2");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid method [ \"INVALID\" ].", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"method\". Expected [ GET, HEAD, POST, PUT, PATCH, DELETE, CONNECT, OPTIONS, TRACE]. Given: [ INVALID ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }

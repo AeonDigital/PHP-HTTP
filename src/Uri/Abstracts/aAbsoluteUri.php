@@ -68,11 +68,10 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      */
     protected function validateQuery($query, bool $throw = false) : bool
     {
-        $r = (\is_string($query) === true);
-        if ($r === false && $throw === true) {
-            throw new \InvalidArgumentException("Invalid given \"query\" value. Must be an string.");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "query", $query, ["is string"], $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Normaliza o valor do ``query`` indicado.
@@ -175,11 +174,10 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      */
     protected function validateFragment($fragment, bool $throw = false) : bool
     {
-        $r = (\is_string($fragment) === true);
-        if ($r === false && $throw === true) {
-            throw new \InvalidArgumentException("Invalid given \"fragment\" value. Must be an string.");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "fragment", $fragment, ["is string"], $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Normaliza o valor do ``fragment`` indicado.

@@ -5,7 +5,7 @@ namespace AeonDigital\Http\Data;
 
 use AeonDigital\Interfaces\Http\Data\iFile as iFile;
 use AeonDigital\Interfaces\Stream\iFileStream as iFileStream;
-
+use AeonDigital\BObject as BObject;
 
 
 
@@ -23,7 +23,7 @@ use AeonDigital\Interfaces\Stream\iFileStream as iFileStream;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-class File implements iFile
+class File extends BObject implements iFile
 {
     use \AeonDigital\Http\Traits\MimeTypeData;
 

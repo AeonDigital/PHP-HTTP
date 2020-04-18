@@ -30,7 +30,7 @@ class aMessageTest extends TestCase
             $httpMsg = new Message("1.5", $oHeaders, $oStream);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"protocolVersion\" value. [ \"1.5\" ].", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"protocolVersion\". Expected [ 1.0, 1.1, 2.0, 2]. Given: [ 1.5 ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -133,7 +133,7 @@ class aMessageTest extends TestCase
             $httpMsg = $httpMsg->withProtocolVersion(null, "valor");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"protocolVersion\" value. Must be an string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"protocolVersion\". Expected string. Given: [ ``null`` ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -159,7 +159,7 @@ class aMessageTest extends TestCase
             $httpMsg = $httpMsg->withHeader(null, "valor");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"name\" value. Must be a non empty string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"name\". Expected non empty string. Given: [ ``null`` ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -199,7 +199,7 @@ class aMessageTest extends TestCase
             $httpMsg1 = $httpMsg->withAddedHeader("", "value3");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"name\" value. Must be a non empty string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"name\". Expected non empty string.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -230,7 +230,7 @@ class aMessageTest extends TestCase
             $httpMsg1 = $httpMsg->withoutHeader("", "value3");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"name\" value. Must be a non empty string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"name\". Expected non empty string.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }

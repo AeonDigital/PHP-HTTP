@@ -300,13 +300,18 @@ class Request extends aMessage implements iRequest
      */
     protected function checkMethod(string $method) : string
     {
-        $method = \mb_strtoupper($method);
-
-        // Verifica se o "method" informado é válido.
-        if (\in_array($method, $this->validMethod) === false) {
-            throw new \InvalidArgumentException("Invalid HTTP method [ \"" . $method . "\" ].");
-        }
-
-        return $method;
+        return $this->mainCheckForInvalidArgumentException(
+            "method", $method,
+            [
+                [
+                    "validate" => "is allowed value",
+                    "allowedValues" => $this->validMethod,
+                    "caseInsensitive" => true,
+                    "executeBeforeReturn" => function($args) {
+                        return \mb_strtoupper($args["argValue"]);
+                    }
+                ],
+            ]
+        );
     }
 }

@@ -4,8 +4,8 @@ declare (strict_types=1);
 namespace AeonDigital\Http\Uri\Abstracts;
 
 use AeonDigital\Interfaces\Http\Uri\iBasicUri as iBasicUri;
-
-
+use AeonDigital\BObject as BObject;
+use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
 
 
 
@@ -20,9 +20,9 @@ use AeonDigital\Interfaces\Http\Uri\iBasicUri as iBasicUri;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-abstract class aBasicUri implements iBasicUri
+abstract class aBasicUri extends BObject implements iBasicUri
 {
-
+    use MainCheckArgumentException;
 
 
 
@@ -92,15 +92,21 @@ abstract class aBasicUri implements iBasicUri
      */
     protected function validateScheme($scheme, bool $throw = false) : bool
     {
-        $r = (\is_string($scheme) === true && \in_array(\strtolower($scheme), $this->acceptSchemes) === true);
-        if ($throw === true && $r === false) {
-            if (\is_string($scheme) === false) {
-                throw new \InvalidArgumentException("Invalid given \"scheme\" value. Must be an string.");
-            } else {
-                throw new \InvalidArgumentException("Invalid given \"scheme\" value [ \"" . $scheme . "\" ].");
-            }
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "scheme", $scheme,
+            [
+                [
+                    "validate" => "is string"
+                ],
+                [
+                    "validate" => "is allowed value",
+                    "allowedValues" => $this->acceptSchemes,
+                    "caseInsensitive" => true
+                ]
+            ],
+            $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Normaliza o valor do ``scheme`` indicado.

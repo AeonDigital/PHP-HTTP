@@ -150,11 +150,20 @@ class Response extends aMessage implements iResponse
      */
     protected function validateStatusCode($statusCode, bool $throw = false) : bool
     {
-        $r = (\is_int($statusCode) === true && $statusCode >= 100 && $statusCode <= 599);
-        if ($r === false && $throw === true) {
-            throw new \InvalidArgumentException("Invalid given \"statusCode\" value. Must be an int between 100 and 599.");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "statusCode", $statusCode, [
+                ["validate" => "is integer"],
+                [
+                    "validate" => "closure",
+                    "closure" => function($arg) {
+                        return ($arg >= 100 && $arg <= 599);
+                    },
+                    "customErrorMessage" => "Invalid value defined for \"statusCode\". Expected an integer between 100 and 599."
+                ]
+            ],
+            $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância

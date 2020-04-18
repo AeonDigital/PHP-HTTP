@@ -104,11 +104,10 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function validateUser($user, bool $throw = false) : bool
     {
-        $r = \is_string($user);
-        if (\is_string($user) === false && $throw === true) {
-            throw new \InvalidArgumentException("Invalid given \"user\" value. Must be an string.");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "user", $user, ["is string"], $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Normaliza o valor do ``user`` indicado.
@@ -193,12 +192,10 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function validatePassword($password, bool $throw = false) : bool
     {
-        // Aceita apenas NULL ou valores que são String
-        $r = ($password === null || \is_string($password) === true);
-        if ($r === false && $throw === true) {
-            throw new \InvalidArgumentException("Invalid given \"password\" value. Must be an string or \"null\".");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "password", $password, ["is string or null"], $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Normaliza o valor do ``password`` indicado.
@@ -282,11 +279,10 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function validateHost($host, bool $throw = false) : bool
     {
-        $r = \is_string($host);
-        if ($r === false && $throw === true) {
-            throw new \InvalidArgumentException("Invalid given \"host\" value. Must be an string.");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "host", $host, ["is string"], $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Normaliza o valor do ``host`` indicado.
@@ -377,15 +373,21 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function validatePort($port, bool $throw = false) : bool
     {
-        $r = ($port === null);
-        if ($r === false && \is_int($port) === true) {
-            $r = ($port >= 1 && $port <= 65535);
-        }
-
-        if ($throw === true && $r === false) {
-            throw new \InvalidArgumentException("Invalid given \"port\" value, it must be an int between 1 and 65535 [ \"" . $port . "\" ].");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "port", $port, [
+                ["validate" => "is integer or null"],
+                [
+                    "conditions" => "is integer",
+                    "validate" => "closure",
+                    "closure" => function($arg) {
+                        return ($arg >= 1 && $arg <= 65535);
+                    },
+                    "customErrorMessage" => "Invalid value defined for \"port\". Expected ``null`` or an integer between 1 and 65535."
+                ]
+            ],
+            $throw
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
@@ -591,11 +593,11 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     protected function validatePath($path, bool $throw = false) : bool
     {
-        $r = \is_string($path);
-        if ($r === false && $throw === true) {
-            throw new \InvalidArgumentException("Invalid given \"path\" value. Must be an string.");
-        }
-        return $r;
+        $this->mainCheckForInvalidArgumentException(
+            "path", $path, ["is string"], $throw
+
+        );
+        return $this->getLastArgumentValidateResult();
     }
     /**
      * Normaliza o valor do ``path`` indicado.

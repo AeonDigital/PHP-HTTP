@@ -24,7 +24,7 @@ class aHierPartUriTest extends TestCase
             $nMock = new HierPartUri("htt");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"scheme\" value [ \"htt\" ].", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"scheme\". Expected [ , http, https, ftp, ssh, urn, view-source, ws, wss, file]. Given: [ htt ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -37,7 +37,7 @@ class aHierPartUriTest extends TestCase
             $nMock = new HierPartUri("http", "username", "pass1234", "testdomain", 500000);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"port\" value, it must be an int between 1 and 65535 [ \"500000\" ].", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"port\". Expected ``null`` or an integer between 1 and 65535. Given: [ 500000 ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -294,7 +294,7 @@ class aHierPartUriTest extends TestCase
             $nMock2 = $nMock->withUser(null);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"user\" value. Must be an string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"user\". Expected string. Given: [ ``null`` ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -335,7 +335,7 @@ class aHierPartUriTest extends TestCase
             $nMock2 = $nMock->withPassword([]);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"password\" value. Must be an string or \"null\".", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"password\". Expected string.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -364,7 +364,7 @@ class aHierPartUriTest extends TestCase
             $nMock2 = $nMock->withHost(null);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"host\" value. Must be an string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"host\". Expected string. Given: [ ``null`` ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -393,7 +393,7 @@ class aHierPartUriTest extends TestCase
             $nMock2 = $nMock->withPort("");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"port\" value, it must be an int between 1 and 65535 [ \"\" ].", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"port\". Expected integer.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -452,7 +452,7 @@ class aHierPartUriTest extends TestCase
             $nMock2 = $nMock->withPath([]);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"path\" value. Must be an string.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"path\". Expected string.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }

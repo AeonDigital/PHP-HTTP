@@ -33,7 +33,7 @@ class CookieTest extends TestCase
             $ckie = new Cookie("name!");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid cookie name. Use only a-zA-Z0-9 characters.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"name\". Expected string that matches the ``a-zA-Z0-9_`` pattern. Given: [ name! ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }

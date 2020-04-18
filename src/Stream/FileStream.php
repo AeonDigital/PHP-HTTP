@@ -167,11 +167,12 @@ class FileStream extends Stream implements iFileStream
      */
     protected function internalSetStream(string $pathToFile, string $openMode = "r") : void
     {
-        $pathToFile = $this->normalizePathToFile($pathToFile);
+        $pathToFile = \to_system_path($pathToFile);
 
-        if (\file_exists($pathToFile) === false) {
-            throw new \InvalidArgumentException("The target file does not exists [ \"" . $pathToFile . "\" ].");
-        }
+        $this->mainCheckForInvalidArgumentException(
+            "pathToFile", $pathToFile, [ "is file exists" ]
+        );
+
 
         parent::__construct(\fopen($pathToFile, $openMode));
 
@@ -179,39 +180,5 @@ class FileStream extends Stream implements iFileStream
         $this->pathToFile = $pathToFile;
         $this->fileName = \basename($pathToFile);
         $this->mimeType = $this->retrieveFileMimeType($pathToFile);
-    }
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Normaliza o caminho até o arquivo substituindo qualquer separador de diretório que esteja
-     * em desacordo com o padrão para o S/O do ambiente atual e retorna seu valor corrigido.
-     *
-     * @param       string $pathToFile
-     *              Caminho que será corrigido.
-     *
-     * @return      string
-     */
-    protected function normalizePathToFile(string $pathToFile) : string
-    {
-        $ds = DIRECTORY_SEPARATOR;
-        $wrong = ($ds == "/") ? "\\" : "/";
-
-        // Substitui separadores errados
-        $pathToFile = \str_replace($wrong, $ds, $pathToFile);
-
-        // Remove duplicação dos separadores
-        while (\mb_strpos($pathToFile, $ds . $ds) !== false) {
-            $pathToFile = \str_replace($ds . $ds, $ds, $pathToFile);
-        }
-
-        return \rtrim($pathToFile, $ds);
     }
 }

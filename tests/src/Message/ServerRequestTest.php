@@ -304,7 +304,7 @@ class ServerRequestTest extends TestCase
             $req1 = $req->withParsedBody(0);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("The given body is invalid. Expected associative array, object or \"null\".", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"data\". Expected an array assoc, object or ``null``.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
 

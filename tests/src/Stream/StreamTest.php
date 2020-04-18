@@ -26,7 +26,7 @@ class StreamTest extends TestCase
             $obj = new Stream("");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Argument must be a valid resource type.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"stream\". Expected resource type.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }

@@ -30,7 +30,7 @@ class ResponseTest extends TestCase
             $res = new Response(99, "", "1.0", $oHeaders, $oBody);
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid given \"statusCode\" value. Must be an int between 100 and 599.", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"statusCode\". Expected an integer between 100 and 599. Given: [ 99 ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }

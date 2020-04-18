@@ -888,9 +888,18 @@ class ServerRequest extends Request implements iServerRequest
      */
     public function withParsedBody($data)
     {
-        if ($data !== null && \is_array($data) === false && \is_object($data) === false) {
-            throw new \InvalidArgumentException("The given body is invalid. Expected associative array, object or \"null\".");
-        }
+        $this->mainCheckForInvalidArgumentException(
+            "data", $data, [
+                [
+                    "validate" => "closure",
+                    "closure" => function($arg) {
+                        return ($arg === null || \is_array($arg) === true || \is_object($arg) === true);
+                    },
+                    "customErrorMessage" => "Invalid value defined for \"data\". Expected an array assoc, object or ``null``.",
+                    "showArgumentInMessage" => false
+                ],
+            ]
+        );
 
         $clone = $this->cloneThisInstance();
 

@@ -15,7 +15,7 @@ use AeonDigital\Interfaces\Http\Data\iFileCollection as iFileCollection;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\Interfaces\Stream\iFileStream as iFileStream;
 use AeonDigital\Interfaces\Collection\iCollection as iCollection;
-
+use AeonDigital\BObject as BObject;
 
 /**
  * Implementação de ``iFactory``.
@@ -25,7 +25,7 @@ use AeonDigital\Interfaces\Collection\iCollection as iCollection;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-class Factory implements iFactory
+class Factory extends BObject implements iFactory
 {
 
 
@@ -257,13 +257,6 @@ class Factory implements iFactory
         $headers = (($headers === null) ? $this->createHeaderCollection() : $headers);
         $body = (($body === null) ? $this->createStreamFromBodyRequest() : $body);
 
-
-        $validMethod = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "CONNECT", "OPTIONS", "TRACE"];
-        if (\array_in_ci($httpMethod, $validMethod) === false) {
-            $err = "Invalid method [ \"$httpMethod\" ].";
-            throw new \InvalidArgumentException($err);
-        }
-
         return new \AeonDigital\Http\Message\Request($httpMethod, $uri, $httpVersion, $headers, $body);
     }
 
@@ -351,14 +344,6 @@ class Factory implements iFactory
             $useQS = \http_build_query(\array_merge($uriQS, $queryStrings->toArray()));
             $uri = $uri->withQuery($useQS);
             $queryStrings = $this->createQueryStringCollection($useQS);
-        }
-
-
-
-        $validMethod = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "CONNECT", "OPTIONS", "TRACE"];
-        if (\array_in_ci($httpMethod, $validMethod) === false) {
-            $err = "Invalid method [ \"$httpMethod\" ].";
-            throw new \InvalidArgumentException($err);
         }
 
 
