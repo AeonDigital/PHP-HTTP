@@ -5,7 +5,7 @@ namespace AeonDigital\Http\Uri\Abstracts;
 
 use AeonDigital\Interfaces\Http\Uri\iBasicUri as iBasicUri;
 use AeonDigital\BObject as BObject;
-use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
+
 
 
 
@@ -22,7 +22,7 @@ use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
  */
 abstract class aBasicUri extends BObject implements iBasicUri
 {
-    use MainCheckArgumentException;
+    use \AeonDigital\Traits\MainCheckArgumentException;
 
 
 

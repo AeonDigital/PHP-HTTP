@@ -5,7 +5,7 @@ namespace AeonDigital\Http\Data;
 
 use AeonDigital\Interfaces\Http\Data\iCookie as iCookie;
 use AeonDigital\BObject as BObject;
-use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
+
 
 
 
@@ -25,7 +25,7 @@ use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
  */
 class Cookie extends BObject implements iCookie
 {
-    use MainCheckArgumentException;
+    use \AeonDigital\Traits\MainCheckArgumentException;
 
 
 

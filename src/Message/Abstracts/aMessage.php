@@ -8,7 +8,7 @@ use Psr\Http\Message\StreamInterface as StreamInterface;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 use AeonDigital\BObject as BObject;
-use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
+
 
 
 
@@ -35,7 +35,7 @@ use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
  */
 abstract class aMessage extends BObject implements MessageInterface
 {
-    use MainCheckArgumentException;
+    use \AeonDigital\Traits\MainCheckArgumentException;
 
 
 

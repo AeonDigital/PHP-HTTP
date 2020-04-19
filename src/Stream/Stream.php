@@ -5,7 +5,6 @@ namespace AeonDigital\Http\Stream;
 
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\BObject as BObject;
-use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
 
 
 
@@ -34,7 +33,7 @@ use AeonDigital\Traits\MainCheckArgumentException as MainCheckArgumentException;
  */
 class Stream extends BObject implements iStream
 {
-    use MainCheckArgumentException;
+    use \AeonDigital\Traits\MainCheckArgumentException;
 
 
 
