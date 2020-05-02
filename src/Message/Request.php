@@ -41,7 +41,9 @@ class Request extends aMessage implements iRequest
      *
      * @var     array
      */
-    protected array $validMethod = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "CONNECT", "OPTIONS", "TRACE"];
+    protected array $validMethod = [
+        "GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS", "TRACE", "DEV", "CONNECT"
+    ];
 
 
 
