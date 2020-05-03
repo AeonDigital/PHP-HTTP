@@ -519,12 +519,12 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @return      ?string
      */
-    public function getParam(string $name) : ?string
+    public function getParam(string $name)
     {
         if ($this->parans === null) {
             $this->redefineParans();
         }
-        return ((isset($this->parans[$name]) === true) ? (string)$this->parans[$name] : null);
+        return ((isset($this->parans[$name]) === true) ? $this->parans[$name] : null);
     }
 
 
