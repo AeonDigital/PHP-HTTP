@@ -426,12 +426,12 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @return      ?string
      */
-    public function getPost(string $name) : ?string
+    public function getPost(string $name)
     {
         $r = null;
         if ($this->contentType === "multipart/form-data" ||
             $this->contentType === "application/x-www-form-urlencoded") {
-            $r = ((isset($this->parsedBody[$name]) === true) ? (string)$this->parsedBody[$name] : null);
+            $r = ((isset($this->parsedBody[$name]) === true) ? $this->parsedBody[$name] : null);
         }
         return $r;
     }
