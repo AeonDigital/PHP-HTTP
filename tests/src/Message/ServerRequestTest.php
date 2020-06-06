@@ -401,10 +401,27 @@ class ServerRequestTest extends TestCase
     {
         $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
 
-        $this->assertSame("value 1", $req->getCookie("cookie1"));
-        $this->assertSame("value 2", $req->getCookie("cookie2"));
-        $this->assertSame("not overwrited cookie", $req->getCookie("field3"));
-        $this->assertSame(null, $req->getCookie("not"));
+        $this->assertTrue(is_a($req->getCookie("cookie1"), "AeonDigital\\Http\\Data\\Cookie"));
+        $this->assertSame("value 1", $req->getCookie("cookie1")->getValue());
+
+        $this->assertTrue(is_a($req->getCookie("cookie2"), "AeonDigital\\Http\\Data\\Cookie"));
+        $this->assertSame("value 2", $req->getCookie("cookie2")->getValue());
+
+        $this->assertTrue(is_a($req->getCookie("field3"), "AeonDigital\\Http\\Data\\Cookie"));
+        $this->assertSame("not overwrited cookie", $req->getCookie("field3")->getValue());
+
+        $this->assertNull($req->getCookie("not"));
+    }
+
+
+    public function test_method_get_cookie_value()
+    {
+        $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02);
+
+        $this->assertSame("value 1", $req->getCookieValue("cookie1"));
+        $this->assertSame("value 2", $req->getCookieValue("cookie2"));
+        $this->assertSame("not overwrited cookie", $req->getCookieValue("field3"));
+        $this->assertSame(null, $req->getCookieValue("not"));
     }
 
 

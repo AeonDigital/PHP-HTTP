@@ -9,10 +9,10 @@ use AeonDigital\Interfaces\Http\Uri\iUrl as iUrl;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 use AeonDigital\Interfaces\Http\Data\iFileCollection as iFileCollection;
 use AeonDigital\Interfaces\Http\Data\iCookieCollection as iCookieCollection;
+use AeonDigital\Interfaces\Http\Data\iCookie as iCookie;
 use AeonDigital\Interfaces\Http\Data\iQueryStringCollection as iQueryStringCollection;
 use AeonDigital\Interfaces\Collection\iCollection as iCollection;
 use AeonDigital\Http\Message\Request as Request;
-
 
 
 
@@ -446,6 +446,22 @@ class ServerRequest extends Request implements iServerRequest
 
 
     /**
+     * Retorna o objeto ``iCookie`` correspondente ao cookie de nome indicado.
+     * Retornará ``null`` caso ele não exista.
+     *
+     * @param       string $name
+     *              Nome do cookie alvo.
+     *
+     * @return      ?iCookie
+     */
+    public function getCookie(string $name) : ?iCookie
+    {
+        return (($this->cookies->has($name) === true) ? $this->cookies->get($name) : null);
+    }
+
+
+
+    /**
      * Retorna o valor do cookie de nome indicado.
      * Retornará ``null`` caso ele não exista.
      *
@@ -454,7 +470,7 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @return      ?string
      */
-    public function getCookie(string $name) : ?string
+    public function getCookieValue(string $name) : ?string
     {
         return (($this->cookies->has($name) === true) ? $this->cookies->get($name)->getValue() : null);
     }
