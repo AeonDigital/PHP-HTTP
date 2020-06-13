@@ -18,8 +18,14 @@ Cookie
 		| Representa um cookie.
 		
 	
+	:Parent:
+		:php:class:`AeonDigital\\BObject`
+	
 	:Implements:
 		:php:interface:`AeonDigital\\Interfaces\\Http\\Data\\iCookie` 
+	
+	:Used traits:
+		:php:trait:`AeonDigital\Traits\MainCheckArgumentException` 
 	
 
 Properties

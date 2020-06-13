@@ -26,8 +26,14 @@ Stream
 		| ``Psr\Http\Message\StreamInterface`` através da interface ``iStream``.
 		
 	
+	:Parent:
+		:php:class:`AeonDigital\\BObject`
+	
 	:Implements:
 		:php:interface:`AeonDigital\\Interfaces\\Stream\\iStream` 
+	
+	:Used traits:
+		:php:trait:`AeonDigital\Traits\MainCheckArgumentException` 
 	
 
 Properties

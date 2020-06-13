@@ -7,9 +7,9 @@
 
 .. _namespace-AeonDigital-Http:
 
-===
-Uri
-===
+====
+HTTP
+====
 
 | **PHP-HTTP**
 | Implementação das interfaces 'Psr/Http/Message{...}'.
@@ -41,14 +41,25 @@ Instale em seu projeto usando o composer:
 
 _______________________________________________________________________________
 
+Namespaces
+----------
+
+.. toctree::
+	:maxdepth: 6
+
+	Data <AeonDigital/Http/Data/index>
+	Message <AeonDigital/Http/Message/index>
+	Server <AeonDigital/Http/Server/index>
+	Stream <AeonDigital/Http/Stream/index>
+	Traits <AeonDigital/Http/Traits/index>
+	Uri <AeonDigital/Http/Uri/index>
+
+
 Classes
 -------
 
 .. toctree::
 	:maxdepth: 6
 
-	Traits <AeonDigital/Http/Traits/index>
-	Stream <AeonDigital/Http/Stream/index>
-    Uri <AeonDigital/Http/Uri/index>
-    Data <AeonDigital/Http/Data/index>
-    Message <AeonDigital/Http/Message/index>
+	Execute <AeonDigital/Http/Execute>
+	Factory <AeonDigital/Http/Factory>

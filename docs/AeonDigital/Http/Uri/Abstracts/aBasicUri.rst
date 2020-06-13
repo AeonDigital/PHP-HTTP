@@ -20,8 +20,14 @@ aBasicUri
 		| Implementa a interface ``iBasicUri``.
 		
 	
+	:Parent:
+		:php:class:`AeonDigital\\BObject`
+	
 	:Implements:
 		:php:interface:`AeonDigital\\Interfaces\\Http\\Uri\\iBasicUri` 
+	
+	:Used traits:
+		:php:trait:`AeonDigital\Traits\MainCheckArgumentException` 
 	
 
 Properties

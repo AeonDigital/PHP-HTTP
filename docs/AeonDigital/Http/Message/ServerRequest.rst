@@ -269,6 +269,29 @@ Methods
 	
 		.. rst-class:: phpdoc-description
 		
+			| Retorna o objeto ``iCookie`` correspondente ao cookie de nome indicado.
+			
+			| Retornará ``null`` caso ele não exista.
+			
+		
+		
+		:Parameters:
+			- ‹ string › **$name** |br|
+			  Nome do cookie alvo.
+
+		
+		:Returns: ‹ ?\\AeonDigital\\Interfaces\\Http\\Data\\iCookie ›|br|
+			  
+		
+	
+	
+
+.. rst-class:: public
+
+	.. php:method:: public getCookieValue( $name)
+	
+		.. rst-class:: phpdoc-description
+		
 			| Retorna o valor do cookie de nome indicado.
 			
 			| Retornará ``null`` caso ele não exista.

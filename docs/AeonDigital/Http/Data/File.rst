@@ -21,6 +21,9 @@ File
 		| ``Psr\Http\Message\UploadedFileInterface`` através da interface ``iFile``.
 		
 	
+	:Parent:
+		:php:class:`AeonDigital\\BObject`
+	
 	:Implements:
 		:php:interface:`AeonDigital\\Interfaces\\Http\\Data\\iFile` 
 	
@@ -155,7 +158,7 @@ Methods
 
 .. rst-class:: public
 
-	.. php:method:: public __construct( $fileStream, $clientFilename=null, $uploadError=UPLOAD_ERR_OK)
+	.. php:method:: public __construct( $fileStream, $clientFilename=null, $uploadError=\UPLOAD_ERR_OK)
 	
 		.. rst-class:: phpdoc-description
 		

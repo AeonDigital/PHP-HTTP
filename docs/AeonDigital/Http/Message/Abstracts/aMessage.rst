@@ -27,8 +27,14 @@ aMessage
 		| ``Psr\Http\Message\MessageInterface``.
 		
 	
+	:Parent:
+		:php:class:`AeonDigital\\BObject`
+	
 	:Implements:
 		:php:interface:`Psr\\Http\\Message\\MessageInterface` 
+	
+	:Used traits:
+		:php:trait:`AeonDigital\Traits\MainCheckArgumentException` 
 	
 
 Properties
