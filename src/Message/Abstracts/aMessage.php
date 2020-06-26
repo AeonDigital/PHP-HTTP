@@ -13,7 +13,7 @@ use AeonDigital\BObject as BObject;
 
 
 /**
- * Fornece as operações básicas para o uso de mensagens ``HTTP`` (request ou response).
+ * Fornece as operações básicas para o uso de mensagens ``Http`` (request ou response).
  *
  * Instâncias desta classe são consideradas imutáveis; todos os métodos que podem vir a alterar
  * seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
@@ -74,13 +74,13 @@ abstract class aMessage extends BObject implements MessageInterface
 
 
     /**
-     * Versão do protocolo HTTP da mensagem.
+     * Versão do protocolo Http da mensagem.
      *
      * @var         string
      */
     protected $protocolVersion = null;
     /**
-     * Retorna a versão do protocolo HTTP sendo usado.
+     * Retorna a versão do protocolo Http sendo usado.
      *
      * @return      string
      */
@@ -160,7 +160,7 @@ abstract class aMessage extends BObject implements MessageInterface
      */
     protected $headers = null;
     /**
-     * Retorna um array associativo onde cada chave é um header HTTP
+     * Retorna um array associativo onde cada chave é um header Http
      * usado na mensagem.
      * Valores múltiplos (separados por virgula) serão quebrados
      * em um novo array de valores.
@@ -334,7 +334,7 @@ abstract class aMessage extends BObject implements MessageInterface
      */
     protected iStream $body;
     /**
-     * Retorna o objeto "Stream" que forma o corpo da mensagem HTTP.
+     * Retorna o objeto "Stream" que forma o corpo da mensagem Http.
      * O objeto deve implementar a interface "iStream".
      *
      * @see         http://www.php-fig.org/psr/
@@ -382,10 +382,10 @@ abstract class aMessage extends BObject implements MessageInterface
 
 
     /**
-     * Inicia um novo objeto que representa uma mensagem HTTP.
+     * Inicia um novo objeto que representa uma mensagem Http.
      *
      * @param       string $version
-     *              Versão do protocolo HTTP
+     *              Versão do protocolo Http
      *
      * @param       iHeaderCollection $headers
      *              Objeto que implementa "iHeaderCollection"

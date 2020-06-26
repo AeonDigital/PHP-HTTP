@@ -13,7 +13,7 @@ use AeonDigital\Collection\Collection as Collection;
 
 /**
  * Classe abstrata que serve de base para as demais
- * collections de dados HTTP.
+ * collections de dados Http.
  *
  * @package     AeonDigital\Http\Data
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>

@@ -13,7 +13,7 @@ use AeonDigital\Http\Data\Abstracts\aHttpDataCollection as aHttpDataCollection;
 
 
 /**
- * Coleção que permite agrupar Headers ``HTTP``.
+ * Coleção que permite agrupar Headers ``Http``.
  *
  * @package     AeonDigital\Http\Data
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
@@ -31,7 +31,7 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      * Ajusta o nome das chaves dos headers para o armazenamento padrão.
      * Como esta classe é ``case insensitive`` os valores serão armazenados sempre em
      * ``lowercase`` mas qualquer ``_`` será convertido em ``-`` que é o separador padrão
-     * para os headers ``HTTP``.
+     * para os headers ``Http``.
      *
      * @param       string $key
      *              Chave que será transformada (se necessário).

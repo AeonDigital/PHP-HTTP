@@ -737,7 +737,7 @@ trait MimeTypeData
 
 
     /**
-     * Coleção de ``mimetypes`` que são suportados para respostas em requisições ``HTTP``.
+     * Coleção de ``mimetypes`` que são suportados para respostas em requisições ``Http``.
      *
      * ``` php
      *      $arr = [

@@ -16,7 +16,7 @@
             <!--
                 Defina aqui cada arquivo de testes que será utilizado.
             -->
-            <file>src/Traits/HTTPRawStatusCodeTest.php</file>
+            <file>src/Traits/HttpRawStatusCodeTest.php</file>
             <file>src/Traits/MimeTypeDataTest.php</file>
             <file>src/Traits/ParseQualityHeadersTest.php</file>
 

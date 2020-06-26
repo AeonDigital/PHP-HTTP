@@ -11,7 +11,7 @@ use AeonDigital\Http\Message\Abstracts\aMessage as aMessage;
 
 
 /**
- * Representa uma resposta ``HTTP`` à uma requisição feita por um ``UA``.
+ * Representa uma resposta ``Http`` à uma requisição feita por um ``UA``.
  *
  * Instâncias desta classe são consideradas imutáveis; todos os métodos que podem vir a alterar
  * seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
@@ -28,7 +28,7 @@ use AeonDigital\Http\Message\Abstracts\aMessage as aMessage;
  */
 class Response extends aMessage implements iResponse
 {
-    use \AeonDigital\Http\Traits\HTTPRawStatusCode;
+    use \AeonDigital\Http\Traits\HttpRawStatusCode;
 
 
 
@@ -115,13 +115,13 @@ class Response extends aMessage implements iResponse
 
 
     /**
-     * Código do status ``HTTP`` desta instância.
+     * Código do status ``Http`` desta instância.
      *
      * @var         int
      */
     protected int $statusCode;
     /**
-     * Retorna o código do status ``HTTP`` que está definido para esta resposta.
+     * Retorna o código do status ``Http`` que está definido para esta resposta.
      *
      * @return      int
      */
@@ -170,7 +170,7 @@ class Response extends aMessage implements iResponse
      * contendo o ``method`` especificado.
      *
      * @param       int $code
-     *              Código do status ``HTTP`` a ser definido para a instância.
+     *              Código do status ``Http`` a ser definido para a instância.
      *
      * @param       string $reasonPhrase
      *              Frase razão do status a ser enviada em conjunto na resposta.
@@ -383,15 +383,15 @@ class Response extends aMessage implements iResponse
      * Inicia um novo objeto ``Response``.
      *
      * @param       int $statusCode
-     *              Código do status ``HTTP``.
+     *              Código do status ``Http``.
      *
      * @param       string $reasonPhrase
-     *              Frase razão do status ``HTTP``.
+     *              Frase razão do status ``Http``.
      *              Se não for definida e o código informado for um código padrão, usará a frase
      *              razão correspondente.
      *
      * @param       string $httpVersion
-     *              Versão do protocolo ``HTTP``.
+     *              Versão do protocolo ``Http``.
      *
      * @param       iHeaderCollection $headers
      *              Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da

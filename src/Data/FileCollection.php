@@ -13,7 +13,7 @@ use AeonDigital\Http\Data\Abstracts\aHttpDataCollection as aHttpDataCollection;
 
 
 /**
- * Coleção que permite agrupar arquivos enviados via ``HTTP``.
+ * Coleção que permite agrupar arquivos enviados via ``Http``.
  *
  * Nesta collection uma mesma chave pode possuir um array de objetos File.
  *

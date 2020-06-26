@@ -556,14 +556,14 @@ class ServerRequest extends Request implements iServerRequest
      * Inicia um novo objeto ``ServerRequest``.
      *
      * @param       string $httpMethod
-     *              Método ``HTTP`` que está sendo usado para a requisição.
+     *              Método ``Http`` que está sendo usado para a requisição.
      *
      * @param       iUrl $uri
      *              Objeto que implementa a interface ``iUrl`` configurado com a ``URI`` que está
      *              sendo requisitada pelo ``UA``.
      *
      * @param       string $httpVersion
-     *              Versão do protocolo ``HTTP``.
+     *              Versão do protocolo ``Http``.
      *
      * @param       iHeaderCollection $headers
      *              Objeto que implementa ``iHeaderCollection``

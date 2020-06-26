@@ -28,11 +28,11 @@ class Execute implements iExecute
 
 
     /**
-     * Efetua uma requisição ``HTTP``.
+     * Efetua uma requisição ``Http``.
      * Qualquer tipo de falha encontrada fará retornar ``null``.
      *
      * @param       string $method
-     *              Método ``HTTP`` que será executado.
+     *              Método ``Http`` que será executado.
      *
      * @param       string $absoluteURL
      *              ``URL`` alvo.
@@ -41,7 +41,7 @@ class Execute implements iExecute
      *              Array associativo com as chaves e valores que serão enviados.
      *
      * @param       array $headers
-     *              Array associativo com cabeçalhos ``HTTP`` para serem enviados na requisição.
+     *              Array associativo com cabeçalhos ``Http`` para serem enviados na requisição.
      *
      * @return      ?string
      */

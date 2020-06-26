@@ -225,13 +225,13 @@ class Factory extends BObject implements iFactory
      * Retorna um objeto que implemente a interface ``AeonDigital\Interfaces\Http\Message\iRequest``.
      *
      * @param       string $httpMethod
-     *              Método ``HTTP`` que está sendo usado para a requisição.
+     *              Método ``Http`` que está sendo usado para a requisição.
      *
      * @param       string $uri
      *              ``URI`` que está sendo executada.
      *
      * @param       ?string $httpVersion
-     *              Versão do protocolo ``HTTP``.
+     *              Versão do protocolo ``Http``.
      *
      * @param       ?iHeaderCollection $headers
      *              Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da requisição.
@@ -268,13 +268,13 @@ class Factory extends BObject implements iFactory
      * Retorna um objeto que implemente a interface ``AeonDigital\Interfaces\Http\Message\iServerRequest``.
      *
      * @param       string $httpMethod
-     *              Método ``HTTP`` que está sendo usado para a requisição.
+     *              Método ``Http`` que está sendo usado para a requisição.
      *
      * @param       string $uri
      *              ``URI`` que está sendo executada.
      *
      * @param       ?string $httpVersion
-     *              Versão do protocolo ``HTTP``.
+     *              Versão do protocolo ``Http``.
      *
      * @param       ?iHeaderCollection $headers
      *              Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da requisição.
@@ -371,15 +371,15 @@ class Factory extends BObject implements iFactory
      * Retorna um objeto que implemente a interface ``AeonDigital\Interfaces\Http\Message\iResponse``.
      *
      * @param       int $statusCode
-     *              Código do status ``HTTP``.
+     *              Código do status ``Http``.
      *
      * @param       string $reasonPhrase
-     *              Frase razão do status ``HTTP``.
+     *              Frase razão do status ``Http``.
      *              Se não for definida e o código informado for um código padrão, usará a frase
      *              razão correspondente.
      *
      * @param       ?string $httpVersion
-     *              Versão do protocolo ``HTTP``.
+     *              Versão do protocolo ``Http``.
      *
      * @param       ?iHeaderCollection $headers
      *              Objeto que implementa ``iHeaderCollection``

@@ -13,14 +13,14 @@ namespace AeonDigital\Http\Traits;
 
 
 /**
- * Coleção de códigos de status ``HTTP`` e suas respectivas **reason phrases**.
+ * Coleção de códigos de status ``Http`` e suas respectivas **reason phrases**.
  *
  * @package     AeonDigital\Http\Traits
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-trait HTTPRawStatusCode
+trait HttpRawStatusCode
 {
 
 
@@ -28,14 +28,14 @@ trait HTTPRawStatusCode
 
 
     /**
-     * Coleção de códigos de status ``HTTP``.
+     * Coleção de códigos de status ``Http``.
      *
      * Nesta coleção há apenas os status declarados no documento
-     * **Hypertext Transfer Protocol (HTTP) Status Code Registry** do **http://www.iana.org**.
+     * **Hypertext Transfer Protocol (Http) Status Code Registry** do **http://www.iana.org**.
      *
      * ``` php
      *      $arr = [
-     *          // int      "key"       Código HTTP.
+     *          // int      "key"       Código Http.
      *          // string   "value"     Mensagem.
      *          "key" => "value"
      *      ];

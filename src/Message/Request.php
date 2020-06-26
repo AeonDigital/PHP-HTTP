@@ -14,7 +14,7 @@ use AeonDigital\Http\Message\Abstracts\aMessage as aMessage;
 
 
 /**
- * Representa uma requisição ``HTTP`` feita por um ``UA``.
+ * Representa uma requisição ``Http`` feita por um ``UA``.
  *
  * Instâncias desta classe são consideradas imutáveis; todos os métodos que podem vir a alterar
  * seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
@@ -85,13 +85,13 @@ class Request extends aMessage implements iRequest
 
 
     /**
-     * Método ``HTTP`` que está sendo usado na requisição.
+     * Método ``Http`` que está sendo usado na requisição.
      *
      * @var         string
      */
     protected string $method = "";
     /**
-     * Retorna o método ``HTTP`` que está sendo usado na requisição.
+     * Retorna o método ``Http`` que está sendo usado na requisição.
      *
      * @link        http://tools.ietf.org/html/rfc3986#section-4.3
      *
@@ -251,14 +251,14 @@ class Request extends aMessage implements iRequest
      * Inicia um novo objeto Request.
      *
      * @param       string $httpMethod
-     *              Método ``HTTP`` que está sendo usado para a requisição.
+     *              Método ``Http`` que está sendo usado para a requisição.
      *
      * @param       iUrl $uri
      *              Objeto que implementa a interface ``iUrl`` configurado com a ``URI`` que
      *              está sendo requisitada pelo UA.
      *
      * @param       string $httpVersion
-     *              Versão do protocolo ``HTTP``.
+     *              Versão do protocolo ``Http``.
      *
      * @param       iHeaderCollection $headers
      *              Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da

@@ -2,7 +2,7 @@
 declare (strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use AeonDigital\Http\Traits\HTTPRawStatusCode as HTTPRawStatusCode;
+use AeonDigital\Http\Traits\HttpRawStatusCode as HttpRawStatusCode;
 
 require_once __DIR__ . "/../../phpunit.php";
 
@@ -12,7 +12,7 @@ require_once __DIR__ . "/../../phpunit.php";
 
 
 
-class HTTPRawStatusCodeTest extends TestCase
+class HttpRawStatusCodeTest extends TestCase
 {
 
 
@@ -30,7 +30,7 @@ class HTTPRawStatusCodeTest extends TestCase
             511 => "Network Authentication Required"
         ];
 
-        $nMock = new HTTPRawStatusCodeMockClass();
+        $nMock = new HttpRawStatusCodeMockClass();
         foreach ($keysAndValues as $key => $value) {
             $this->assertSame($value, $nMock->getReasonPhrase($key));
         }
@@ -41,9 +41,9 @@ class HTTPRawStatusCodeTest extends TestCase
 
 
 
-class HTTPRawStatusCodeMockClass
+class HttpRawStatusCodeMockClass
 {
-    use HTTPRawStatusCode;
+    use HttpRawStatusCode;
 
     public function getReasonPhrase(int $code) : ?string {
         return ((isset(self::$rawStatusCode[$code]) === true) ? self::$rawStatusCode[$code] : null);

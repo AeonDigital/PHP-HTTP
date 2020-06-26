@@ -250,7 +250,7 @@ class Cookie extends BObject implements iCookie
      * Define se o cookie é do tipo ``Secure``.
      *
      * Quando ``true`` significa que o cookie só deve trafegar em canais seguros (tipicamente
-     * ``HTTP`` sobre uma camada TSL).
+     * ``Http`` sobre uma camada TSL).
      *
      * O valor ``null`` irá remover esta propriedade do cookie.
      *
@@ -267,7 +267,7 @@ class Cookie extends BObject implements iCookie
      * Indica se a diretiva ``Secure`` deve ser aplicada.
      *
      * Quando ``true`` significa que o cookie só deve trafegar em canais seguros (tipicamente
-     * ``HTTP`` sobre uma camada TSL).
+     * ``Http`` sobre uma camada TSL).
      *
      * @return      bool
      */
@@ -289,7 +289,7 @@ class Cookie extends BObject implements iCookie
     /**
      * Define se o cookie é do tipo ``HttpOnly``.
      *
-     * Quando ``true`` significa que o cookie só deve trafegar em via ``HTTP``.
+     * Quando ``true`` significa que o cookie só deve trafegar em via ``Http``.
      *
      * O valor ``null`` irá remover esta propriedade do cookie.
      *
@@ -305,7 +305,7 @@ class Cookie extends BObject implements iCookie
     /**
      * Indica se a diretiva ``HttpOnly`` deve ser aplicada.
      *
-     * Quando ``true`` significa que o cookie só deve trafegar em via ``HTTP``.
+     * Quando ``true`` significa que o cookie só deve trafegar em via ``Http``.
      *
      * @return      bool
      */
