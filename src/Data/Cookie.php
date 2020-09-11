@@ -459,15 +459,17 @@ class Cookie extends BObject implements iCookie
      */
     public function defineCookie() : bool
     {
-        $timeStamp = (($this->expires === null) ? null : $this->expires->getTimestamp());
         return \setcookie(
             $this->name,
             $this->value,
-            $timeStamp,
-            $this->path,
-            $this->domain,
-            $this->secure,
-            $this->httpOnly
+            [
+                "expires"   => (($this->expires === null) ? null : $this->expires->getTimestamp()),
+                "path"      => $this->path,
+                "domain"    => $this->domain,
+                "secure"    => $this->secure,
+                "httponly"  => $this->httpOnly,
+                "sameSite"  => (($this->secure === true) ? "Strict" : "Lax")
+            ]
         );
     }
 
