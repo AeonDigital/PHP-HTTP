@@ -733,7 +733,7 @@ class ServerRequest extends Request implements iServerRequest
                             \extract($fieldData);
 
                             if ($fieldFile === null) {
-                                if (\ends_with($fieldName, "[]") === true) {
+                                if (\mb_str_ends_with($fieldName, "[]") === true) {
                                     if (isset($r[$fieldName]) === false) { $r[$fieldName] = []; }
                                     $r[$fieldName][] = $fieldValue;
                                 }
@@ -758,7 +758,6 @@ class ServerRequest extends Request implements iServerRequest
                                 }
                             }
                         }
-
                     }
 
 
