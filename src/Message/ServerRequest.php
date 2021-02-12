@@ -644,7 +644,7 @@ class ServerRequest extends Request implements iServerRequest
 
         $this->getParsedBody();
 
-        $useHttpMethod = $this->getParam("_method");
+        $useHttpMethod = ((isset($_REQUEST["_method"]) === true) ? $_REQUEST["_method"] : null);
         if ($useHttpMethod !== null) {
             $this->method = $this->checkMethod($useHttpMethod);
         }
