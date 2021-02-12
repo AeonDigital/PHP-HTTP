@@ -16,6 +16,8 @@ use AeonDigital\Http\Data\Abstracts\aHttpDataCollection as aHttpDataCollection;
  * Coleção que permite agrupar arquivos enviados via ``Http``.
  *
  * Nesta collection uma mesma chave pode possuir um array de objetos File.
+ * Campos enviados vazios serão representados por uma posição com seu respectivo
+ * nome e valor ``null``.
  *
  * @package     AeonDigital\Http\Data
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
@@ -63,11 +65,15 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
         $files = $this->toArray();
 
         foreach ($files as $k => $v) {
-            if (\is_array($v) === false) {
-                $v->dropStream();
-            } else {
-                foreach ($v as $f) {
-                    $f->dropStream();
+            if ($v !== null) {
+                if (\is_array($v) === false) {
+                    $v->dropStream();
+                } else {
+                    foreach ($v as $f) {
+                        if ($f !== null) {
+                            $f->dropStream();
+                        }
+                    }
                 }
             }
         }
@@ -100,11 +106,15 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
     protected function isValidType($value) : bool
     {
         if (\is_array($value) === false) {
-            $r = (\is_object($value) === true && \in_array(iFile::class, \class_implements($value)) === true);
+            $r = (  $value === null ||
+                    (\is_object($value) === true && \in_array(iFile::class, \class_implements($value)) === true)
+                );
         } else {
             $c = 0;
             foreach ($value as $v) {
-                if (\is_object($v) === true && \in_array(iFile::class, \class_implements($v)) === true) {
+                if ($v === null ||
+                    (\is_object($v) === true && \in_array(iFile::class, \class_implements($v)) === true)
+                ) {
                     $c++;
                 }
             }
