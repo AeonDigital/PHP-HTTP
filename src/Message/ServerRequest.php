@@ -557,6 +557,8 @@ class ServerRequest extends Request implements iServerRequest
      *
      * @param       string $httpMethod
      *              Método ``Http`` que está sendo usado para a requisição.
+     *              Este valor será substituido caso um parametro ``_method`` seja enviado em
+     *              algum parametro da requisição (seja via GET, POST ou outra forma).
      *
      * @param       iUrl $uri
      *              Objeto que implementa a interface ``iUrl`` configurado com a ``URI`` que está
@@ -644,7 +646,10 @@ class ServerRequest extends Request implements iServerRequest
 
         $this->getParsedBody();
 
-        $useHttpMethod = ((isset($_REQUEST["_method"]) === true) ? $_REQUEST["_method"] : null);
+        $useHttpMethod = (
+            $this->getParam("_method") ??
+            ((isset($_REQUEST["_method"]) === true) ? $_REQUEST["_method"] : null)
+        );
         if ($useHttpMethod !== null) {
             $this->method = $this->checkMethod($useHttpMethod);
         }
