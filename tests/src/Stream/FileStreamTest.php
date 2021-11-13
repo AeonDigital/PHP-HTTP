@@ -30,7 +30,7 @@ class FileStreamTest extends TestCase
             $obj = new FileStream($tgtFile);
         } catch (\Exception $ex) {
             $fail = true;
-            $correctPath = $dirFiles . "\\does-not-exist.md";
+            $correctPath = $dirFiles . DS . "does-not-exist.md";
             $this->assertSame("Invalid value defined for \"pathToFile\". File does not exists. Given: [ $correctPath ]", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
