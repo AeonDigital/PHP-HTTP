@@ -116,6 +116,7 @@ test-cover-file-html:
 # Prepara o container para que seja possível exportar a documentação técnica
 # do código fonte para ser compatível com os requisitos do 'ReadTheDocs'.
 # Este comando precisa ser rodado apenas 1 vez para cada novo container.
+# use esta opção como 'sudo'
 docs-prepare-container:
 	apt-get update
 	apt-get install -y python3 python3-pip
@@ -123,6 +124,7 @@ docs-prepare-container:
 	pip install -U sphinx_rtd_theme
 	pip install -U sphinxcontrib-phpdomain
 	pip install -U recommonmark
+	./vendor/bin/phpdoc-to-rst config
 
 #
 # Efetua a extração da documentação técnica para o formato 'rst'.
