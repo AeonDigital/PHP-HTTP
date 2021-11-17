@@ -43,6 +43,11 @@ composer-install:
 composer-update:
 	docker exec -it ${CONTAINER_NAME} composer update
 
+#
+# Retorna o IP da rede usado pelo container
+get-ip:
+	docker inspect ${CONTAINER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+'
+
 
 
 
