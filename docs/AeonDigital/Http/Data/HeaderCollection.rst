@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -15,7 +15,7 @@ HeaderCollection
 
 	.. rst-class:: phpdoc-description
 	
-		| Coleção que permite agrupar Headers ``HTTP``.
+		| Coleção que permite agrupar Headers ``Http``.
 		
 	
 	:Parent:

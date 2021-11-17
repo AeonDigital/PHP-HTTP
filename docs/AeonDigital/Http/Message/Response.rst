@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -15,7 +15,7 @@ Response
 
 	.. rst-class:: phpdoc-description
 	
-		| Representa uma resposta ``HTTP`` à uma requisição feita por um ``UA``.
+		| Representa uma resposta ``Http`` à uma requisição feita por um ``UA``.
 		
 		| Instâncias desta classe são consideradas imutáveis; todos os métodos que podem vir a alterar
 		| seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
@@ -31,7 +31,7 @@ Response
 		:php:interface:`AeonDigital\\Interfaces\\Http\\Message\\iResponse` 
 	
 	:Used traits:
-		:php:trait:`AeonDigital\Http\Traits\HTTPRawStatusCode` 
+		:php:trait:`AeonDigital\Http\Traits\HttpRawStatusCode` 
 	
 
 Properties
@@ -46,7 +46,7 @@ Methods
 	
 		.. rst-class:: phpdoc-description
 		
-			| Retorna o código do status ``HTTP`` que está definido para esta resposta.
+			| Retorna o código do status ``Http`` que está definido para esta resposta.
 			
 		
 		
@@ -69,7 +69,7 @@ Methods
 		
 		:Parameters:
 			- ‹ int › **$code** |br|
-			  Código do status ``HTTP`` a ser definido para a instância.
+			  Código do status ``Http`` a ser definido para a instância.
 			- ‹ string › **$reasonPhrase** |br|
 			  Frase razão do status a ser enviada em conjunto na resposta.
 			  Se não for definida e o código informado for um código padrão, usará a frase
@@ -196,7 +196,7 @@ Methods
 		
 		:Parameters:
 			- ‹ array › **$headers** |br|
-			  Coleção de headers.
+			  Coleção de headers.
 			- ‹ bool › **$merge** |br|
 			  Quando ``true`` irá manter os headers já definidos e apenas adicionar ou
 			  sobrescrever os definidos em ``$headers``.
@@ -221,9 +221,9 @@ Methods
 		
 		:Parameters:
 			- ‹ ?\\StdClass › **$viewData** |br|
-			  Objeto ``viewData``.
+			  Objeto ``viewData``.
 			- ‹ ?\\StdClass › **$viewConfig** |br|
-			  Objeto ``viewConfig``.
+			  Objeto ``viewConfig``.
 			- ‹ ?array › **$headers** |br|
 			  Coleção de headers.
 			  Irá executar um Merge com os headers existentes.
@@ -247,20 +247,20 @@ Methods
 		
 		:Parameters:
 			- ‹ int › **$statusCode** |br|
-			  Código do status ``HTTP``.
+			  Código do status ``Http``.
 			- ‹ string › **$reasonPhrase** |br|
-			  Frase razão do status ``HTTP``.
+			  Frase razão do status ``Http``.
 			  Se não for definida e o código informado for um código padrão, usará a frase
-			  razão correspondente.
+			  razão correspondente.
 			- ‹ string › **$httpVersion** |br|
-			  Versão do protocolo ``HTTP``.
+			  Versão do protocolo ``Http``.
 			- ‹ AeonDigital\\Interfaces\\Http\\Data\\iHeaderCollection › **$headers** |br|
 			  Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da
-			  requisição.
+			  requisição.
 			- ‹ AeonDigital\\Interfaces\\Stream\\iStream › **$body** |br|
-			  Objeto ``stream`` que faz parte do corpo da mensagem.
+			  Objeto ``stream`` que faz parte do corpo da mensagem.
 			- ‹ ?\\StdClass › **$viewData** |br|
-			  Objeto ``viewData``.
+			  Objeto ``viewData``.
 			- ‹ ?\\StdClass › **$viewConfig** |br|
 			  Objeto ``viewConfig``.
 

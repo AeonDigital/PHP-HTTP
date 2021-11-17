@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -95,7 +95,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$pathToFile** |br|
-			  Caminho completo até o arquivo alvo.
+			  Caminho completo até o arquivo alvo.
 			- ‹ string › **$openMode** |br|
 			  Modo de abertura do stream.
 
@@ -123,7 +123,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$pathToFile** |br|
-			  Caminho completo até o arquivo alvo.
+			  Caminho completo até o arquivo alvo.
 			- ‹ ?string › **$openMode** |br|
 			  Modo de abertura do stream.
 			  Se for mantido ``null``, o novo arquivo deve utilizar o mesmo modo usado

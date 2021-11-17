@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -208,7 +208,7 @@ Methods
 		
 		:Parameters:
 			- ‹ int › **$offset** |br|
-			  Posição que será definida para o cursor.
+			  Posição que será definida para o cursor.
 			- ‹ int › **$whence** |br|
 			  Especifica a forma como a posição do cursor será calculado.
 			  Valores válidos são ``SEEK_SET``, ``SEEK_CUR`` e ``SEEK_END``.

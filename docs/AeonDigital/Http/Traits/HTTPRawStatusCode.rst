@@ -1,21 +1,21 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
-HTTPRawStatusCode
+HttpRawStatusCode
 =================
 
 
 .. php:namespace:: AeonDigital\Http\Traits
 
-.. php:trait:: HTTPRawStatusCode
+.. php:trait:: HttpRawStatusCode
 
 
 	.. rst-class:: phpdoc-description
 	
-		| Coleção de códigos de status ``HTTP`` e suas respectivas **reason phrases**.
+		| Coleção de códigos de status ``Http`` e suas respectivas **reason phrases**.
 		
 	
 

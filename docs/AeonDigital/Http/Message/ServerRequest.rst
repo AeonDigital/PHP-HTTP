@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -347,30 +347,32 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$httpMethod** |br|
-			  Método ``HTTP`` que está sendo usado para a requisição.
+			  Método ``Http`` que está sendo usado para a requisição.
+			  Este valor será substituido caso um parametro ``_method`` seja enviado em
+			  algum parametro da requisição (seja via GET, POST ou outra forma).
 			- ‹ AeonDigital\\Interfaces\\Http\\Uri\\iUrl › **$uri** |br|
 			  Objeto que implementa a interface ``iUrl`` configurado com a ``URI`` que está
-			  sendo requisitada pelo ``UA``.
+			  sendo requisitada pelo ``UA``.
 			- ‹ string › **$httpVersion** |br|
-			  Versão do protocolo ``HTTP``.
+			  Versão do protocolo ``Http``.
 			- ‹ AeonDigital\\Interfaces\\Http\\Data\\iHeaderCollection › **$headers** |br|
 			  Objeto que implementa ``iHeaderCollection``
-			  cotendo os cabeçalhos da requisição.
+			  cotendo os cabeçalhos da requisição.
 			- ‹ AeonDigital\\Interfaces\\Stream\\iStream › **$body** |br|
-			  Objeto ``stream`` que faz parte do corpo da mensagem.
+			  Objeto ``stream`` que faz parte do corpo da mensagem.
 			- ‹ AeonDigital\\Interfaces\\Http\\Data\\iCookieCollection › **$cookies** |br|
-			  Objeto que implementa ``iCookieCollection`` cotendo os cookies da requisição.
+			  Objeto que implementa ``iCookieCollection`` cotendo os cookies da requisição.
 			- ‹ AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection › **$queryStrings** |br|
-			  Objeto que implementa ``iQueryStringCollection`` cotendo os queryStrings.
+			  Objeto que implementa ``iQueryStringCollection`` cotendo os queryStrings.
 			- ‹ AeonDigital\\Interfaces\\Http\\Data\\iFileCollection › **$files** |br|
 			  Objeto que implementa ``iFileCollection`` cotendo os arquivos enviados nesta
-			  requisição.
+			  requisição.
 			- ‹ array › **$serverParans** |br|
 			  Coleção de parametros definidos pelo servidor sobre o ambiente e requisição
-			  atual.
+			  atual.
 			- ‹ AeonDigital\\Interfaces\\Collection\\iCollection › **$attributes** |br|
 			  Objeto que implementa ``iCollection`` contendo atributos personalizados para
-			  esta requisição.
+			  esta requisição.
 			- ‹ ?\\AeonDigital\\Interfaces\\Collection\\iCollection › **$bodyParsers** |br|
 			  Objeto que implementa ``iCollection`` cotendo os closures que podem efetuar
 			  o processamento do body da requisição.
@@ -572,7 +574,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$name** |br|
-			  O nome do atributo a ser retornado.
+			  O nome do atributo a ser retornado.
 			- ‹ mixed › **$default** |br|
 			  Valor padrão para o atributo, caso não exista.
 
@@ -596,7 +598,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$name** |br|
-			  Nome do atributo que será definido.
+			  Nome do atributo que será definido.
 			- ‹ mixed › **$value** |br|
 			  Valor do atributo.
 

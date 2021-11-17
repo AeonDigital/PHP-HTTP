@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -262,7 +262,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$user** |br|
-			  O novo valor para ``user`` na nova instância.
+			  O novo valor para ``user`` na nova instância.
 			- ‹ string › **$password** |br|
 			  O novo valor para ``password`` na nova instância.
 
@@ -318,12 +318,12 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$user** |br|
-			  O novo valor para ``user`` na nova instância.
+			  O novo valor para ``user`` na nova instância.
 			- ‹ ?string › **$password** |br|
 			  O novo valor para ``password`` para a nova instância.
-			  Se ``null`` for passado, o valor da ``password`` será removido.
+			  Se ``null`` for passado, o valor da ``password`` será removido.
 			- ‹ string › **$host** |br|
-			  O novo valor para ``host`` na nova instância.
+			  O novo valor para ``host`` na nova instância.
 			- ‹ ?int › **$port** |br|
 			  O novo valor para ``port`` na nova instância.
 			  Use ``null`` para ignorar usar o valor padrão para o ``scheme``.
@@ -393,17 +393,17 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$scheme** |br|
-			  Define o ``scheme`` usado pelo ``URI``.
+			  Define o ``scheme`` usado pelo ``URI``.
 			- ‹ string › **$user** |br|
-			  Define o ``user`` usado pelo ``URI``.
+			  Define o ``user`` usado pelo ``URI``.
 			- ‹ ?string › **$password** |br|
 			  Define o ``password`` usado pelo ``URI``.
-			  Se ``null`` for passado, o valor da ``password`` não será removido.
+			  Se ``null`` for passado, o valor da ``password`` não será removido.
 			- ‹ string › **$host** |br|
-			  Define o ``host`` usado pelo ``URI``.
+			  Define o ``host`` usado pelo ``URI``.
 			- ‹ ?int › **$port** |br|
 			  Define a ``port`` usado pelo ``URI``.
-			  Use ``null`` para usar o valor padrão para do ``scheme``.
+			  Use ``null`` para usar o valor padrão para do ``scheme``.
 			- ‹ string › **$path** |br|
 			  Define o ``path`` usado pelo ``URI``.
 

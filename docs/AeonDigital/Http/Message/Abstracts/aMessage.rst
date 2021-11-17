@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -17,7 +17,7 @@ aMessage
 
 	.. rst-class:: phpdoc-description
 	
-		| Fornece as operações básicas para o uso de mensagens ``HTTP`` (request ou response).
+		| Fornece as operações básicas para o uso de mensagens ``Http`` (request ou response).
 		
 		| Instâncias desta classe são consideradas imutáveis; todos os métodos que podem vir a alterar
 		| seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
@@ -49,7 +49,7 @@ Methods
 	
 		.. rst-class:: phpdoc-description
 		
-			| Retorna a versão do protocolo HTTP sendo usado.
+			| Retorna a versão do protocolo Http sendo usado.
 			
 		
 		
@@ -90,7 +90,7 @@ Methods
 	
 		.. rst-class:: phpdoc-description
 		
-			| Retorna um array associativo onde cada chave é um header HTTP
+			| Retorna um array associativo onde cada chave é um header Http
 			| usado na mensagem.
 			
 			| Valores múltiplos (separados por virgula) serão quebrados
@@ -195,7 +195,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$name** |br|
-			  Nome do header.
+			  Nome do header.
 			- ‹ string | array › **$value** |br|
 			  Valor do header.
 
@@ -226,7 +226,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$name** |br|
-			  Nome do header.
+			  Nome do header.
 			- ‹ string | array › **$value** |br|
 			  Valores a serem adicionados ao header.
 
@@ -271,7 +271,7 @@ Methods
 	
 		.. rst-class:: phpdoc-description
 		
-			| Retorna o objeto &#34;Stream&#34; que forma o corpo da mensagem HTTP.
+			| Retorna o objeto &#34;Stream&#34; que forma o corpo da mensagem Http.
 			
 			| O objeto deve implementar a interface &#34;iStream&#34;.
 			
@@ -315,16 +315,16 @@ Methods
 	
 		.. rst-class:: phpdoc-description
 		
-			| Inicia um novo objeto que representa uma mensagem HTTP.
+			| Inicia um novo objeto que representa uma mensagem Http.
 			
 		
 		
 		:Parameters:
 			- ‹ string › **$version** |br|
-			  Versão do protocolo HTTP
+			  Versão do protocolo Http
 			- ‹ AeonDigital\\Interfaces\\Http\\Data\\iHeaderCollection › **$headers** |br|
 			  Objeto que implementa &#34;iHeaderCollection&#34;
-			  cotendo os cabeçalhos da requisição.
+			  cotendo os cabeçalhos da requisição.
 			- ‹ AeonDigital\\Interfaces\\Stream\\iStream › **$body** |br|
 			  Objeto &#34;Stream&#34; representando o corpo da mensagem.
 

@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -279,7 +279,7 @@ Methods
 			| Define se o cookie é do tipo ``Secure``.
 			
 			| Quando ``true`` significa que o cookie só deve trafegar em canais seguros (tipicamente
-			| ``HTTP`` sobre uma camada TSL).
+			| ``Http`` sobre uma camada TSL).
 			| 
 			| O valor ``null`` irá remover esta propriedade do cookie.
 			
@@ -305,7 +305,7 @@ Methods
 			| Indica se a diretiva ``Secure`` deve ser aplicada.
 			
 			| Quando ``true`` significa que o cookie só deve trafegar em canais seguros (tipicamente
-			| ``HTTP`` sobre uma camada TSL).
+			| ``Http`` sobre uma camada TSL).
 			
 		
 		
@@ -323,7 +323,7 @@ Methods
 		
 			| Define se o cookie é do tipo ``HttpOnly``.
 			
-			| Quando ``true`` significa que o cookie só deve trafegar em via ``HTTP``.
+			| Quando ``true`` significa que o cookie só deve trafegar em via ``Http``.
 			| 
 			| O valor ``null`` irá remover esta propriedade do cookie.
 			
@@ -348,7 +348,7 @@ Methods
 		
 			| Indica se a diretiva ``HttpOnly`` deve ser aplicada.
 			
-			| Quando ``true`` significa que o cookie só deve trafegar em via ``HTTP``.
+			| Quando ``true`` significa que o cookie só deve trafegar em via ``Http``.
 			
 		
 		
@@ -370,17 +370,17 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$name** |br|
-			  Nome do cookie.
+			  Nome do cookie.
 			- ‹ string › **$value** |br|
-			  Valor do cookie.
+			  Valor do cookie.
 			- ‹ ?\\DateTime › **$expires** |br|
-			  Data de expiração do cookie.
+			  Data de expiração do cookie.
 			- ‹ ?string › **$domain** |br|
-			  Domínio.
+			  Domínio.
 			- ‹ ?string › **$path** |br|
-			  Path.
+			  Path.
 			- ‹ bool › **$secure** |br|
-			  Secure.
+			  Secure.
 			- ‹ bool › **$httpOnly** |br|
 			  HttpOnly.
 

@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -89,7 +89,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$scheme** |br|
-			  Define o ``scheme`` usado pelo ``URI``.
+			  Define o ``scheme`` usado pelo ``URI``.
 			- ‹ array › **$acceptSchemes** |br|
 			  Coleção de ``schemes`` permitidos para a serem definidos por uma classe
 			  concreta.

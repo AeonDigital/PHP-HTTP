@@ -1,60 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
-<phpunit
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
-    colors="true" verbose="true" stopOnFailure="false"
-    bootstrap="phpunit.php">
-
-    <!--
-        Todos os endereços de arquivos e diretórios são relativos ao
-        diretório no qual o PHP unit foi iniciado, ou aquele onde está
-        o arquivo de configuração "phpunit.xml".
-    -->
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+        bootstrap="phpunit.php"
+        cacheResultFile=".phpunit.cache/test-results"
+        executionOrder="default"
+        forceCoversAnnotation="false"
+        beStrictAboutCoversAnnotation="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutTodoAnnotatedTests="true"
+        convertDeprecationsToExceptions="true"
+        failOnRisky="true"
+        failOnWarning="true"
+        verbose="true">
 
     <testsuites>
-        <testsuite name="AeonDigital-PHP-Http">
-            <!--
-                Defina aqui cada arquivo de testes que será utilizado.
-            -->
-            <file>src/Traits/HttpRawStatusCodeTest.php</file>
-            <file>src/Traits/MimeTypeDataTest.php</file>
-            <file>src/Traits/ParseQualityHeadersTest.php</file>
-
-
-            <file>src/Stream/StreamTest.php</file>
-            <file>src/Stream/FileStreamTest.php</file>
-
-
-            <file>src/Uri/aBasicUriTest.php</file>
-            <file>src/Uri/aHierPartUriTest.php</file>
-            <file>src/Uri/aAbsoluteUriTest.php</file>
-
-
-            <file>src/Data/CookieTest.php</file>
-            <file>src/Data/CookieCollectionTest.php</file>
-            <file>src/Data/FileTest.php</file>
-            <file>src/Data/FileCollectionTest.php</file>
-            <file>src/Data/HeaderCollectionTest.php</file>
-            <file>src/Data/QueryStringCollectionTest.php</file>
-
-
-            <file>src/Message/aMessageTest.php</file>
-            <file>src/Message/RequestTest.php</file>
-            <file>src/Message/ResponseTest.php</file>
-            <file>src/Message/ServerRequestTest.php</file>
-
-
+        <testsuite name="default">
             <file>src/FactoryTest.php</file>
             <file>src/ExecuteTest.php</file>
+
+            <directory>src/Traits</directory>
+            <directory>src/Stream</directory>
+            <directory>src/Uri</directory>
+
+            <directory>src/Data</directory>
+            <directory>src/Message</directory>
         </testsuite>
     </testsuites>
-    <filter>
-       <whitelist processUncoveredFilesFromWhitelist="true">
-            <!--
-                Defina aqui cada diretório de projeto que será
-                avaliado em um teste de cobertura.
-            -->
-            <directory>../src</directory>
-        </whitelist>
-    </filter>
+
+    <coverage cacheDirectory=".phpunit.cache/code-coverage"
+            includeUncoveredFiles="false"
+            processUncoveredFiles="false">
+        <include>
+            <directory suffix=".php">../src</directory>
+        </include>
+    </coverage>
 </phpunit>

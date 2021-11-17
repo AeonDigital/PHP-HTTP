@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -134,7 +134,7 @@ Methods
 		
 		:Parameters:
 			- ‹ ?array › **$initialValues** |br|
-			  Valores com os quais a instância deve iniciar.
+			  Valores com os quais a instância deve iniciar.
 			- ‹ bool › **$autoincrement** |br|
 			  Quando ``true`` permite que seja omitido o nome da chave dos valores pois
 			  eles serão definidos internamente conforme fosse um array começando em zero.
@@ -203,7 +203,7 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$filename** |br|
-			  Caminho completo até o arquivo.
+			  Caminho completo até o arquivo.
 			- ‹ string › **$mode** |br|
 			  Modo no qual o stream será aberto.
 
@@ -266,13 +266,13 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$httpMethod** |br|
-			  Método ``HTTP`` que está sendo usado para a requisição.
+			  Método ``Http`` que está sendo usado para a requisição.
 			- ‹ string › **$uri** |br|
-			  ``URI`` que está sendo executada.
+			  ``URI`` que está sendo executada.
 			- ‹ ?string › **$httpVersion** |br|
-			  Versão do protocolo ``HTTP``.
+			  Versão do protocolo ``Http``.
 			- ‹ ?\\AeonDigital\\Interfaces\\Http\\Data\\iHeaderCollection › **$headers** |br|
-			  Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da requisição.
+			  Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da requisição.
 			- ‹ ?\\AeonDigital\\Interfaces\\Stream\\iStream › **$body** |br|
 			  Objeto ``stream`` que faz parte do corpo da mensagem.
 
@@ -298,28 +298,28 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$httpMethod** |br|
-			  Método ``HTTP`` que está sendo usado para a requisição.
+			  Método ``Http`` que está sendo usado para a requisição.
 			- ‹ string › **$uri** |br|
-			  ``URI`` que está sendo executada.
+			  ``URI`` que está sendo executada.
 			- ‹ ?string › **$httpVersion** |br|
-			  Versão do protocolo ``HTTP``.
+			  Versão do protocolo ``Http``.
 			- ‹ ?\\AeonDigital\\Interfaces\\Http\\Data\\iHeaderCollection › **$headers** |br|
-			  Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da requisição.
+			  Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da requisição.
 			- ‹ ?\\AeonDigital\\Interfaces\\Stream\\iStream › **$body** |br|
-			  Objeto ``stream`` que faz parte do corpo da mensagem.
+			  Objeto ``stream`` que faz parte do corpo da mensagem.
 			- ‹ ?\\AeonDigital\\Interfaces\\Http\\Data\\iCookieCollection › **$cookies** |br|
-			  Objeto que implementa ``iCookieCollection`` cotendo os cookies da requisição.
+			  Objeto que implementa ``iCookieCollection`` cotendo os cookies da requisição.
 			- ‹ ?\\AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection › **$queryStrings** |br|
-			  Objeto que implementa ``iQueryStringCollection`` cotendo os queryStrings da ``URI``.
+			  Objeto que implementa ``iQueryStringCollection`` cotendo os queryStrings da ``URI``.
 			- ‹ ?\\AeonDigital\\Interfaces\\Http\\Data\\iFileCollection › **$files** |br|
 			  Objeto que implementa ``iFileCollection`` cotendo os arquivos enviados nesta
-			  requisição.
+			  requisição.
 			- ‹ ?array › **$serverParans** |br|
 			  Coleção de parametros definidos pelo servidor sobre o ambiente e requisição
-			  atual.
+			  atual.
 			- ‹ ?\\AeonDigital\\Interfaces\\Collection\\iCollection › **$attributes** |br|
 			  Objeto que implementa ``iCollection`` cotendo atributos personalizados para
-			  esta requisição.
+			  esta requisição.
 			- ‹ ?\\AeonDigital\\Interfaces\\Collection\\iCollection › **$bodyParsers** |br|
 			  Objeto que implementa ``iCollection`` cotendo os closures que podem efetuar
 			  o processamento do body da requisição.
@@ -346,22 +346,22 @@ Methods
 		
 		:Parameters:
 			- ‹ int › **$statusCode** |br|
-			  Código do status ``HTTP``.
+			  Código do status ``Http``.
 			- ‹ string › **$reasonPhrase** |br|
-			  Frase razão do status ``HTTP``.
+			  Frase razão do status ``Http``.
 			  Se não for definida e o código informado for um código padrão, usará a frase
-			  razão correspondente.
+			  razão correspondente.
 			- ‹ ?string › **$httpVersion** |br|
-			  Versão do protocolo ``HTTP``.
+			  Versão do protocolo ``Http``.
 			- ‹ ?\\AeonDigital\\Interfaces\\Http\\Data\\iHeaderCollection › **$headers** |br|
 			  Objeto que implementa ``iHeaderCollection``
-			  cotendo os cabeçalhos da requisição.
+			  cotendo os cabeçalhos da requisição.
 			- ‹ ?\\AeonDigital\\Interfaces\\Stream\\iStream › **$body** |br|
-			  Objeto ``stream`` que faz parte do corpo da mensagem.
+			  Objeto ``stream`` que faz parte do corpo da mensagem.
 			- ‹ ?\\StdClass › **$viewData** |br|
-			  Objeto ``viewData``.
+			  Objeto ``viewData``.
 			- ‹ ?string › **$mime** |br|
-			  Mimetype que deve ser usado para criar o corpo da mensagem.
+			  Mimetype que deve ser usado para criar o corpo da mensagem.
 			- ‹ ?string › **$locale** |br|
 			  Locale no qual a informação que consta no corpo da mensagem está construído.
 

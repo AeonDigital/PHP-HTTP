@@ -101,11 +101,15 @@ class Execute implements iExecute
 
         // Cria um objeto "stream" preparado com o conteúdo definido
         $streamResource = \stream_context_create([
-            "http" => [
+            "http"  => [
                 "method"    => $method,
                 "header"    => $strHeaders,
                 "content"   => $postContent
-            ]
+            ],
+            "ssl"   => [
+                "verify_peer"       => false,
+                "verify_peer_name"  => false
+            ],
         ]);
 
 

@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -168,7 +168,7 @@ Methods
 		
 		:Parameters:
 			- ‹ AeonDigital\\Interfaces\\Stream\\iFileStream › **$fileStream** |br|
-			  Stream que representa o arquivo que está sendo enviado pelo ``UA``.
+			  Stream que representa o arquivo que está sendo enviado pelo ``UA``.
 			- ‹ int › **$uploadError** |br|
 			  Código de erro ao efetuar o upload, caso exista.
 

@@ -1,0 +1,13 @@
+version: '3'
+
+#
+# Descrição dos serviços
+services:
+
+  # 
+  # Servidor Web
+  web-server:
+    container_name: apache-php-7.4
+    image: aeondigital/apache-php-7.4:latest
+    volumes:
+      - .:/var/www/html

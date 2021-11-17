@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -31,7 +31,7 @@ Methods
 	
 		.. rst-class:: phpdoc-description
 		
-			| Efetua uma requisição ``HTTP``.
+			| Efetua uma requisição ``Http``.
 			
 			| Qualquer tipo de falha encontrada fará retornar ``null``.
 			
@@ -39,13 +39,13 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$method** |br|
-			  Método ``HTTP`` que será executado.
+			  Método ``Http`` que será executado.
 			- ‹ string › **$absoluteURL** |br|
-			  ``URL`` alvo.
+			  ``URL`` alvo.
 			- ‹ array › **$content** |br|
-			  Array associativo com as chaves e valores que serão enviados.
+			  Array associativo com as chaves e valores que serão enviados.
 			- ‹ array › **$headers** |br|
-			  Array associativo com cabeçalhos ``HTTP`` para serem enviados na requisição.
+			  Array associativo com cabeçalhos ``Http`` para serem enviados na requisição.
 
 		
 		:Returns: ‹ ?string ›|br|
@@ -67,9 +67,9 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$absoluteURL** |br|
-			  ``URL`` de onde o arquivo será resgatado.
+			  ``URL`` de onde o arquivo será resgatado.
 			- ‹ string › **$absoluteSystemPathToDir** |br|
-			  Diretório da aplicação onde o arquivo será salvo.
+			  Diretório da aplicação onde o arquivo será salvo.
 			- ‹ string › **$fileName** |br|
 			  Nome usado para salvar o arquivo.
 			  Se não informado será usado o nome original do mesmo.

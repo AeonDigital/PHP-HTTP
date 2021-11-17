@@ -26,7 +26,7 @@ class ExecuteTest extends TestCase
             "baz"=>"boom",
             "cow"=>"milk"
         ];
-        $result = Execute::request("GET", "http://google.com#ignore-hash", $parans);
+        $result = Execute::request("GET", "http://aeondigital.com.br#ignore-hash", $parans);
         $this->assertNotNull($result);
     }
 

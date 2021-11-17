@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -18,7 +18,7 @@ aHttpDataCollection
 	.. rst-class:: phpdoc-description
 	
 		| Classe abstrata que serve de base para as demais
-		| collections de dados HTTP.
+		| collections de dados Http.
 		
 	
 	:Parent:

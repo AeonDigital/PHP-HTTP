@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -15,7 +15,7 @@ Request
 
 	.. rst-class:: phpdoc-description
 	
-		| Representa uma requisição ``HTTP`` feita por um ``UA``.
+		| Representa uma requisição ``Http`` feita por um ``UA``.
 		
 		| Instâncias desta classe são consideradas imutáveis; todos os métodos que podem vir a alterar
 		| seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
@@ -43,7 +43,7 @@ Methods
 	
 		.. rst-class:: phpdoc-description
 		
-			| Retorna o método ``HTTP`` que está sendo usado na requisição.
+			| Retorna o método ``Http`` que está sendo usado na requisição.
 			
 		
 		
@@ -107,7 +107,7 @@ Methods
 		
 		:Parameters:
 			- ‹ Psr\\Http\\Message\\UriInterface › **$uri** |br|
-			  O objeto ``uri`` que será usado na nova instância.
+			  O objeto ``uri`` que será usado na nova instância.
 			- ‹ bool › **$preserveHost** |br|
 			  Preserva o estado original do Header ``Host``.
 
@@ -178,15 +178,15 @@ Methods
 		
 		:Parameters:
 			- ‹ string › **$httpMethod** |br|
-			  Método ``HTTP`` que está sendo usado para a requisição.
+			  Método ``Http`` que está sendo usado para a requisição.
 			- ‹ AeonDigital\\Interfaces\\Http\\Uri\\iUrl › **$uri** |br|
 			  Objeto que implementa a interface ``iUrl`` configurado com a ``URI`` que
-			  está sendo requisitada pelo UA.
+			  está sendo requisitada pelo UA.
 			- ‹ string › **$httpVersion** |br|
-			  Versão do protocolo ``HTTP``.
+			  Versão do protocolo ``Http``.
 			- ‹ AeonDigital\\Interfaces\\Http\\Data\\iHeaderCollection › **$headers** |br|
 			  Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da
-			  requisição.
+			  requisição.
 			- ‹ AeonDigital\\Interfaces\\Stream\\iStream › **$body** |br|
 			  Objeto stream que faz parte do corpo da mensagem.
 

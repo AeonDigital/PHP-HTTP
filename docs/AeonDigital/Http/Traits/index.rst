@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -18,7 +18,7 @@ Traits
 .. toctree::
 	:maxdepth: 6
 	
-	HTTPRawStatusCode <HTTPRawStatusCode>
+	HttpRawStatusCode <HttpRawStatusCode>
 	MimeTypeData <MimeTypeData>
 	ParseQualityHeaders <ParseQualityHeaders>
 

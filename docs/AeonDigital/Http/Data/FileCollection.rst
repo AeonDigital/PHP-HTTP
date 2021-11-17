@@ -1,6 +1,6 @@
 .. rst-class:: phpdoctorst
 
-.. role:: php(code)
+.. role:: php(code)
 	:language: php
 
 
@@ -15,9 +15,11 @@ FileCollection
 
 	.. rst-class:: phpdoc-description
 	
-		| Coleção que permite agrupar arquivos enviados via ``HTTP``.
+		| Coleção que permite agrupar arquivos enviados via ``Http``.
 		
 		| Nesta collection uma mesma chave pode possuir um array de objetos File.
+		| Campos enviados vazios serão representados por uma posição com seu respectivo
+		| nome e valor ``null``.
 		
 	
 	:Parent:

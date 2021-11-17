@@ -37,11 +37,14 @@ _______________________________________________________________________________
 
 ## Outras Informações
 
+Confira o [Makefile](Makefile) para conhecer sobre as formas de executar, 
+testar, versionar e expor a documentação.
+
 Este e outros projetos **Aeon Digital** utilizam o sistema de [Versionamento
 Semântico](https://semver.org/) proposto por Tom Preston-Werner.
 
 A documentação completa pode ser vista em
-[ReadTheDocs](https://aeondigital-php-http.readthedocs.io/en/latest/).
+[ReadTheDocs](https://aeondigital-php-http.readthedocs.io/).
 
 
 &nbsp;
