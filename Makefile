@@ -9,7 +9,7 @@
 
 #
 # Variáveis de controle
-CONTAINER_NAME="apache-php-7.4"
+CONTAINER_NAME="dev-php-http"
 
 
 
