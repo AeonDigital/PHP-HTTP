@@ -156,9 +156,9 @@ docs-extract:
 LOG_LENGTH=10
 git-log:
 	if [ -z "${len}" ]; then \
-	  git log -${LOG_LENGTH} --pretty='format:%ad | %s' --reverse --date=format:'%d %B | %H:%M' > .tmplogdata; \
+		git log -${LOG_LENGTH} --pretty='format:%ad | %s' --reverse --date=format:'%d %B | %H:%M' > .tmplogdata; \
 	else \
-	  git log -${len} --pretty='format:%ad | %s' --reverse --date=format:'%d %B | %H:%M' > .tmplogdata; \
+		git log -${len} --pretty='format:%ad | %s' --reverse --date=format:'%d %B | %H:%M' > .tmplogdata; \
 	fi;
 	# Sem esta linha extra o comando 'column' apresenta um erro de 'line too long'
 	echo "" >> .tmplogdata
