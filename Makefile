@@ -2,6 +2,7 @@
 # Aeon Digital
 # Rianna Cantarelli <rianna@aeondigital.com.br>
 #
+.SILENT:
 
 
 
@@ -153,15 +154,15 @@ docs-extract:
 #
 LOG_LENGTH=10
 git-log:
-	@if [ -z "${len}" ]; then \
+	if [ -z "${len}" ]; then \
 	  git log -${LOG_LENGTH} --pretty='format:%ad | %s' --reverse --date=format:'%d %B | %H:%M' > .tmplogdata; \
 	else \
 	  git log -${len} --pretty='format:%ad | %s' --reverse --date=format:'%d %B | %H:%M' > .tmplogdata; \
 	fi;
-	@# Sem esta linha extra o comando 'column' apresenta um erro de 'line too long'
-	@echo "" >> .tmplogdata
-	@column .tmplogdata -e -t -s "|"
-	@rm .tmplogdata
+	# Sem esta linha extra o comando 'column' apresenta um erro de 'line too long'
+	echo "" >> .tmplogdata
+	column .tmplogdata -e -t -s "|"
+	rm .tmplogdata
 	
 
 
@@ -171,7 +172,7 @@ git-log:
 #
 # Mostra qual a tag atual do projeto.
 tag:
-	@git describe --abbrev=0 --tags
+	git describe --abbrev=0 --tags
 
 #
 # Atualiza o 'patch' da tag atualmente definida 
