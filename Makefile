@@ -47,6 +47,7 @@ composer-update:
 #
 # Retorna o IP da rede usado pelo container
 get-ip:
+	printf "Web-Server : "
 	docker inspect ${CONTAINER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+'
 
 
