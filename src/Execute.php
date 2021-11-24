@@ -26,9 +26,32 @@ class Execute implements iExecute
 
 
 
+    /**
+     * Armazena o status de erro ocorrido após a última requisição.
+     * O Valor vazio "" indica que nenhum erro ocorreu.
+     *
+     * @var         string
+     */
+    private static string $lastRequestError = "";
+    /**
+     * Retorna o status do último erro ocorrido após o a última requisição executada.
+     * O Valor vazio "" indica que nenhum erro ocorreu.
+     *
+     * @return      string
+     */
+    public static function getLastError() : string
+    {
+        return self::$lastRequestError;
+    }
+
+
+
+
 
     /**
-     * Efetua uma requisição ``Http``.
+     * Efetua uma requisição ``Http`` e retorna uma string correspondente
+     * ao conteúdo da URL que foi requisitada.
+     * 
      * Qualquer tipo de falha encontrada fará retornar ``null``.
      *
      * @param       string $method
@@ -43,13 +66,17 @@ class Execute implements iExecute
      * @param       array $headers
      *              Array associativo com cabeçalhos ``Http`` para serem enviados na requisição.
      *
+     * @param       ?string $absolutePathToUploadFile
+     *              Caminho absoluto até um arquivo que se deseja efetuar o upload.
+     *
      * @return      ?string
      */
-    public static function request(
+    protected static function mainRequest(
         string $method,
         string $absoluteURL,
         array $content = [],
-        array $headers = []
+        array $headers = [],
+        ?string $absolutePathToUploadFile = null
     ) : ?string {
         $r = null;
         $method = (($method === "") ? "GET" : \strtoupper($method));
@@ -75,51 +102,70 @@ class Execute implements iExecute
 
 
 
-        // Prepara os dados que serão enviados
-        $postContent = \http_build_query($content);
+        // Prepara e executa a requisição usando 'curl'
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $absoluteURL);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
-        // Uma requisição terá, inicialmente os seguintes headers
-        $defaultHeaders = [
-            "Connection"        => "close",
-            "Content-type"      => "application/x-www-form-urlencoded",
-            "Content-Length"    => \mb_strlen($postContent)
-        ];
+        if ($method !== "GET") {
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+            if (count($content) > 0) {
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+            }
 
-
-        // Une os headers padrão e os passados
-        // substituindo os iniciais caso novos valores sejam passados.
-        $finalHeaders = \array_merge($defaultHeaders, $headers);
-
-
-        // Prepara os headers em formato de string para serem usados.
-        $strHeaders = "";
-        foreach ($finalHeaders as $h => $v) {
-            $strHeaders .= $h . ": " . $v . "\r\n";
+            if ($absolutePathToUploadFile !== null) {
+                curl_setopt($curl, CURLOPT_PUT, true);
+                curl_setopt($curl, CURLOPT_INFILE, fopen($absolutePathToUploadFile, "r"));
+            }
         }
 
-
-        // Cria um objeto "stream" preparado com o conteúdo definido
-        $streamResource = \stream_context_create([
-            "http"  => [
-                "method"    => $method,
-                "header"    => $strHeaders,
-                "content"   => $postContent
-            ],
-            "ssl"   => [
-                "verify_peer"       => false,
-                "verify_peer_name"  => false
-            ],
-        ]);
+        $responseData = curl_exec($curl);
+        self::$lastRequestError = curl_error($curl);
+        curl_close($curl);
 
 
-        $resultData = @\file_get_contents($absoluteURL, false, $streamResource);
-        if ($resultData !== false) {
-            $r = $resultData;
+        if (self::$lastRequestError === "") {
+            $r = $responseData;
         }
 
 
         return $r;
+    }
+
+
+
+
+    /**
+     * Efetua uma requisição ``Http``.
+     * Qualquer tipo de falha encontrada fará retornar ``null``.
+     *
+     * @param       string $method
+     *              Método ``Http`` que será executado.
+     *
+     * @param       string $absoluteURL
+     *              ``URL`` alvo.
+     *
+     * @param       array $content
+     *              Array associativo com as chaves e valores que serão enviados.
+     *
+     * @param       array $headers
+     *              Array associativo com cabeçalhos ``Http`` para serem enviados na requisição.
+     *
+     * @return      ?string
+     */
+    public static function request(
+        string $method,
+        string $absoluteURL,
+        array $content = [],
+        array $headers = []
+    ) : ?string {
+        return self::mainRequest($method, $absoluteURL, $content, $headers);
     }
 
 
@@ -147,12 +193,11 @@ class Execute implements iExecute
         string $absoluteSystemPathToDir,
         string $fileName = ""
     ) : bool {
-
         $rBool = false;
 
         // Efetua o download do arquivo
-        $downloadedFile = \fopen($absoluteURL, "rb");
-        if ($downloadedFile !== false) {
+        $downloadedFile = self::mainRequest("GET", $absoluteURL);
+        if ($downloadedFile !== null) {
             $originalExt = \pathinfo($absoluteURL, PATHINFO_EXTENSION);
             $originalFileName = \pathinfo($absoluteURL, PATHINFO_BASENAME);
 
@@ -171,19 +216,8 @@ class Execute implements iExecute
             $absoluteSystemPathToDir = \rtrim($absoluteSystemPathToDir, $ds) . $ds;
 
             // Abre/Cria o novo arquivo
-            $newFile = \fopen($absoluteSystemPathToDir . $fileName, "ab+");
-            if ($newFile !== false) {
-                // Recria o conteúdo do arquivo
-                while (\feof($downloadedFile) === false) {
-                    \fwrite($newFile, \fread($downloadedFile, 1024 * 8), 1024 * 8);
-                }
-
-                // Encerra os arquivos abertos
-                \fclose($downloadedFile);
-                \fclose($newFile);
-
-                $rBool = true;
-            }
+            $r = file_put_contents($absoluteSystemPathToDir . $fileName, $downloadedFile);
+            $rBool = (($r === false) ? false : true);
         }
 
         return $rBool;

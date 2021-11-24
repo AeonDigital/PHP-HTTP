@@ -10,7 +10,8 @@
 
 #
 # Variáveis de controle
-CONTAINER_NAME="dev-php-http"
+CONTAINER_WEBSERVER_NAME="dev-php-webserver"
+CONTAINER_DBSERVER_NAME=""
 
 
 
@@ -20,7 +21,12 @@ CONTAINER_NAME="dev-php-http"
 # Inicia o projeto
 up:
 	docker-compose up -d
-	docker exec -it ${CONTAINER_NAME} composer install
+	docker exec -it ${CONTAINER_WEBSERVER_NAME} composer install
+
+#
+# Inicia o projeto e prepara o container alvo para a extração da
+# documentação técnica
+up-docs: up docs-config
 
 #
 # Encerra o projeto
@@ -29,26 +35,44 @@ down:
 
 #
 # Entra no bash principal do projeto
+# Use o parametro 'cont' para indicar em qual container deseja entrar.
+#   Valores aceitos são: web|db
+#	Se nenhum valor for informado, entrará no 'web'
 bash:
-	docker exec -it ${CONTAINER_NAME} /bin/bash
+	if [ "${CONTAINER_WEBSERVER_NAME}" != "" ] && [ -z "${cont}" ] || [ "${cont}" = "web" ]; then \
+		docker exec -it ${CONTAINER_WEBSERVER_NAME} /bin/bash; \
+	fi;
+	if [ "${CONTAINER_DBSERVER_NAME}" != "" ] && [ "${cont}" = "db" ]; then \
+		docker exec -it ${CONTAINER_DBSERVER_NAME} /bin/bash; \
+	fi;
+
+
+
+
 
 #
 # Instala as dependências do projeto
 # usando o 'php composer'
 composer-install:
-	docker exec -it ${CONTAINER_NAME} composer install
+	docker exec -it ${CONTAINER_WEBSERVER_NAME} composer install
 
 #
 # Atualiza as dependências do projeto
 # usando o 'php composer'
 composer-update:
-	docker exec -it ${CONTAINER_NAME} composer update
+	docker exec -it ${CONTAINER_WEBSERVER_NAME} composer update
 
 #
 # Retorna o IP da rede usado pelo container
 get-ip:
-	printf "Web-Server : "
-	docker inspect ${CONTAINER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+'
+	if [ "${CONTAINER_WEBSERVER_NAME}" != "" ]; then \
+		printf "Web-Server : "; \
+		docker inspect ${CONTAINER_WEBSERVER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+'; \
+	fi;
+	if [ "${CONTAINER_DBSERVER_NAME}" != "" ]; then \
+		printf "DB-Server  : "; \
+		docker inspect ${CONTAINER_DBSERVER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+'; \
+	fi;
 
 
 
@@ -68,12 +92,12 @@ get-ip:
 # > make test file="path/to/tgtFile.php" method="tgtMethodName"
 test:
 	if [ -z "${file}" ]; then \
-		docker exec -it ${CONTAINER_WEB_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --verbose --debug; \
+		docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --verbose --debug; \
 	else \
 		if [ -z "${method}" ]; then \
-			docker exec -it ${CONTAINER_WEB_NAME} vendor/bin/phpunit "tests/src/${file}" --colors=always --verbose --debug; \
+			docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --colors=always --verbose --debug; \
 		else \
-			docker exec -it ${CONTAINER_WEB_NAME} vendor/bin/phpunit --filter "::${method}$$" "tests/src/${file}" --colors=always --verbose --debug; \
+			docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --filter "::${method}$$" "tests/src/${file}" --colors=always --verbose --debug; \
 		fi; \
 	fi
 
@@ -99,21 +123,21 @@ test:
 # > make test-cover file="path/to/tgtFile.php" output="html"
 test-cover:
 	if [ -z "${file}" ] && [ -z "${output}" ]; then \
-		docker exec -it ${CONTAINER_WEB_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-text; \
+		docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-text; \
 	else \
 		if [ -z "${file}" ]; then \
 			if [ -z "${output}" ] || [ "${output}" = "text" ]; then \
-				docker exec -it ${CONTAINER_WEB_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-text; \
+				docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-text; \
 			elif [ "${output}" = "html" ]; then \
-				docker exec -it ${CONTAINER_WEB_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-html "tests/cover"; \
+				docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-html "tests/cover"; \
 			else \
 				echo "Parametro 'output' inválido. Use apenas 'text' ou 'html'."; \
 			fi; \
 		else \
 			if [ -z "${output}" ] || [ "${output}" = "text" ]; then \
-				docker exec -it ${CONTAINER_WEB_NAME} vendor/bin/phpunit "tests/src/${file}" --whitelist="tests/src/${file}" --colors=always --coverage-text; \
+				docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --whitelist="tests/src/${file}" --colors=always --coverage-text; \
 			elif [ "${output}" = "html" ]; then \
-				docker exec -it ${CONTAINER_WEB_NAME} vendor/bin/phpunit "tests/src/${file}" --whitelist="tests/src/${file}" --coverage-html "tests/cover-file"; \
+				docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --whitelist="tests/src/${file}" --coverage-html "tests/cover-file"; \
 			else \
 				echo "Parametro 'output' inválido. Use apenas 'text' ou 'html'."; \
 			fi; \
@@ -125,25 +149,27 @@ test-cover:
 
 
 #
-# Prepara o container para que seja possível exportar a documentação técnica
-# do código fonte para ser compatível com os requisitos do 'ReadTheDocs'.
-# Este comando precisa ser rodado apenas 1 vez para cada novo container.
-# use esta opção como 'sudo'
-docs-prepare-container:
-	apt-get update
-	apt-get install -y python3 python3-pip
-	pip install -U sphinx
-	pip install -U sphinx_rtd_theme
-	pip install -U sphinxcontrib-phpdomain
-	pip install -U recommonmark
-	./vendor/bin/phpdoc-to-rst config
+# Configura a classe de extração de documentação técnica
+# Este comando precisa ser rodado apenas 1 vez para cada novo container e apenas 
+# se o arquivo de configuração ainda não existir.
+#
+# Use o parametro 'force' com o valor 'true' para executar e sobrescrever configurações
+# atualmente existentes.
+#
+# > make docs-config
+# > make docs-config force="true"
+docs-config:
+	if [ ! -f "vendor/aeondigital/phpdoc-to-rst/src/_static/conf.py" ] || [ "${force}" = "true" ]; then \
+		docker exec -it ${CONTAINER_WEBSERVER_NAME} mkdir -p docs; \
+		docker exec -it ${CONTAINER_WEBSERVER_NAME} ./vendor/bin/phpdoc-to-rst config; \
+	else \
+		echo "Configuração para documentação já existe"; \
+	fi;
 
 #
 # Efetua a extração da documentação técnica para o formato 'rst'.
 docs-extract:
-	./vendor/bin/phpdoc-to-rst config
-	./vendor/bin/phpdoc-to-rst generate docs src --public-only
-	chmod -R 777 docs
+	docker exec -it ${CONTAINER_WEBSERVER_NAME} ./vendor/bin/phpdoc-to-rst generate docs src --public-only
 
 
 
@@ -179,6 +205,11 @@ git-log:
 # Mostra qual a tag atual do projeto.
 tag:
 	git describe --abbrev=0 --tags
+
+#
+# Redefine a tag atualmente vigente para o commit mais recente
+tag-remark:
+	./tag-update.sh "remark"
 
 #
 # Atualiza o 'patch' da tag atualmente definida 

@@ -22,8 +22,29 @@ Execute
 		:php:interface:`AeonDigital\\Interfaces\\Http\\iExecute` 
 	
 
+Properties
+----------
+
 Methods
 -------
+
+.. rst-class:: public static
+
+	.. php:method:: public static getLastError()
+	
+		.. rst-class:: phpdoc-description
+		
+			| Retorna o status do último erro ocorrido após o a última requisição executada.
+			
+			| O Valor vazio &#34;&#34; indica que nenhum erro ocorreu.
+			
+		
+		
+		:Returns: ‹ string ›|br|
+			  
+		
+	
+	
 
 .. rst-class:: public static
 

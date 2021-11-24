@@ -26,7 +26,7 @@ class ExecuteTest extends TestCase
             "baz"=>"boom",
             "cow"=>"milk"
         ];
-        $result = Execute::request("GET", "http://aeondigital.com.br#ignore-hash", $parans);
+        $result = Execute::request("GET", "http://localhost/LICENSE#ignore-hash", $parans);
         $this->assertNotNull($result);
     }
 
@@ -37,14 +37,14 @@ class ExecuteTest extends TestCase
         global $dirResources;
         $ds = DIRECTORY_SEPARATOR;
 
-        $absoluteURL = "https://uploads.jovemnerd.com.br/wp-content/uploads/2019/12/sonic-animacao.jpg";
+        $absoluteURL = "http://localhost/tests/resources/todownload/sonic-animacao.jpg";
         $absoluteSystemPathToDir = $dirResources . $ds . "files" . $ds;
 
         // Exclui arquivo de teste
         $fileName = "background.jpg";
         @unlink($absoluteSystemPathToDir . $fileName);
 
-        // Altera a extenção do arquivo para salvar
+        // Altera a extenção do arquivo para salvar...
         // a extenção original deve ser mantida
         $fileName = "background.txt";
 
