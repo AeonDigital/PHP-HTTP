@@ -1,3 +1,34 @@
+#
+# Configuração de EOL para arquivos de texto
+# use o comando abaixo para forçar a normalização dos documentos
+# em seu repositório
+# > git add --renormalize .
+#
+# Veja os arquivos que serão normalizados
+# > git status
+# > git commit -m "EOL"
+* text eol=lf
+
+#
+# Remoção de arquivos de imagem e demais binários da normalização
+# causada pela normalização de EOL
+*.jpg -text
+*.jpge -text
+*.gif -text
+*.png -text
+*.ico -text
+*.pdf -text
+*.zip -text
+*.eot -text
+*.woff -text
+*.woff2 -text
+*.ttf -text
+*.exe -text
+
+
+#
+# Diretórios e arquivos que não são essenciais para rodar o projeto
+# e podem ser ignorados em uma instalação em produção.
 /container-config export-ignore
 /docs export-ignore
 /make export-ignore
