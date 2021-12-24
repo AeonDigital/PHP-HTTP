@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 
 
@@ -10,8 +10,8 @@ services:
   #
   # Servidor Web
   web-server:
-    container_name: dev-php-webserver
     image: aeondigital/apache-php-7.4:dev
+    container_name: dev-php-webserver
     env_file:
       - ./container-config/apache-php-7.4/etc/.env
     volumes:
