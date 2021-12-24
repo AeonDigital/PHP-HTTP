@@ -12,6 +12,8 @@ services:
   web-server:
     container_name: dev-php-webserver
     image: aeondigital/apache-php-7.4:dev
+    env_file:
+      - ./container-config/apache-php-7.4/etc/.env
     volumes:
       #
       # Diretórios de arquivos de configuração.
