@@ -1,12 +1,12 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Data;
 
 use AeonDigital\Interfaces\Collection\iCaseInsensitiveCollection as iCaseInsensitiveCollection;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 use AeonDigital\Http\Data\Abstracts\aHttpDataCollection as aHttpDataCollection;
-
 
 
 
@@ -33,15 +33,15 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      * ``lowercase`` mas qualquer ``_`` será convertido em ``-`` que é o separador padrão
      * para os headers ``Http``.
      *
-     * @param       string $key
-     *              Chave que será transformada (se necessário).
+     * @param string $key
+     * Chave que será transformada (se necessário).
      *
-     * @param       mixed $value
-     *              Valor que está sendo definido no momento.
+     * @param mixed $value
+     * Valor que está sendo definido no momento.
      *
-     * @return      string
+     * @return string
      */
-    protected function useKey(string $key, $value = null) : string
+    protected function useKey(string $key, $value = null): string
     {
         $k = (($this->isCaseInsensitive() === false) ? $key : \strtolower($key));
         return \str_replace(["_", " "], "-", $k);
@@ -54,14 +54,14 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
     /**
      * Retorna uma representação dos dados da coleção em formato de string.
      *
-     * @param       ?bool $originalKeys
-     *              Quando ``true`` irá usar as chaves conforme foram definidas na função ``set``.
-     *              Se no armazenamento interno elas sofrerem qualquer alteração e for definido
-     *              ``false`` então elas retornarão seu formato alterado.
+     * @param ?bool $originalKeys
+     * Quando ``true`` irá usar as chaves conforme foram definidas na função ``set``.
+     * Se no armazenamento interno elas sofrerem qualquer alteração e for definido
+     * ``false`` então elas retornarão seu formato alterado.
      *
-     * @return      string
+     * @return string
      */
-    public function toString(?bool $originalKeys = false) : string
+    public function toString(?bool $originalKeys = false): string
     {
         $r = [];
         $coll = $this->toArray($originalKeys);
@@ -80,26 +80,26 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      * Prioriza o retorno das chaves conforme usadas internamente pois considera que se há uma
      * alteração nelas deve-se a alguma importância relacionado a seu formato de uso.
      *
-     * @param       ?bool $originalKeys
-     *              Quando ``true`` irá usar as chaves conforme foram definidas na função ``set``.
-     *              Se no armazenamento interno elas sofrerem qualquer alteração e for definido
-     *              ``false`` então elas retornarão seu formato alterado.
+     * @param ?bool $originalKeys
+     * Quando ``true`` irá usar as chaves conforme foram definidas na função ``set``.
+     * Se no armazenamento interno elas sofrerem qualquer alteração e for definido
+     * ``false`` então elas retornarão seu formato alterado.
      *
-     * @return      array
+     * @return array
      */
-    public function toArray(?bool $originalKeys = false) : array
+    public function toArray(?bool $originalKeys = false): array
     {
         return $this->retrieveCollection($originalKeys, [$this, "prettyHeaderKey"]);
     }
     /**
      * Função responsável por deixar padronizado o formato dos nomes dos headers.
      *
-     * @param       string $key
-     *              Chave do header que será padrinizada.
+     * @param string $key
+     * Chave do header que será padrinizada.
      *
-     * @return      string
+     * @return string
      */
-    protected function prettyHeaderKey(string $key) : string
+    protected function prettyHeaderKey(string $key): string
     {
         return \strtr(\ucwords(\strtr(\strtr(\strtolower($key), "_", " "), "-", " ")), " ", "-");
     }
@@ -122,12 +122,12 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      * ```
      *
      *
-     * @param       ?array $initialValues
-     *              Valores com os quais a instância deve iniciar.
+     * @param ?array $initialValues
+     * Valores com os quais a instância deve iniciar.
      *
      *
-     * @throws      \InvalidArgumentException
-     *              Caso algum dos valores iniciais a serem definidos não seja aceito.
+     * @throws \InvalidArgumentException
+     * Caso algum dos valores iniciais a serem definidos não seja aceito.
      */
     function __construct(?array $initialValues = [])
     {
@@ -148,16 +148,16 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      * strings. Outros tipos de valores não serão modificados e falharão na etapa de validação
      * de valores.
      *
-     * @param       mixed $value
-     *              Valor que será verificado ou transformado.
+     * @param mixed $value
+     * Valor que será verificado ou transformado.
      *
-     * @param       mixed $oldValue
-     *              Se já há um valor definido para a chave, este deverá ser enviado para
-     *              possível uso.
+     * @param mixed $oldValue
+     * Se já há um valor definido para a chave, este deverá ser enviado para
+     * possível uso.
      *
-     * @return      mixed
+     * @return mixed
      */
-    protected function beforeSet($value, $oldValue = null)
+    protected function beforeSet(mixed $value, mixed $oldValue = null): mixed
     {
         $useVal = $value;
 
@@ -195,12 +195,12 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      * mais específicas sobre o motivo da falha e aponte o que era esperado de ser recebido.
      *
      *
-     * @param       mixed $value
-     *              Valor que será testado.
+     * @param mixed $value
+     * Valor que será testado.
      *
-     * @return      bool
+     * @return bool
      */
-    protected function isValidType($value) : bool
+    protected function isValidType($value): bool
     {
         $r = (\is_string($value) === true || (\is_array($value) === true && \array_is_assoc($value) === false));
 
@@ -235,15 +235,15 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
     /**
      * Utiliza as informações da string indicada para iniciar uma nova coleção de dados.
      *
-     * @param       string $str
-     *              String que será convertida em uma nova coleção.
+     * @param string $str
+     * String que será convertida em uma nova coleção.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso a string passada seja inválida para construção de uma nova coleção.
+     * @throws \InvalidArgumentException
+     * Caso a string passada seja inválida para construção de uma nova coleção.
      */
-    public static function fromString(string $str) : HeaderCollection
+    public static function fromString(string $str): HeaderCollection
     {
         $h = [];
         $lines = \explode("\n", $str);
@@ -272,12 +272,12 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
      *
      * Uma string vazia será retornada caso o header não exista.
      *
-     * @param       string $key
-     *              Nome do header alvo.
+     * @param string $key
+     * Nome do header alvo.
      *
-     * @return      string
+     * @return string
      */
-    public function getHeaderLine(string $key) : string
+    public function getHeaderLine(string $key): string
     {
         $str = "";
 
@@ -287,5 +287,4 @@ class HeaderCollection extends aHttpDataCollection implements iHeaderCollection,
 
         return $str;
     }
-
 }

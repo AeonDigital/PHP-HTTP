@@ -1,5 +1,6 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Data;
 
@@ -11,12 +12,11 @@ use AeonDigital\Http\Data\Abstracts\aHttpDataCollection as aHttpDataCollection;
 
 
 
-
 /**
  * Coleção que permite agrupar Cookies.
  *
- * @see         http://www.ietf.org/rfc/rfc6265.txt
- * @see         https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+ * @see http://www.ietf.org/rfc/rfc6265.txt
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
  *
  * @package     AeonDigital\Http\Data
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
@@ -32,14 +32,14 @@ class CookieCollection extends aHttpDataCollection implements iCookieCollection
     /**
      * Retorna uma representação dos dados da coleção em formato de string.
      *
-     * @param       ?bool $originalKeys
-     *              Quando ``true`` irá usar as chaves conforme foram definidas na função ``set``.
-     *              Se no armazenamento interno elas sofrerem qualquer alteração e for definido
-     *              ``false`` então elas retornarão seu formato alterado.
+     * @param ?bool $originalKeys
+     * Quando ``true`` irá usar as chaves conforme foram definidas na função ``set``.
+     * Se no armazenamento interno elas sofrerem qualquer alteração e for definido
+     * ``false`` então elas retornarão seu formato alterado.
      *
-     * @return      string
+     * @return string
      */
-    public function toString(?bool $originalKeys = false) : string
+    public function toString(?bool $originalKeys = false): string
     {
         $r = [];
         $ckie = $this->toArray($originalKeys);
@@ -58,11 +58,11 @@ class CookieCollection extends aHttpDataCollection implements iCookieCollection
      * O nome das chaves será sempre o próprio nome do cookie portanto o parametro
      * ``$originalKeys`` não funcionará para esta collection.
      *
-     * @param       ?bool $originalKeys
+     * @param ?bool $originalKeys
      *
-     * @return      array
+     * @return array
      */
-    public function toArray(?bool $originalKeys = false) : array
+    public function toArray(?bool $originalKeys = false): array
     {
         return $this->retrieveCollection();
     }
@@ -80,15 +80,15 @@ class CookieCollection extends aHttpDataCollection implements iCookieCollection
      * Ajusta o nome das chaves dos cookies para que seja sempre o mesmo nome definido para o
      * cookie passado.
      *
-     * @param       string $key
-     *              Chave que será transformada (se necessário).
+     * @param string $key
+     * Chave que será transformada (se necessário).
      *
-     * @param       mixed $value
-     *              Objeto cookie.
+     * @param mixed $value
+     * Objeto cookie.
      *
-     * @return      string
+     * @return string
      */
-    protected function useKey(string $key, $value = null) : string
+    protected function useKey(string $key, mixed $value = null): string
     {
         if ($value !== null && $this->isValidType($value) === false) {
             throw new \InvalidArgumentException($this->messageInvalidValue);
@@ -113,11 +113,11 @@ class CookieCollection extends aHttpDataCollection implements iCookieCollection
      * cada cookie indicado.
      *
      *
-     * @param       ?array $initialValues
-     *              Valores com os quais a instância deve iniciar.
+     * @param ?array $initialValues
+     * Valores com os quais a instância deve iniciar.
      *
-     * @throws      \InvalidArgumentException
-     *              Caso algum dos valores iniciais a serem definidos não seja aceito.
+     * @throws \InvalidArgumentException
+     * Caso algum dos valores iniciais a serem definidos não seja aceito.
      */
     function __construct(?array $initialValues = [])
     {
@@ -143,12 +143,12 @@ class CookieCollection extends aHttpDataCollection implements iCookieCollection
      * específicas sobre o motivo da falha e aponte o que era esperado de ser recebido.
      *
      *
-     * @param       mixed $value
-     *              Valor que será testado.
+     * @param mixed $value
+     * Valor que será testado.
      *
-     * @return      bool
+     * @return bool
      */
-    protected function isValidType($value) : bool
+    protected function isValidType(mixed $value): bool
     {
         $r = (\is_object($value) === true && \in_array(iCookie::class, \class_implements($value)) === true);
 
@@ -171,15 +171,15 @@ class CookieCollection extends aHttpDataCollection implements iCookieCollection
     /**
      * Utiliza as informações da string indicada para iniciar uma nova coleção de dados.
      *
-     * @param       string $str
-     *              String que será convertida em uma nova coleção.
+     * @param string $str
+     * String que será convertida em uma nova coleção.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso a string passada seja inválida para construção de uma nova coleção.
+     * @throws \InvalidArgumentException
+     * Caso a string passada seja inválida para construção de uma nova coleção.
      */
-    public static function fromString(string $str) : CookieCollection
+    public static function fromString(string $str): CookieCollection
     {
         $cookies = \AeonDigital\Http\Data\Cookie::fromRawCookieHeader($str);
         return new CookieCollection($cookies);

@@ -1,11 +1,11 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Data\Cookie as Cookie;
 
 require_once __DIR__ . "/../../phpunit.php";
-
 
 
 

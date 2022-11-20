@@ -1,5 +1,6 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Data;
 
@@ -31,7 +32,7 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
      * desta conversão.
      *
      *
-     * @var         bool
+     * @var bool
      */
     protected bool $isUsePercentEncode = true;
 
@@ -40,14 +41,14 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
     /**
      * Retorna uma representação dos dados da coleção em formato de string.
      *
-     * @param       ?bool $originalKeys
-     *              Quando ``true`` irá usar as chaves conforme foram definidas na função ``set``.
-     *              Se no armazenamento interno elas sofrerem qualquer alteração e for definido
-     *              ``false`` então elas retornarão seu formato alterado.
+     * @param ?bool $originalKeys
+     * Quando ``true`` irá usar as chaves conforme foram definidas na função ``set``.
+     * Se no armazenamento interno elas sofrerem qualquer alteração e for definido
+     * ``false`` então elas retornarão seu formato alterado.
      *
-     * @return      string
+     * @return string
      */
-    public function toString(?bool $originalKeys = false) : string
+    public function toString(?bool $originalKeys = false): string
     {
         $r = [];
         $coll = $this->toArray($originalKeys);
@@ -77,12 +78,12 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
      * ```
      *
      *
-     * @param       ?array $initialValues
-     *              Valores com os quais a instância deve iniciar.
+     * @param ?array $initialValues
+     * Valores com os quais a instância deve iniciar.
      *
      *
-     * @throws      \InvalidArgumentException
-     *              Caso algum dos valores iniciais a serem definidos não seja aceito.
+     * @throws \InvalidArgumentException
+     * Caso algum dos valores iniciais a serem definidos não seja aceito.
      */
     function __construct(?array $initialValues = [])
     {
@@ -105,12 +106,12 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
      * Internamente os valores devem **SEMPRE** serem armazenados utilizando tal encode, mas ao
      * retornar os dados eles devem ser alterados caso seja definido ``false``.
      *
-     * @param       bool $use
-     *              Indica se a coleção deve retornar os valores utilizando ``percent-encode`` ou não.
+     * @param bool $use
+     * Indica se a coleção deve retornar os valores utilizando ``percent-encode`` ou não.
      *
-     * @return      void
+     * @return void
      */
-    public function usePercentEncode(bool $use) : void
+    public function usePercentEncode(bool $use): void
     {
         $this->isUsePercentEncode = $use;
     }
@@ -127,15 +128,15 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
     /**
      * Aplica ``percent-encoding`` aos caracteres ``unsafe``.
      *
-     * @param       string $value
-     *              Valor que será encodado.
+     * @param string $value
+     * Valor que será encodado.
      *
-     * @see         https://tools.ietf.org/html/rfc3986#section-2.1
-     * @see         http://www.faqs.org/rfcs/rfc3986.html
+     * @see https://tools.ietf.org/html/rfc3986#section-2.1
+     * @see http://www.faqs.org/rfcs/rfc3986.html
      *
-     * @return      string
+     * @return string
      */
-    protected function percentEncode(string $value) : string
+    protected function percentEncode(string $value): string
     {
         // Se o valor já está encodado... remove encoding
         $value = \str_replace("+", "%20", $value);
@@ -149,16 +150,16 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
      * Antes de inserir o valor da ``querystring`` na coleção efetua a conversão de seus
      * caracteres ``unsafe`` para ``percent-encode``.
      *
-     * @param       mixed $value
-     *              Valor que será verificado ou transformado.
+     * @param mixed $value
+     * Valor que será verificado ou transformado.
      *
-     * @param       mixed $oldValue
-     *              Se já há um valor definido para a chave, este deverá ser enviado para possível
-     *              uso.
+     * @param mixed $oldValue
+     * Se já há um valor definido para a chave, este deverá ser enviado para possível
+     * uso.
      *
-     * @return      mixed
+     * @return mixed
      */
-    protected function beforeSet($value, $oldValue = null)
+    protected function beforeSet(mixed $value, mixed $oldValue = null): mixed
     {
         $useVal = $value;
 
@@ -171,17 +172,17 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
     /**
      * Resgata um valor da coleção a partir do nome da chave indicada.
      *
-     * @param       string $key
-     *              Nome da chave cujo valor deve ser retornado.
+     * @param string $key
+     * Nome da chave cujo valor deve ser retornado.
      *
-     * @return      mixed|null
+     * @return mixed
      *
      *
-     * @throws      \InvalidArgumentException
-     *              Caso a regra da classe concreta defina que em caso de ser passado uma chave
-     *              inexistente seja lançada uma exception.
+     * @throws \InvalidArgumentException
+     * Caso a regra da classe concreta defina que em caso de ser passado uma chave
+     * inexistente seja lançada uma exception.
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         $v = $this->beforeGet($key);
         return (($this->isUsePercentEncode === true || $v === null) ? $v : \rawurldecode($v));
@@ -200,12 +201,12 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
      * específicas sobre o motivo da falha e aponte o que era esperado de ser recebido.
      *
      *
-     * @param       mixed $value
-     *              Valor que será testado.
+     * @param mixed $value
+     * Valor que será testado.
      *
-     * @return      bool
+     * @return bool
      */
-    protected function isValidType($value) : bool
+    protected function isValidType($value): bool
     {
         $r = (\is_string($value) === true);
 
@@ -228,15 +229,15 @@ class QueryStringCollection extends aHttpDataCollection implements iQueryStringC
     /**
      * Utiliza as informações da string indicada para iniciar uma nova coleção de dados.
      *
-     * @param       string $str
-     *              String que será convertida em uma nova coleção.
+     * @param string $str
+     * String que será convertida em uma nova coleção.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso a string passada seja inválida para construção de uma nova coleção.
+     * @throws \InvalidArgumentException
+     * Caso a string passada seja inválida para construção de uma nova coleção.
      */
-    public static function fromString(string $str) : QueryStringCollection
+    public static function fromString(string $str): QueryStringCollection
     {
         \parse_str($str, $initialValues);
         return new QueryStringCollection($initialValues);

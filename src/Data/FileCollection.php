@@ -1,5 +1,6 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Data;
 
@@ -11,11 +12,10 @@ use AeonDigital\Http\Data\Abstracts\aHttpDataCollection as aHttpDataCollection;
 
 
 
-
 /**
  * Coleção que permite agrupar arquivos enviados via ``Http``.
  *
- * Nesta collection uma mesma chave pode possuir um array de objetos File.
+ * Nesta collection uma mesma chave pode possuir um array de objetos ``File``.
  * Campos enviados vazios serão representados por uma posição com seu respectivo
  * nome e valor ``null``.
  *
@@ -35,12 +35,12 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
      * Inicia um novo objeto ``FileCollection``.
      *
      *
-     * @param       ?array $initialValues
-     *              Valores com os quais a instância deve iniciar.
+     * @param ?array $initialValues
+     * Valores com os quais a instância deve iniciar.
      *
-     * @throws      \InvalidArgumentException
-     *              Caso algum dos valores iniciais a serem definidos não
-     *              seja aceito.
+     * @throws \InvalidArgumentException
+     * Caso algum dos valores iniciais a serem definidos não
+     * seja aceito.
      */
     function __construct(?array $initialValues = [])
     {
@@ -58,9 +58,9 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
      * Após esta ação os métodos das instâncias que dependem diretamente do recurso que foi
      * liberado não irão funcionar.
      *
-     * @return      void
+     * @return void
      */
-    public function dropStreams() : void
+    public function dropStreams(): void
     {
         $files = $this->toArray();
 
@@ -98,21 +98,22 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
      * específicas sobre o motivo da falha e aponte o que era esperado de ser recebido.
      *
      *
-     * @param       mixed $value
-     *              Valor que será testado.
+     * @param mixed $value
+     * Valor que será testado.
      *
-     * @return      bool
+     * @return bool
      */
-    protected function isValidType($value) : bool
+    protected function isValidType($value): bool
     {
         if (\is_array($value) === false) {
-            $r = (  $value === null ||
-                    (\is_object($value) === true && \in_array(iFile::class, \class_implements($value)) === true)
-                );
+            $r = ($value === null ||
+                (\is_object($value) === true && \in_array(iFile::class, \class_implements($value)) === true)
+            );
         } else {
             $c = 0;
             foreach ($value as $v) {
-                if ($v === null ||
+                if (
+                    $v === null ||
                     (\is_object($v) === true && \in_array(iFile::class, \class_implements($v)) === true)
                 ) {
                     $c++;
@@ -143,16 +144,16 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
      *
      * @codeCoverageIgnore
      *
-     * @param       string $str
-     *              String que será convertida em uma nova coleção.
+     * @param string $str
+     * String que será convertida em uma nova coleção.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso a string passada seja inválida para construção de
-     *              uma nova coleção.
+     * @throws \InvalidArgumentException
+     * Caso a string passada seja inválida para construção de
+     * uma nova coleção.
      */
-    public static function fromString(string $str) : FileCollection
+    public static function fromString(string $str): FileCollection
     {
         throw new \RuntimeException("Not implemented.");
     }

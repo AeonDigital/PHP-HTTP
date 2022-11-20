@@ -1,5 +1,6 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Data;
 
@@ -11,12 +12,11 @@ use AeonDigital\BObject as BObject;
 
 
 
-
 /**
  * Representa um cookie.
  *
- * @see         http://www.ietf.org/rfc/rfc6265.txt
- * @see         https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+ * @see http://www.ietf.org/rfc/rfc6265.txt
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
  *
  * @package     AeonDigital\Http\Data
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
@@ -32,24 +32,26 @@ class Cookie extends BObject implements iCookie
     /**
      * Nome do cookie
      *
-     * @var         string
+     * @var string
      */
     protected string $name = "";
     /**
      * Define o nome do cookie.
      *
-     * @param       string $name
-     *              Nome do cookie.
+     * @param string $name
+     * Nome do cookie.
      *
-     * @return      void
+     * @return void
      *
-     * @throws      \InvalidArgumentException
-     *              Caso o valor indicado seja inválido.
+     * @throws \InvalidArgumentException
+     * Caso o valor indicado seja inválido.
      */
-    public function setName(string $name) : void
+    public function setName(string $name): void
     {
         $this->mainCheckForInvalidArgumentException(
-            "name", $name, [
+            "name",
+            $name,
+            [
                 [
                     "validate"          => "is string matches pattern",
                     "patternPregMatch"  => "/^([a-zA-Z0-9_])+$/",
@@ -62,9 +64,9 @@ class Cookie extends BObject implements iCookie
     /**
      * Retorna o nome identificador do cookie.
      *
-     * @return      string
+     * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -76,19 +78,19 @@ class Cookie extends BObject implements iCookie
     /**
      * Valor do cookie.
      *
-     * @var         string
+     * @var string
      */
     protected string $value = "";
     /**
      * Define o valor do cookie.
      * O valor será armazenado em ``percent-encode``.
      *
-     * @param       string $value
-     *              Valor do cookie.
+     * @param string $value
+     * Valor do cookie.
      *
-     * @return      void
+     * @return void
      */
-    public function setValue(string $value) : void
+    public function setValue(string $value): void
     {
         $this->value = $this->percentEncode($value);
     }
@@ -96,13 +98,13 @@ class Cookie extends BObject implements iCookie
      * Retorna o valor do cookie.
      * O valor será retornado usando ``percent-encode``.
      *
-     * @param       bool $urldecoded
-     *              Indica se o valor retornado deve ser convertido para o formato **natural**,
-     *              sem ``percent-encode``.
+     * @param bool $urldecoded
+     * Indica se o valor retornado deve ser convertido para o formato **natural**,
+     * sem ``percent-encode``.
      *
-     * @return      string
+     * @return string
      */
-    public function getValue(bool $urldecoded = true) : string
+    public function getValue(bool $urldecoded = true): string
     {
         return (($urldecoded === true) ? \rawurldecode($this->value) : $this->value);
     }
@@ -115,7 +117,7 @@ class Cookie extends BObject implements iCookie
      * Objeto "DateTime" do momento em que o cookie deve
      * ser eliminado.
      *
-     * @var         ?\DateTime
+     * @var ?\DateTime
      */
     protected ?\DateTime $expires = null;
     /**
@@ -123,12 +125,12 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``null`` irá remover esta propriedade do cookie.
      *
-     * @param       ?DateTime $expires
-     *              Data de expiração.
+     * @param ?\DateTime $expires
+     * Data de expiração.
      *
-     * @return      void
+     * @return void
      */
-    public function setExpires(?\DateTime $expires) : void
+    public function setExpires(?\DateTime $expires): void
     {
         $this->expires = $expires;
     }
@@ -137,9 +139,9 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``null`` será retornado caso nenhum valor esteja definido para esta propriedade.
      *
-     * @return      ?DateTime
+     * @return ?\DateTime
      */
-    public function getExpires() : ?\DateTime
+    public function getExpires(): ?\DateTime
     {
         return $this->expires;
     }
@@ -153,9 +155,9 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``null`` será retornado caso nenhum valor esteja definido para esta propriedade.
      *
-     * @return      ?\DateTime
+     * @return ?string
      */
-    public function getStrExpires() : ? string
+    public function getStrExpires(): ?string
     {
         return (($this->expires === null) ? null : $this->expires->format("D, d M Y H:i:s") . " UTC");
     }
@@ -167,7 +169,7 @@ class Cookie extends BObject implements iCookie
     /**
      * Domínio do cookie.
      *
-     * @var         ?string
+     * @var ?string
      */
     protected ?string $domain = null;
     /**
@@ -175,12 +177,12 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``null`` irá remover esta propriedade do cookie.
      *
-     * @param       ?string $domain
-     *              Domain.
+     * @param ?string $domain
+     * Domain.
      *
-     * @return      void
+     * @return void
      */
-    public function setDomain(?string $domain) : void
+    public function setDomain(?string $domain): void
     {
         $this->domain = (($domain === null) ? null : \strtolower($domain));
     }
@@ -190,9 +192,9 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``null`` será retornado caso nenhum valor esteja definido para esta propriedade.
      *
-     * @return      ?string
+     * @return ?string
      */
-    public function getDomain() : ?string
+    public function getDomain(): ?string
     {
         return $this->domain;
     }
@@ -204,7 +206,7 @@ class Cookie extends BObject implements iCookie
     /**
      * Path do cookie.
      *
-     * @var         string
+     * @var string
      */
     protected string $path = "/";
     /**
@@ -212,12 +214,12 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``null`` irá remover esta propriedade do cookie.
      *
-     * @param       ?string $path
-     *              Path.
+     * @param ?string $path
+     * Path.
      *
-     * @return      void
+     * @return void
      */
-    public function setPath(?string $path) : void
+    public function setPath(?string $path): void
     {
         if (\strpos($path, "/") !== 0) {
             $path = "/" . $path;
@@ -229,9 +231,9 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``/`` será retornado caso nenhum valor esteja definido para esta propriedade.
      *
-     * @return      string
+     * @return string
      */
-    public function getPath() : string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -243,7 +245,7 @@ class Cookie extends BObject implements iCookie
     /**
      * Atributo "secure".
      *
-     * @var         bool
+     * @var bool
      */
     protected bool $secure = false;
     /**
@@ -254,12 +256,12 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``null`` irá remover esta propriedade do cookie.
      *
-     * @param       bool $secure
-     *              Secure.
+     * @param bool $secure
+     * Secure.
      *
-     * @return      void
+     * @return void
      */
-    public function setSecure(bool $secure) : void
+    public function setSecure(bool $secure): void
     {
         $this->secure = $secure;
     }
@@ -269,9 +271,9 @@ class Cookie extends BObject implements iCookie
      * Quando ``true`` significa que o cookie só deve trafegar em canais seguros (tipicamente
      * ``Http`` sobre uma camada TSL).
      *
-     * @return      bool
+     * @return bool
      */
-    public function getSecure() : bool
+    public function getSecure(): bool
     {
         return $this->secure;
     }
@@ -283,7 +285,7 @@ class Cookie extends BObject implements iCookie
     /**
      * Atributo "httpOnly".
      *
-     * @var         bool
+     * @var bool
      */
     protected bool $httpOnly = false;
     /**
@@ -293,12 +295,12 @@ class Cookie extends BObject implements iCookie
      *
      * O valor ``null`` irá remover esta propriedade do cookie.
      *
-     * @param       bool $httpOnly
-     *              HttpOnly.
+     * @param bool $httpOnly
+     * HttpOnly.
      *
-     * @return      void
+     * @return void
      */
-    public function setHttpOnly(bool $httpOnly) : void
+    public function setHttpOnly(bool $httpOnly): void
     {
         $this->httpOnly = $httpOnly;
     }
@@ -307,9 +309,9 @@ class Cookie extends BObject implements iCookie
      *
      * Quando ``true`` significa que o cookie só deve trafegar em via ``Http``.
      *
-     * @return      bool
+     * @return bool
      */
-    public function getHttpOnly() : bool
+    public function getHttpOnly(): bool
     {
         return $this->httpOnly;
     }
@@ -326,38 +328,38 @@ class Cookie extends BObject implements iCookie
     /**
      * Inicia um novo objeto ``Cookie``.
      *
-     * @param       string $name
-     *              Nome do cookie.
+     * @param string $name
+     * Nome do cookie.
      *
-     * @param       string $value
-     *              Valor do cookie.
+     * @param string $value
+     * Valor do cookie.
      *
-     * @param       ?\DateTime $expires
-     *              Data de expiração do cookie.
+     * @param ?\DateTime $expires
+     * Data de expiração do cookie.
      *
-     * @param       ?string $domain
-     *              Domínio.
+     * @param ?string $domain
+     * Domínio.
      *
-     * @param       ?string $path
-     *              Path.
+     * @param ?string $path
+     * Path.
      *
-     * @param       bool $secure
-     *              Secure.
+     * @param bool $secure
+     * Secure.
      *
-     * @param       bool $httpOnly
-     *              HttpOnly.
+     * @param bool $httpOnly
+     * HttpOnly.
      *
      *
-     * @throws      \InvalidArgumentException
-     *              Caso algum dos valores iniciais a serem definidos não
-     *              seja aceito.
+     * @throws \InvalidArgumentException
+     * Caso algum dos valores iniciais a serem definidos não
+     * seja aceito.
      */
     function __construct(
         string $name,
         string $value = "",
         ?\DateTime $expires = null,
         ?string $domain = null,
-        string $path = "/",
+        ?string $path = "/",
         bool $secure = false,
         bool $httpOnly = false
     ) {
@@ -382,15 +384,15 @@ class Cookie extends BObject implements iCookie
     /**
      * Aplica ``percent-encoding`` aos caracteres ``unsafe``.
      *
-     * @param       string $value
-     *              Valor que será encodado.
+     * @param string $value
+     * Valor que será encodado.
      *
-     * @see         https://tools.ietf.org/html/rfc3986#section-2.1
-     * @see         http://www.faqs.org/rfcs/rfc3986.html
+     * @see https://tools.ietf.org/html/rfc3986#section-2.1
+     * @see http://www.faqs.org/rfcs/rfc3986.html
      *
-     * @return      string
+     * @return string
      */
-    protected function percentEncode(string $value) : string
+    protected function percentEncode(string $value): string
     {
         // Se o valor já está encodado... remove encoding
         $value = \str_replace("+", "%20", $value);
@@ -417,13 +419,13 @@ class Cookie extends BObject implements iCookie
      *  name=value; [Expires=string;] [Domain=string;] [Path=string;] [Secure;] [HttpOnly;]
      * ```
      *
-     * @param       bool $urldecoded
-     *              Indica se o valor retornado deve ser convertido para o formato **natural**,
-     *              sem ``percent-encode``.
+     * @param bool $urldecoded
+     * Indica se o valor retornado deve ser convertido para o formato **natural**,
+     * sem ``percent-encode``.
      *
-     * @return      string
+     * @return string
      */
-    public function toString(bool $urldecoded = true) : string
+    public function toString(bool $urldecoded = true): string
     {
         $str = $this->name . "=" . $this->getValue($urldecoded) . ";";
 
@@ -455,9 +457,9 @@ class Cookie extends BObject implements iCookie
      * O retorno ``true`` apenas indica que a operação foi concluída mas não que o ``UA``
      * aceitou o Cookie.
      *
-     * @return      bool
+     * @return bool
      */
-    public function defineCookie() : bool
+    public function defineCookie(): bool
     {
         return \setcookie(
             $this->name,
@@ -483,9 +485,9 @@ class Cookie extends BObject implements iCookie
      * O retorno ``true`` apenas indica que a operação foi concluída mas não que o ``UA``
      * aceitou o Cookie.
      *
-     * @return      bool
+     * @return bool
      */
-    public function removeCookie() : bool
+    public function removeCookie(): bool
     {
         return \setcookie(
             $this->name,
@@ -509,15 +511,15 @@ class Cookie extends BObject implements iCookie
     /**
      * Converte a string passada em um objeto Cookie.
      *
-     * @param       string $str
-     *              String do objeto Cookie.
+     * @param string $str
+     * String do objeto Cookie.
      *
-     * @return      Cookie
+     * @return Cookie
      *
-     * @throws      \InvalidArgumentException
-     *              Se a conversão não for possível.
+     * @throws \InvalidArgumentException
+     * Se a conversão não for possível.
      */
-    public static function fromString(string $str) : Cookie
+    public static function fromString(string $str): Cookie
     {
         $err = false;
         $name = "";
@@ -560,8 +562,10 @@ class Cookie extends BObject implements iCookie
                                     $expires = new \DateTime();
                                     $expires->setTimestamp((int)$val);
                                 } else {
-                                    if (\strpos(\strtolower($val), " utc") !== false ||
-                                        \strpos(\strtolower($val), " gmt") !== false) {
+                                    if (
+                                        \strpos(\strtolower($val), " utc") !== false ||
+                                        \strpos(\strtolower($val), " gmt") !== false
+                                    ) {
                                         $val = \substr($val, 0, \strlen($val) - 4);
                                     }
                                     $expires = \DateTime::createFromFormat("D, d M Y H:i:s", $val);
@@ -607,16 +611,16 @@ class Cookie extends BObject implements iCookie
      * ```
      *
      *
-     * @param       string $str
-     *              String dos objetos Cookie.
+     * @param string $str
+     * String dos objetos Cookie.
      *
-     * @return      array
+     * @return array
      *
      *
-     * @throws      \InvalidArgumentException
-     *              Se a conversão não for possível.
+     * @throws \InvalidArgumentException
+     * Se a conversão não for possível.
      */
-    public static function fromRawCookieHeader(string $str) : array
+    public static function fromRawCookieHeader(string $str): array
     {
         $coll = [];
 

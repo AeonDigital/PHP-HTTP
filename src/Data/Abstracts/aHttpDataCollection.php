@@ -1,5 +1,6 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Data\Abstracts;
 
@@ -31,14 +32,14 @@ abstract class aHttpDataCollection extends Collection
      * Utiliza as informações da string indicada para iniciar uma nova
      * coleção de dados.
      *
-     * @param       string $str
-     *              String que será convertida em uma nova coleção.
+     * @param string $str
+     * String que será convertida em uma nova coleção.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso a string passada seja inválida para construção de
-     *              uma nova coleção.
+     * @throws \InvalidArgumentException
+     * Caso a string passada seja inválida para construção de
+     * uma nova coleção.
      */
     abstract public static function fromString(string $str);
 }

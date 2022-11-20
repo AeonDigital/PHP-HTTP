@@ -33,6 +33,15 @@ class FileStream extends Stream implements iFileStream
      * @var string
      */
     protected string $openMode = "";
+    /**
+     * Retorna o modo em que o stream está aberto..
+     *
+     * @return string
+     */
+    public function getOpenMode(): string
+    {
+        return $this->openMode;
+    }
 
 
 
