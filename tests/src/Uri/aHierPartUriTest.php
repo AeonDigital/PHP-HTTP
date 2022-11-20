@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Uri\Tests\Concrete\HierPartUri as HierPartUri;
 
 require_once __DIR__ . "/../../phpunit.php";
-
 
 
 
@@ -287,16 +287,6 @@ class aHierPartUriTest extends TestCase
     {
         $nMock = new HierPartUri("https", "username", "pass1@234", "testdomain", 455);
         $this->assertSame("username", $nMock->getUser());
-
-
-        $fail = false;
-        try {
-            $nMock2 = $nMock->withUser(null);
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"user\". Expected string. Given: [ ``null`` ]", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
     }
 
 
@@ -328,16 +318,6 @@ class aHierPartUriTest extends TestCase
     {
         $nMock = new HierPartUri("https", "username", "pass1@234", "testdomain", 455);
         $this->assertSame("pass1%40234", $nMock->getPassword());
-
-
-        $fail = false;
-        try {
-            $nMock2 = $nMock->withPassword([]);
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"password\". Expected string.", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
     }
 
 
@@ -357,16 +337,6 @@ class aHierPartUriTest extends TestCase
     {
         $nMock = new HierPartUri("https", "username", "pass1@234", "testdomain", 455);
         $this->assertSame("testdomain", $nMock->getHost());
-
-
-        $fail = false;
-        try {
-            $nMock2 = $nMock->withHost(null);
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"host\". Expected string. Given: [ ``null`` ]", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
     }
 
 
@@ -386,16 +356,6 @@ class aHierPartUriTest extends TestCase
     {
         $nMock = new HierPartUri("https", "username", "pass1@234", "testdomain", 455);
         $this->assertSame(455, $nMock->getPort());
-
-
-        $fail = false;
-        try {
-            $nMock2 = $nMock->withPort("");
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"port\". Expected integer.", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
     }
 
 
@@ -445,16 +405,6 @@ class aHierPartUriTest extends TestCase
     {
         $nMock = new HierPartUri("https", "username", "pass1@234", "testdomain", 455, "/segment$/segment&/seg-ment");
         $this->assertSame("/segment%24/segment%26/seg-ment", $nMock->getPath());
-
-
-        $fail = false;
-        try {
-            $nMock2 = $nMock->withPath([]);
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"path\". Expected string.", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
     }
 
 

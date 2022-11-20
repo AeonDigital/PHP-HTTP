@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Uri\Tests\Concrete\BasicUri as BasicUri;
 
 require_once __DIR__ . "/../../phpunit.php";
-
 
 
 
@@ -61,15 +61,5 @@ class aBasicUriTest extends TestCase
         $nMock = new BasicUri("HTTPS", ["http", "https", "ftp"]);
         $this->assertSame("https", $nMock->getScheme());
 
-
-        $fail = false;
-        try {
-            $nMock2 = $nMock->withScheme([], ["http", "https", "ftp"]);
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"scheme\". Expected string.", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
     }
-
 }

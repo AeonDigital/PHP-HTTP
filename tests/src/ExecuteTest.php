@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Execute as Execute;
 
 require_once __DIR__ . "/../phpunit.php";
-
 
 
 
@@ -22,9 +22,9 @@ class ExecuteTest extends TestCase
     public function test_method_execute_request()
     {
         $parans = [
-            "foo"=>"bar",
-            "baz"=>"boom",
-            "cow"=>"milk"
+            "foo" => "bar",
+            "baz" => "boom",
+            "cow" => "milk"
         ];
         $result = Execute::request("GET", "http://localhost/LICENSE#ignore-hash", $parans);
         $this->assertNotNull($result);

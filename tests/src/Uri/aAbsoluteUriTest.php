@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Uri\Tests\Concrete\AbsoluteUri as AbsoluteUri;
 
 require_once __DIR__ . "/../../phpunit.php";
-
 
 
 
@@ -30,6 +30,19 @@ class aAbsoluteUriTest extends TestCase
             "sam3d^oc§s"
         );
         $this->assertTrue(is_a($nMock, AbsoluteUri::class));
+
+
+        $nURL = new AeonDigital\Http\Uri\Url(
+            "https",
+            "username",
+            "pass1@234",
+            "testdomain",
+            455,
+            "segment/segment&/seg-ment",
+            "par1=val#lue&PAR2=m!sturall",
+            "sam3d^oc§s"
+        );
+        $this->assertTrue(is_a($nURL, AeonDigital\Http\Uri\Url::class));
     }
 
 
@@ -100,15 +113,6 @@ class aAbsoluteUriTest extends TestCase
         );
         $this->assertSame("par1=val%23lue&PAR2=m%21stur%28all", $nMock->getQuery());
 
-
-        $fail = false;
-        try {
-            $nMock2 = $nMock->withQuery(1);
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"query\". Expected string. Given: [ 1 ]", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
     }
 
 
@@ -147,15 +151,6 @@ class aAbsoluteUriTest extends TestCase
         );
         $this->assertSame("sam3d%5Eoc%C2%A7s", $nMock->getFragment());
 
-
-        $fail = false;
-        try {
-            $nMock2 = $nMock->withFragment(["fragment"]);
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"fragment\". Expected string. Given: [ fragment ]", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
     }
 
 
@@ -286,6 +281,5 @@ class aAbsoluteUriTest extends TestCase
 
         $strUri = (string)$nMock;
         $this->assertSame($strUri, $nMock->getAbsoluteUri(true));
-
     }
 }

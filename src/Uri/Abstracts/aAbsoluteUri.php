@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Uri\Abstracts;
 
 use AeonDigital\Interfaces\Http\Uri\iAbsoluteUri as iAbsoluteUri;
 use AeonDigital\Http\Uri\Abstracts\aHierPartUri as aHierPartUri;
-
 
 
 
@@ -30,7 +30,7 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
     /**
      * Componente ``query`` da URI.
      *
-     * @var         string
+     * @var string
      */
     protected string $query = "";
     /**
@@ -39,11 +39,11 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      *
      * Os valores definidos serão retornados usando ``percent-encoding``.
      *
-     * @see         https://tools.ietf.org/html/rfc3986#section-3.4
+     * @see https://tools.ietf.org/html/rfc3986#section-3.4
      *
-     * @return      string
+     * @return string
      */
-    public function getQuery() : string
+    public function getQuery(): string
     {
         return $this->query;
     }
@@ -55,21 +55,24 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
     /**
      * Verifica se o ``query`` indicado é válido.
      *
-     * @param       string $query
-     *              Valor que será testado.
+     * @param string $query
+     * Valor que será testado.
      *
-     * @param       bool $throw
-     *              Quando ``true`` irá lançar uma exception em caso de falha.
+     * @param bool $throw
+     * Quando ``true`` irá lançar uma exception em caso de falha.
      *
-     * @return      bool
+     * @return bool
      *
-     * @throws      \InvalidArgumentException
-     *              Caso o ``query`` definido seja inválido e ``$throw`` seja ``true``.
+     * @throws \InvalidArgumentException
+     * Caso o ``query`` definido seja inválido e ``$throw`` seja ``true``.
      */
-    protected function validateQuery($query, bool $throw = false) : bool
+    protected function validateQuery(string $query, bool $throw = false): bool
     {
         $this->mainCheckForInvalidArgumentException(
-            "query", $query, ["is string"], $throw
+            "query",
+            $query,
+            ["is string"],
+            $throw
         );
         return $this->getLastArgumentValidateResult();
     }
@@ -81,12 +84,12 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      * parte do valor de algum dos parametros, ele deve estar convertido em seu formato
      * ``percent-encode`` (%26amp%3B).
      *
-     * @param       string $query
-     *              Valor de ``query``.
+     * @param string $query
+     * Valor de ``query``.
      *
-     * @return      string
+     * @return string
      */
-    protected function normalizeQuery(string $query) : string
+    protected function normalizeQuery(string $query): string
     {
         $nQuery = [];
 
@@ -107,15 +110,15 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
      * contendo o ``query`` especificado.
      *
-     * @param       string $query
-     *              O novo valor para ``query`` na nova instância.
+     * @param string $query
+     * O novo valor para ``query`` na nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``query``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``query``.
      */
-    public function withQuery($query)
+    public function withQuery(string $query): static
     {
         $this->validateQuery($query, true);
 
@@ -136,7 +139,7 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
     /**
      * Componente ``fragment`` da ``URI``.
      *
-     * @var         string
+     * @var string
      */
     protected string $fragment = "";
     /**
@@ -145,11 +148,11 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      *
      * Os valores definidos serão retornados usando ``percent-encoding``.
      *
-     * @see         https://tools.ietf.org/html/rfc3986#section-3.4
+     * @see https://tools.ietf.org/html/rfc3986#section-3.4
      *
-     * @return      string
+     * @return string
      */
-    public function getFragment() : string
+    public function getFragment(): string
     {
         return $this->fragment;
     }
@@ -161,21 +164,24 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
     /**
      * Verifica se o ``fragment`` indicado é válido.
      *
-     * @param       string $fragment
-     *              Valor que será testado.
+     * @param string $fragment
+     * Valor que será testado.
      *
-     * @param       bool $throw
-     *              Quando ``true`` irá lançar uma ``exception`` em caso de falha.
+     * @param bool $throw
+     * Quando ``true`` irá lançar uma ``exception`` em caso de falha.
      *
-     * @return      bool
+     * @return bool
      *
-     * @throws      \InvalidArgumentException
-     *              Caso o ``fragment`` definido seja inválido e ``$throw`` seja ``true``.
+     * @throws \InvalidArgumentException
+     * Caso o ``fragment`` definido seja inválido e ``$throw`` seja ``true``.
      */
-    protected function validateFragment($fragment, bool $throw = false) : bool
+    protected function validateFragment(string $fragment, bool $throw = false): bool
     {
         $this->mainCheckForInvalidArgumentException(
-            "fragment", $fragment, ["is string"], $throw
+            "fragment",
+            $fragment,
+            ["is string"],
+            $throw
         );
         return $this->getLastArgumentValidateResult();
     }
@@ -185,12 +191,12 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      * Se o caracter ``&``  faz parte do valor de algum dos parametros, ele deve estar
      * convertido em seu formato ``percent-encode`` (%26amp%3B).
      *
-     * @param       string $query
-     *              Valor de ``fragment``.
+     * @param string $fragment
+     * Valor de ``fragment``.
      *
-     * @return      string
+     * @return string
      */
-    protected function normalizeFragment(string $fragment) : string
+    protected function normalizeFragment(string $fragment): string
     {
         return $this->percentEncode($fragment);
     }
@@ -198,15 +204,15 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
      * contendo o ``fragment`` especificado.
      *
-     * @param       string $fragment
-     *              O novo valor para ``fragment`` na nova instância.
+     * @param string $fragment
+     * O novo valor para ``fragment`` na nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``fragment``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``fragment``.
      */
-    public function withFragment($fragment)
+    public function withFragment(string $fragment): static
     {
         $this->validateFragment($fragment, true);
 
@@ -228,22 +234,25 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
      * contendo a parte ``relative-uri`` especificado.
      *
-     * @param       string $path
-     *              O novo valor para ``path`` na nova instância.
+     * @param string $path
+     * O novo valor para ``path`` na nova instância.
      *
-     * @param       string $query
-     *              O novo valor para ``query`` na nova instância.
+     * @param string $query
+     * O novo valor para ``query`` na nova instância.
      *
-     * @param       string $fragment
-     *              O novo valor para ``fragment`` na nova instância.
+     * @param string $fragment
+     * O novo valor para ``fragment`` na nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para algum argumento.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para algum argumento.
      */
-    public function withRelativeUri($path = "", $query = "", $fragment = "")
-    {
+    public function withRelativeUri(
+        string $path = "",
+        string $query = "",
+        string $fragment = ""
+    ): static {
         $this->validatePath($path, true);
         $this->validateQuery($query, true);
         $this->validateFragment($fragment, true);
@@ -267,34 +276,34 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
     /**
      * Inicia uma instância ``absoluteUri`` de uma ``URI``.
      *
-     * @param       string $scheme
-     *              Define o ``scheme`` usado pelo ``URI``.
+     * @param string $scheme
+     * Define o ``scheme`` usado pelo ``URI``.
      *
-     * @param       string $user
-     *              Define o ``user`` usado pelo ``URI``.
+     * @param string $user
+     * Define o ``user`` usado pelo ``URI``.
      *
-     * @param       ?string $password
-     *              Define o ``password`` usado pelo ``URI``.
-     *              Se ``null`` for passado, o valor da ``password`` não será removido.
+     * @param ?string $password
+     * Define o ``password`` usado pelo ``URI``.
+     * Se ``null`` for passado, o valor da ``password`` não será removido.
      *
-     * @param       string $host
-     *              Define o ``host`` usado pelo ``URI``.
+     * @param string $host
+     * Define o ``host`` usado pelo ``URI``.
      *
-     * @param       ?int $port
-     *              Define a ``port`` usado pelo ``URI``.
-     *              Use ``null`` para usar o valor padrão para do ``scheme``.
+     * @param ?int $port
+     * Define a ``port`` usado pelo ``URI``.
+     * Use ``null`` para usar o valor padrão para do ``scheme``.
      *
-     * @param       string $path
-     *              Define o ``path`` usado pelo ``URI``.
+     * @param string $path
+     * Define o ``path`` usado pelo ``URI``.
      *
-     * @param       string $query
-     *              Define o ``query`` usado pelo ``URI``.
+     * @param string $query
+     * Define o ``query`` usado pelo ``URI``.
      *
-     * @param       string $fragment
-     *              Define o ``fragment`` usado pelo ``URI``.
+     * @param string $fragment
+     * Define o ``fragment`` usado pelo ``URI``.
      *
-     * @throws      \InvalidArgumentException
-     *              Caso algum dos parametros passados seja inválido.
+     * @throws \InvalidArgumentException
+     * Caso algum dos parametros passados seja inválido.
      */
     function __construct(
         string $scheme = "",
@@ -329,17 +338,17 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      *
      * O resultado será uma string com o seguinte formato:
      *
-     * ```
+     * ```txt
      *  [ scheme ":" ][ "//" authority ][ "/" path ][ "?" query ][ "#" fragment ]
      * ```
      *
-     * @param       bool $withFragment
-     *              Quando ``true`` irá adicionar o componente ``fragment``.
-     *              Se ``false`` irá omitir totalmente este componente.
+     * @param bool $withFragment
+     * Quando ``true`` irá adicionar o componente ``fragment``.
+     * Se ``false`` irá omitir totalmente este componente.
      *
-     * @return      string
+     * @return string
      */
-    public function getAbsoluteUri(bool $withFragment = false) : string
+    public function getAbsoluteUri(bool $withFragment = false): string
     {
         $basePath = $this->getBasePath();
         $query = $this->getQuery();
@@ -358,17 +367,17 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
      *
      * O resultado será uma string com o seguinte formato:
      *
-     * ```
+     * ```txt
      *  [ "/" path ][ "?" query ][ "#" fragment ]
      * ```
      *
-     * @param       bool $withFragment
-     *              Quando ``true`` irá adicionar o componente ``fragment``.
-     *              Se ``false`` irá omitir totalmente este componente.
+     * @param bool $withFragment
+     * Quando ``true`` irá adicionar o componente ``fragment``.
+     * Se ``false`` irá omitir totalmente este componente.
      *
-     * @return      string
+     * @return string
      */
-    public function getRelativeUri(bool $withFragment = false) : string
+    public function getRelativeUri(bool $withFragment = false): string
     {
         $path = $this->getPath();
         $query = $this->getQuery();
@@ -391,15 +400,15 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
     /**
      * Retorna uma nova instância definida a partir do valor indicado na string ``$uri``.
      *
-     * @param       string $uri
-     *              ``URI`` que será usada de base para a nova instância.
+     * @param string $uri
+     * ``URI`` que será usada de base para a nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Exception lançada caso a ``URI`` indicada seja inválida.
+     * @throws \InvalidArgumentException
+     * Exception lançada caso a ``URI`` indicada seja inválida.
      */
-    public static function fromString(string $uri)
+    public static function fromString(string $uri): static
     {
         $components = \parse_url($uri);
 
@@ -425,9 +434,9 @@ abstract class aAbsoluteUri extends aHierPartUri implements iAbsoluteUri
     /**
      * Converte os atributos que formam a ``URI`` em uma string válida para seu respectivo ``scheme``.
      *
-     * @return      string
+     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getAbsoluteUri(true);
     }

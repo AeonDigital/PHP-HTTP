@@ -1,10 +1,10 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Uri\Tests\Concrete;
 
 use AeonDigital\Http\Uri\Abstracts\aBasicUri as aBasicUri;
-
 
 
 
@@ -17,10 +17,15 @@ use AeonDigital\Http\Uri\Abstracts\aBasicUri as aBasicUri;
  */
 class BasicUri extends aBasicUri
 {
-    public static function fromString(string $uri)
+    public static function fromString(string $uri): static
     {
+        $components = \parse_url($uri);
+
+        $scheme = ($components["scheme"] ?? "");
+
+        return new static($scheme);
     }
-    public function __toString()
+    public function __toString(): string
     {
         return $this->scheme;
     }

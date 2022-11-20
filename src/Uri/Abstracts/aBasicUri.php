@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Uri\Abstracts;
 
 use AeonDigital\Interfaces\Http\Uri\iBasicUri as iBasicUri;
 use AeonDigital\BObject as BObject;
-
 
 
 
@@ -36,7 +36,7 @@ abstract class aBasicUri extends BObject implements iBasicUri
      *
      * Os valores definidos aqui devem estar em formato ``lowercase``.
      *
-     * @var         array
+     * @var array
      */
     protected array $acceptSchemes = [];
 
@@ -53,21 +53,21 @@ abstract class aBasicUri extends BObject implements iBasicUri
      * Componente ``scheme`` da ``URI`` (sempre em lowercase).
      * Nomes válidos devem seguir o formato:
      *
-     * ```
+     * ```txt
      *  scheme = ALPHA * ( ALPHA / DIGIT / "+" / "-" / "." )
      * ```
      *
-     * @see         https://tools.ietf.org/html/rfc3986#section-3.1
+     * @see https://tools.ietf.org/html/rfc3986#section-3.1
      *
-     * @var         string
+     * @var string
      */
     protected string $scheme = "";
     /**
      * Retorna o nome do ``scheme`` que o ``URI`` da classe está usando.
      *
-     * @return      string
+     * @return string
      */
-    public function getScheme() : string
+    public function getScheme(): string
     {
         return $this->scheme;
     }
@@ -79,21 +79,22 @@ abstract class aBasicUri extends BObject implements iBasicUri
     /**
      * Verifica se o ``scheme`` indicado é válido.
      *
-     * @param       string $scheme
-     *              Valor que será testado.
+     * @param string $scheme
+     * Valor que será testado.
      *
-     * @param       bool $throw
-     *              Quando ``true`` irá lançar uma ``exception`` em caso de falha.
+     * @param bool $throw
+     * Quando ``true`` irá lançar uma ``exception`` em caso de falha.
      *
-     * @return      bool
+     * @return bool
      *
-     * @throws      \InvalidArgumentException
-     *              Caso o ``scheme`` definido seja inválido e ``$throw`` seja ``true``.
+     * @throws \InvalidArgumentException
+     * Caso o ``scheme`` definido seja inválido e ``$throw`` seja ``true``.
      */
-    protected function validateScheme($scheme, bool $throw = false) : bool
+    protected function validateScheme(string $scheme, bool $throw = false): bool
     {
         $this->mainCheckForInvalidArgumentException(
-            "scheme", $scheme,
+            "scheme",
+            $scheme,
             [
                 [
                     "validate" => "is string"
@@ -111,12 +112,12 @@ abstract class aBasicUri extends BObject implements iBasicUri
     /**
      * Normaliza o valor do ``scheme`` indicado.
      *
-     * @param       string $scheme
-     *              Valor de ``scheme``.
+     * @param string $scheme
+     * Valor de ``scheme``.
      *
-     * @return      string
+     * @return string
      */
-    protected function normalizeScheme(string $scheme) : string
+    protected function normalizeScheme(string $scheme): string
     {
         return \strtolower($scheme);
     }
@@ -124,15 +125,15 @@ abstract class aBasicUri extends BObject implements iBasicUri
      * Este método ``DEVE`` manter o estado da instância atual e retornar uma nova instância
      * contendo o ``scheme`` especificado.
      *
-     * @param       string $scheme
-     *              O novo valor para ``scheme`` para a nova instância.
+     * @param string $scheme
+     * O novo valor para ``scheme`` para a nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``scheme``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``scheme``.
      */
-    public function withScheme($scheme)
+    public function withScheme(string $scheme): static
     {
         $this->validateScheme($scheme, true);
 
@@ -153,15 +154,15 @@ abstract class aBasicUri extends BObject implements iBasicUri
     /**
      * Aplica ``percent-encoding`` aos caracteres ``unsafe``.
      *
-     * @param       string $value
-     *              Valor que será encodado.
+     * @param string $value
+     * Valor que será encodado.
      *
-     * @see         https://tools.ietf.org/html/rfc3986#section-2.1
-     * @see         http://www.faqs.org/rfcs/rfc3986.html
+     * @see https://tools.ietf.org/html/rfc3986#section-2.1
+     * @see http://www.faqs.org/rfcs/rfc3986.html
      *
-     * @return      string
+     * @return string
      */
-    protected function percentEncode(string $value) : string
+    protected function percentEncode(string $value): string
     {
         // Se o valor já está encodado... remove encoding
         $value = \str_replace("+", "%20", $value);
@@ -184,15 +185,15 @@ abstract class aBasicUri extends BObject implements iBasicUri
     /**
      * Inicia uma instância básica de uma ``URI``.
      *
-     * @param       string $scheme
-     *              Define o ``scheme`` usado pelo ``URI``.
+     * @param string $scheme
+     * Define o ``scheme`` usado pelo ``URI``.
      *
-     * @param       array $acceptSchemes
-     *              Coleção de ``schemes`` permitidos para a serem definidos por uma classe
-     *              concreta.
+     * @param array $acceptSchemes
+     * Coleção de ``schemes`` permitidos para a serem definidos por uma classe
+     * concreta.
      *
-     * @throws      \InvalidArgumentException
-     *              Caso algum dos parametros passados seja inválido.
+     * @throws \InvalidArgumentException
+     * Caso algum dos parametros passados seja inválido.
      */
     function __construct(
         string $scheme = "",
@@ -202,25 +203,5 @@ abstract class aBasicUri extends BObject implements iBasicUri
 
         $this->validateScheme($scheme, true);
         $this->scheme = $this->normalizeScheme($scheme);
-    }
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Desabilita a função mágica ``__set`` para assegurar a imutabilidade da instância conforme
-     * definido na interface ``iUri``.
-     *
-     * @codeCoverageIgnore
-     */
-    public function __set($name, $value)
-    {
-        // Não produz efeito
     }
 }
