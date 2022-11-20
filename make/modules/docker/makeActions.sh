@@ -1,23 +1,17 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+# myShellEnv v 1.0 [aeondigital.com.br]
+
+
+
+
+
+
 
 #
-# Carrega dependencias
-source "${PWD}/make/modules/makeEnvironment.sh"
-source "${MK_ROOT_PATH}/make/modules/makeTools.sh"
-source "${MK_ROOT_PATH}/make/mseStandAlone/loadScripts.sh";
-
-#
-# Se quiser,
-# defina um arquivo em 'make/makeEnvironment.sh' e use-o para
-# suas configurações personalizadas.
-if [ -f "${MK_MY_ENVIRONMENT_FILE}" ]; then
-  source "${MK_MY_ENVIRONMENT_FILE}"
-fi;
-
-
-
-
-
+# Carrega as ferramentas de uso geral
+. "${PWD}/make/standalone.sh"
+. "${PWD}/make/makeEnvironment.sh"
+. "${PWD}/make/makeTools.sh"
 
 
 
@@ -39,7 +33,7 @@ openContainerBash() {
   elif [ "${cont}" == "db" ]; then
     docker exec -it ${CONTAINER_DBSERVER_NAME} /bin/bash;
   else
-    echo "Parametro cont='${cont}' inválido; use 'web' ou 'db'."
+    mse_inter_showAlert "f" "Parametro cont=\"${cont}\" inválido; use \"web\" ou \"db\"."
   fi;
 }
 
@@ -50,14 +44,21 @@ openContainerBash() {
 #
 # Retorna o IP da rede usado pelos containers
 getContainersIP() {
+  local tmpIP=""
+  local tmpMsgTitle="IP dos Containers"
+  declare -a arrMessage=()
+
+
   if [ "${CONTAINER_WEBSERVER_NAME}" != "" ]; then
-    printf "Web-Server : ";
-    docker inspect ${CONTAINER_WEBSERVER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+';
-  fi;
+    tmpIP=$(docker inspect ${CONTAINER_WEBSERVER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+')
+    arrMessage+=("Web-Server : ${tmpIP}")
+  fi
   if [ "${CONTAINER_DBSERVER_NAME}" != "" ]; then
-    printf "DB-Server  : ";
-    docker inspect ${CONTAINER_DBSERVER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+';
-  fi;
+    tmpIP=$(docker inspect ${CONTAINER_DBSERVER_NAME} | grep -oP -m1 '(?<="IPAddress": ")[a-f0-9.:]+')
+    arrMessage+=("DB-Server  : ${tmpIP}")
+  fi
+
+  mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
 }
 
 

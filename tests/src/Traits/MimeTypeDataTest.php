@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Traits\MimeTypeData as MimeTypeData;
 
 require_once __DIR__ . "/../../phpunit.php";
-
 
 
 
@@ -112,11 +112,13 @@ class MimeTypeDataMockClass
 {
     use MimeTypeData;
 
-    public function getMimeTypeByExtension(string $extension) : ?string {
+    public function getMimeTypeByExtension(string $extension): ?string
+    {
         return ((isset($this->mimeTypeList[$extension]) === true) ? $this->mimeTypeList[$extension] : null);
     }
 
-    public function isValidResponseMime(string $extension) : bool {
+    public function isValidResponseMime(string $extension): bool
+    {
         $keys = array_keys($this->responseMimeTypes);
         return (in_array($extension, $keys));
     }

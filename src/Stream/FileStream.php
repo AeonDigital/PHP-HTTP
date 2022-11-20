@@ -1,5 +1,6 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Stream;
 
@@ -11,10 +12,9 @@ use AeonDigital\Http\Stream\Stream as Stream;
 
 
 
-
 /**
- * Extende a classe ``Stream`` para especializar-se em representar um arquivo físico e existente
- * no servidor atual.
+ * Extende a classe ``Stream`` para especializar-se em representar um arquivo físico
+ * e existente no servidor atual.
  *
  * @package     AeonDigital\Http\Stream
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
@@ -30,7 +30,7 @@ class FileStream extends Stream implements iFileStream
     /**
      * Modo de abertura do stream atual.
      *
-     * @var         string
+     * @var string
      */
     protected string $openMode = "";
 
@@ -41,15 +41,15 @@ class FileStream extends Stream implements iFileStream
     /**
      * Caminho completo até onde o arquivo está armazenado no momento.
      *
-     * @var         string
+     * @var string
      */
     protected string $pathToFile = "";
     /**
      * Retorna o caminho completo até onde o arquivo está no momento.
      *
-     * @return      string
+     * @return string
      */
-    public function getPathToFile() : string
+    public function getPathToFile(): string
     {
         return $this->pathToFile;
     }
@@ -61,15 +61,15 @@ class FileStream extends Stream implements iFileStream
     /**
      * Nome do arquivo.
      *
-     * @var         string
+     * @var string
      */
     protected string $fileName = "";
     /**
      * Retorna o nome do arquivo.
      *
-     * @return      string
+     * @return string
      */
-    public function getFilename() : string
+    public function getFilename(): string
     {
         return $this->fileName;
     }
@@ -81,15 +81,15 @@ class FileStream extends Stream implements iFileStream
     /**
      * Mimetype do arquivo.
      *
-     * @var         string
+     * @var string
      */
     protected string $mimeType = "";
     /**
      * Resgata o mimetype do arquivo.
      *
-     * @return      string
+     * @return string
      */
-    public function getMimeType() : string
+    public function getMimeType(): string
     {
         return $this->mimeType;
     }
@@ -106,17 +106,14 @@ class FileStream extends Stream implements iFileStream
     /**
      * Inicia um novo manipulador ``FileStream``.
      *
+     * @param string $pathToFile
+     * Caminho completo até o arquivo alvo.
      *
-     * @param       string $pathToFile
-     *              Caminho completo até o arquivo alvo.
+     * @param string $openMode
+     * Modo de abertura do stream.
      *
-     * @param       string $openMode
-     *              Modo de abertura do stream.
-     *
-     * @return      void
-     *
-     * @throws      \InvalidArgumentException
-     *              Caso o arquivo indicado não exista.
+     * @throws \InvalidArgumentException
+     * Caso o arquivo indicado não exista.
      */
     function __construct(string $pathToFile, string $openMode = "r")
     {
@@ -129,20 +126,20 @@ class FileStream extends Stream implements iFileStream
      * Define um novo arquivo alvo para a instância ``FileStream``.
      * Use o método ``detach`` para liberar o recurso atual para outras ações.
      *
-     * @param       string $pathToFile
-     *              Caminho completo até o arquivo alvo.
+     * @param string $pathToFile
+     * Caminho completo até o arquivo alvo.
      *
-     * @param       ?string $openMode
-     *              Modo de abertura do stream.
-     *              Se for mantido ``null``, o novo arquivo deve utilizar o mesmo modo usado
-     *              pelo anterior.
+     * @param ?string $openMode
+     * Modo de abertura do stream.
+     * Se for mantido ``null``, o novo arquivo deve utilizar o mesmo modo usado
+     * pelo anterior.
      *
-     * @return      void
+     * @return void
      *
-     * @throws      \InvalidArgumentException
-     *              Caso o arquivo indicado não exista.
+     * @throws \InvalidArgumentException
+     * Caso o arquivo indicado não exista.
      */
-    public function setFileStream(string $pathToFile, ?string $openMode = null) : void
+    public function setFileStream(string $pathToFile, ?string $openMode = null): void
     {
         $useMode = (($openMode === null) ? $this->openMode : $openMode);
         $this->internalSetStream($pathToFile, $useMode);
@@ -154,23 +151,25 @@ class FileStream extends Stream implements iFileStream
      * Define o arquivo alvo para a instância ``FileStream``.
      *
      *
-     * @param       string $pathToFile
-     *              Caminho completo até o arquivo alvo.
+     * @param string $pathToFile
+     * Caminho completo até o arquivo alvo.
      *
-     * @param       string $openMode
-     *              Modo de abertura do stream.
+     * @param string $openMode
+     * Modo de abertura do stream.
      *
-     * @return      void
+     * @return void
      *
-     * @throws      \InvalidArgumentException
-     *              Caso o arquivo indicado não exista.
+     * @throws \InvalidArgumentException
+     * Caso o arquivo indicado não exista.
      */
-    protected function internalSetStream(string $pathToFile, string $openMode = "r") : void
+    protected function internalSetStream(string $pathToFile, string $openMode = "r"): void
     {
         $pathToFile = \to_system_path($pathToFile);
 
         $this->mainCheckForInvalidArgumentException(
-            "pathToFile", $pathToFile, [ "is file exists" ]
+            "pathToFile",
+            $pathToFile,
+            ["is file exists"]
         );
 
 

@@ -1,8 +1,8 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Traits;
-
 
 
 
@@ -33,7 +33,7 @@ trait MimeTypeData
      * A lista de ``mimetypes`` foi definida baseada no encontrado em:
      * https://www.freeformatter.com/mime-types-list.html na data de 2017-11-13.
      *
-     * ``` php
+     * ```php
      *      $arr = [
      *          // string   "key"       Extenção.
      *          // string   "value"     MimeType.
@@ -41,9 +41,9 @@ trait MimeTypeData
      *      ];
      * ```
      *
-     * @var         array
+     * @var array
      *
-     * @see         https://www.freeformatter.com/mime-types-list.html
+     * @see https://www.freeformatter.com/mime-types-list.html
      */
     protected array $mimeTypeList = [
         "123" => "application/vnd.lotus-1-2-3",
@@ -739,7 +739,7 @@ trait MimeTypeData
     /**
      * Coleção de ``mimetypes`` que são suportados para respostas em requisições ``Http``.
      *
-     * ``` php
+     * ```php
      *      $arr = [
      *          // string   "key"       Extenção.
      *          // string   "value"     MimeType.
@@ -747,7 +747,7 @@ trait MimeTypeData
      *      ];
      * ```
      *
-     * @var         array
+     * @var array
      */
     protected array $responseMimeTypes = [
         "txt" => "text/plain",
@@ -772,12 +772,12 @@ trait MimeTypeData
      * Retornará ``application/octet-stream`` caso não seja possível identificar o tipo
      * correspondente.
      *
-     * @param       string $fileName
-     *              Nome do arquivo que se deseja obter o ``mimetype``.
+     * @param string $fileName
+     * Nome do arquivo que se deseja obter o ``mimetype``.
      *
-     * @return      string
+     * @return string
      */
-    public function retrieveFileMimeType(string $fileName) : string
+    public function retrieveFileMimeType(string $fileName): string
     {
         $ext = \explode(".", $fileName);
         $ext = \strtolower($ext[\count($ext) - 1]);

@@ -1,12 +1,12 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Stream;
 
+use Psr\Http\Message\StreamInterface as StreamInterface;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\BObject as BObject;
-
-
 
 
 
@@ -20,11 +20,13 @@ use AeonDigital\BObject as BObject;
  * Em PHP, geralmente os ``Streams`` são iniciados usando o comando ``fopen`` e é importante
  * lembrar que o modo com o qual o recurso foi aberto influencia a capacidade desta classe.
  *
- * Esta classe implementa a interface
- * ``Psr\Http\Message\StreamInterface`` através da interface ``iStream``.
+ * Esta classe é compatível com a PSR ``Psr\Http\Message\StreamInterface`` mas não a implementa
+ * de forma direta. Use a classe ``PSRStream`` ou o método ``toPSR`` para obter uma instância
+ * que implemente tal interface.
  *
- * @see         http://www.php-fig.org/psr/
- * @see         http://php.net/manual/pt_BR/function.fopen.php
+ *
+ * @see http://www.php-fig.org/psr/
+ * @see http://php.net/manual/pt_BR/function.fopen.php
  *
  * @package     AeonDigital\Http\Stream
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
@@ -41,7 +43,7 @@ class Stream extends BObject implements iStream
     /**
      * ``Stream`` que está carregado na instância.
      *
-     * @var     resource
+     * @var resource
      */
     protected $stream = null;
 
@@ -50,7 +52,7 @@ class Stream extends BObject implements iStream
     /**
      * Indica se o ``Stream`` atualmente carregado é do tipo ``pipe``.
      *
-     * @var     bool
+     * @var bool
      */
     protected bool $isPipe = false;
 
@@ -60,7 +62,7 @@ class Stream extends BObject implements iStream
      * Tamanho do ``Stream`` em bytes.
      * Será ``null`` caso o stream seja ``pipe`` ou caso seu tamanho não possa ser identificado.
      *
-     * @var     ?int
+     * @var ?int
      */
     protected ?int $size = null;
 
@@ -69,7 +71,7 @@ class Stream extends BObject implements iStream
     /**
      * Coleção de metadados referentes ao ``Stream`` que está atualmente carregado.
      *
-     * @var     ?array
+     * @var ?array
      */
     protected ?array $metaData = null;
 
@@ -78,7 +80,7 @@ class Stream extends BObject implements iStream
     /**
      * Indica quando o ``Stream`` é *pesquisável*.
      *
-     * @var     bool
+     * @var bool
      */
     protected bool $seekable = false;
 
@@ -87,7 +89,7 @@ class Stream extends BObject implements iStream
     /**
      * Indica quando o ``Stream`` pode ser escrito ou se está com o modo de escrita ativo.
      *
-     * @var     bool
+     * @var bool
      */
     protected bool $writable = false;
 
@@ -96,7 +98,7 @@ class Stream extends BObject implements iStream
     /**
      * Indica quando o ``Stream`` pode ser lido ou se está com o modo de leitura ativo.
      *
-     * @var     bool
+     * @var bool
      */
     protected bool $readable = false;
 
@@ -112,10 +114,10 @@ class Stream extends BObject implements iStream
     /**
      * Inicia um manipulador de ``Stream``.
      *
-     * @param       resource $stream
-     *              Objeto ``Stream`` que será manipulado.
+     * @param resource $stream
+     * Objeto ``Stream`` que será manipulado.
      *
-     * @throws      \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     function __construct($stream)
     {
@@ -128,17 +130,19 @@ class Stream extends BObject implements iStream
     /**
      * Anexa o recurso indicado nesta instância.
      *
-     * @param       resource $stream
-     *              Recurso.
+     * @param resource $stream
+     * Recurso.
      *
-     * @throws      \InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
-     * @return      void
+     * @return void
      */
-    protected function attachResource($stream) : void
+    protected function attachResource($stream): void
     {
         $this->mainCheckForInvalidArgumentException(
-            "stream", $stream, [ "is resource" ]
+            "stream",
+            $stream,
+            ["is resource"]
         );
 
         $this->stream = $stream;
@@ -188,25 +192,42 @@ class Stream extends BObject implements iStream
 
 
     /**
-     * Retorna um array associativo contendo metadados relacionados com a ``key`` indicada.
-     * Retorna ``null`` caso a chave indicada não exista.
+     * Retorna os metadados do stream como um array associativo ou o valor específico de
+     * uma chave indicada.
      *
      * Os dados retornados são identicos aos que seriam pegos pela função do PHP
      * ``stream_get_meta_data``.
      *
-     * @link        http://php.net/manual/en/function.stream-get-meta-data.php
+     * @link http://php.net/manual/en/function.stream-get-meta-data.php
      *
-     * @param       ?string $key
-     *              Nome da chave de metadados que serão retornados.
+     * @param ?string $key
+     * Nome da chave de metadados que serão retornados.
      *
-     * @return      mixed
+     * @return mixed
+     * Retorna ``null`` se o stream principal não estiver definido.
+     *
+     * Retorna um array associativo com todos valores atualmente definidos quando
+     * a chave não for passada, ou, se for passada como ``null`` ou se for passada
+     * como um valor que não seja uma ``string``.
+     *
+     * Retorna o valor atual da chave se ela existir.
+     *
+     * Retorna ``null`` se a chave não for encontrada.
      */
-    public function getMetadata($key = null)
+    public function getMetadata(?string $key = null): mixed
     {
         $r = null;
-        if ($this->stream !== null && $key !== null && \is_string($key) === true) {
-            $r = ((isset($this->metaData[$key]) === false) ? null : $this->metaData[$key]);
+
+        if ($this->stream !== null) {
+            $key = (\is_string($key) === true) ? $key : null;
+
+            if ($key === null) {
+                $r = $this->metaData;
+            } elseif (key_exists($key, $this->metaData) === true) {
+                $r = $this->metaData[$key];
+            }
         }
+
         return $r;
     }
 
@@ -217,9 +238,9 @@ class Stream extends BObject implements iStream
     /**
      * Retorna ``true`` se o ``Stream`` carregado é *pesquisável*.
      *
-     * @return      bool
+     * @return bool
      */
-    public function isSeekable() : bool
+    public function isSeekable(): bool
     {
         return $this->seekable;
     }
@@ -232,9 +253,9 @@ class Stream extends BObject implements iStream
      * Retorna ``true`` se é possível escrever no ``Stream`` ou se ele está com seu modo de
      * escrita ativo.
      *
-     * @return      bool
+     * @return bool
      */
-    public function isWritable() : bool
+    public function isWritable(): bool
     {
         return $this->writable;
     }
@@ -247,9 +268,9 @@ class Stream extends BObject implements iStream
      * Retorna ``true`` se é possível ler o ``Stream`` ou se ele está com seu modo de
      * leitura ativo.
      *
-     * @return      bool
+     * @return bool
      */
-    public function isReadable() : bool
+    public function isReadable(): bool
     {
         return $this->readable;
     }
@@ -262,9 +283,9 @@ class Stream extends BObject implements iStream
      * Retorna o tamanho (em bytes) do ``Stream`` carregado ou ``null`` caso ele não exista ou se
      * não for possível determinar.
      *
-     * @return      ?int
+     * @return ?int
      */
-    public function getSize() : ?int
+    public function getSize(): ?int
     {
         return $this->size;
     }
@@ -281,9 +302,9 @@ class Stream extends BObject implements iStream
     /**
      * Retornará ``true`` caso o ponteiro do ``Stream`` esteja posicionado no final do arquivo.
      *
-     * @return      bool
+     * @return bool
      */
-    public function eof() : bool
+    public function eof(): bool
     {
         return (($this->stream === null) ? true : \feof($this->stream));
     }
@@ -295,11 +316,11 @@ class Stream extends BObject implements iStream
     /**
      * Retorna a posição atual do ponteiro.
      *
-     * @return      int
+     * @return int
      *
-     * @throws      \RuntimeException
+     * @throws \RuntimeException
      */
-    public function tell() : int
+    public function tell(): int
     {
         $pos = null;
         $err = ($this->stream === null || $this->isPipe === true);
@@ -330,19 +351,22 @@ class Stream extends BObject implements iStream
      * Importante lembrar que conforme o modo de abertura do recurso (r ; rw; r+; a+ ...) esta
      * função pode não funcionar adequadamente.
      *
-     * @link        http://www.php.net/manual/en/function.fseek.php
+     * @link http://www.php.net/manual/en/function.fseek.php
      *
-     * @param       int $offset
-     *              Posição que será definida para o cursor.
+     * @param int $offset
+     * Posição que será definida para o cursor.
      *
-     * @param       int $whence
-     *              Especifica a forma como a posição do cursor será calculado.
-     *              Valores válidos são ``SEEK_SET``, ``SEEK_CUR`` e ``SEEK_END``.
+     * @param int $whence
+     * Especifica a forma como a posição do cursor será calculado.
+     * Valores válidos são ``SEEK_SET``, ``SEEK_CUR`` e ``SEEK_END``.
      *
-     * @throws      \RuntimeException
+     * @throws \RuntimeException
      */
-    public function seek($offset, $whence = SEEK_SET) : void
+    public function seek(int $offset, int $whence = SEEK_SET): void
     {
+        $offset = (int)$offset;
+        $whence = (int)$whence;
+
         $r = -1;
         $err = ($this->stream === null || $this->seekable === false);
 
@@ -365,13 +389,13 @@ class Stream extends BObject implements iStream
      * Posiciona o cursor do ``Stream`` no início do mesmo.
      * Se o ``Stream`` não for *pesquisável* então este método irá lançar uma exception.
      *
-     * @see         seek()
+     * @see seek()
      *
-     * @link        http://www.php.net/manual/en/function.fseek.php
+     * @link http://www.php.net/manual/en/function.fseek.php
      *
-     * @throws      \RuntimeException
+     * @throws \RuntimeException
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         $r = false;
         $err = ($this->stream === null || $this->seekable === false);
@@ -395,15 +419,17 @@ class Stream extends BObject implements iStream
      * Lê as informações do ``Stream`` carregado a partir da posição atual do cursor até onde
      * ``$length`` indicar.
      *
-     * @param       int $length
-     *              Tamanho da string que será retornada.
+     * @param int $length
+     * Tamanho da string que será retornada.
      *
-     * @return      string
+     * @return string
      *
-     * @throws      \RuntimeException
+     * @throws \RuntimeException
      */
-    public function read($length) : string
+    public function read(int $length): string
     {
+        $length = (int)$length;
+
         $r = false;
         $err = ($this->stream === null || $this->readable === false);
 
@@ -428,15 +454,17 @@ class Stream extends BObject implements iStream
      * Escreve no ``Stream`` carregado.
      * Retorna o número de bytes escritos no ``Stream``.
      *
-     * @param       string $string
-     *              Dados que serão escritos.
+     * @param string $string
+     * Dados que serão escritos.
      *
-     * @return      int
+     * @return int
      *
-     * @throws      \RuntimeException
+     * @throws \RuntimeException
      */
-    public function write($string) : int
+    public function write(string $string): int
     {
+        $string = (string)$string;
+
         $r = false;
         $err = ($this->stream === null || $this->writable === false);
 
@@ -465,11 +493,11 @@ class Stream extends BObject implements iStream
      * A partir da posição atual do cursor, retorna o conteúdo do ``Stream`` em uma string.
      * Lança uma exception caso algum erro ocorra.
      *
-     * @return      string
+     * @return string
      *
-     * @throws      \RuntimeException
+     * @throws \RuntimeException
      */
-    public function getContents() : string
+    public function getContents(): string
     {
         $r = false;
         $err = ($this->stream === null || $this->readable === false);
@@ -500,7 +528,7 @@ class Stream extends BObject implements iStream
      * Encerra o uso do ``Stream`` atualmente carregado para esta instância.
      * Retorna o objeto ``Stream`` em sua condição atual ou ``null`` caso ele não esteja definido.
      *
-     * @return      ?resource
+     * @return ?resource
      */
     public function detach()
     {
@@ -526,9 +554,9 @@ class Stream extends BObject implements iStream
     /**
      * Encerra o ``Stream``.
      *
-     * @return      void
+     * @return void
      */
-    public function close() : void
+    public function close(): void
     {
         if ($this->stream !== null) {
             if ($this->isPipe === true) {
@@ -561,13 +589,13 @@ class Stream extends BObject implements iStream
      * será reposicionado onde estava imediatamente antes da execução deste método. Este
      * comportamento é próprio desta implementação.
      *
+     * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
+     *
+     * @return string
+     *
      * @codeCoverageIgnore
-     *
-     * @see         http://php.net/manual/en/language.oop5.magic.php#object.tostring
-     *
-     * @return      string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $r = "";
 
@@ -585,5 +613,19 @@ class Stream extends BObject implements iStream
         }
 
         return $r;
+    }
+
+
+
+
+
+
+    /**
+     * Retorna uma instância deste mesmo objeto, porém, compatível com a interface
+     * original ``Psr\Http\Message\StreamInterface``.
+     */
+    public function toPSR(): StreamInterface
+    {
+        return new \AeonDigital\Http\Stream\PSRStream($this->stream);
     }
 }

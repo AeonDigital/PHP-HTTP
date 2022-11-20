@@ -1,5 +1,5 @@
-#!/bin/bash -eu
-
+#!/usr/bin/env bash
+# myShellEnv v 1.0 [aeondigital.com.br]
 
 
 
@@ -27,13 +27,13 @@
 #             Retorna o resultado do comando 'ping' efetuado.
 #
 checkServerWithPing() {
-  local tmpDocker=$(echo "docker exec -it ${CONTAINER_WEBSERVER_NAME}");
+  local tmpDocker=$(echo "docker exec -it ${CONTAINER_WEBSERVER_NAME}")
 
   if [ "${3}" == "1" ]; then
-    local tmpResult=$(${tmpDocker} ping -c ${2} -W 10 "${1}");
-    echo "${tmpResult}";
+    local tmpResult=$(${tmpDocker} ping -c ${2} -W 10 "${1}")
+    echo "${tmpResult}"
   else
-    ${tmpDocker} ping -c ${2} -W 10 "${1}";
+    ${tmpDocker} ping -c ${2} -W 10 "${1}"
   fi;
 }
 #
@@ -52,61 +52,60 @@ checkServerWithPing() {
 #       - Percentual de Sucesso
 #       - Percentual de Falhas
 proccessPingStringResult() {
-  local tmpResult="${1}";
+  local tmpResult="${1}"
   local tmpGetNextLine="0"
   local tmpTgtLine=""
 
-  while read -r rawLine
-  do
+  while read -r rawLine; do
     if [ "${tmpTgtLine}" == "" ]; then
       if [ "${tmpGetNextLine}" == "1" ]; then
-        tmpTgtLine="${rawLine}";
+        tmpTgtLine="${rawLine}"
         tmpGetNextLine="0"
-      fi;
+      fi
 
       if [[ "${rawLine}" == *"ping statistics"* ]]; then
-        tmpGetNextLine="1";
-      fi;
-    fi;
-  done <<< "${tmpResult}";
+        tmpGetNextLine="1"
+      fi
+    fi
+  done <<< "${tmpResult}"
 
 
   if [ "${tmpTgtLine}" != "" ]; then
-    tmpTgtLine=$(trimD "," "${tmpTgtLine}");
+    tmpTgtLine=$(mse_str_trimD "," "${tmpTgtLine}")
 
-    local oIFS="${IFS}";
-    local tmpStrSub="";
-    local tmpCount="0";
+    local oIFS="${IFS}"
+    local tmpStrSub=""
+    local tmpCount="0"
 
-    local tmpAtempts="0";
-    local tmpReceived="0";
-    local tmpLost="0";
+    local tmpAtempts="0"
+    local tmpReceived="0"
+    local tmpLost="0"
 
-    local tmpPercentFail="0";
-    local tmpPercentSuccess="0";
+    local tmpPercentFail="0"
+    local tmpPercentSuccess="0"
 
     while IFS=',' read -ra arrSplit; do
       for tmpStrSub in "${arrSplit[@]}"; do
-        local strSubSplit=(${tmpStrSub});
+        local strSubSplit=(${tmpStrSub})
 
         if [ "${tmpCount}" == "0" ]; then
-          tmpAtempts="${strSubSplit[0]}";
+          tmpAtempts="${strSubSplit[0]}"
         fi;
         if [ "${tmpCount}" == "1" ]; then
-          tmpReceived="${strSubSplit[0]}";
-          tmpLost=$((tmpAtempts-tmpReceived));
+          tmpReceived="${strSubSplit[0]}"
+          tmpLost=$((tmpAtempts-tmpReceived))
         fi;
         if [ "${tmpCount}" == "2" ]; then
-          tmpPercentFail=$(echo "${strSubSplit[0]}" | sed "s/\%//");
-          tmpPercentSuccess=$((100-tmpPercentFail));
+          tmpPercentFail=$(echo "${strSubSplit[0]}" | sed "s/\%//")
+          tmpPercentSuccess=$((100-tmpPercentFail))
         fi;
 
-        tmpCount=$((tmpCount+1));
+        tmpCount=$((tmpCount+1))
       done
     done <<< "${tmpTgtLine}"
 
-    IFS="${oIFS}";
+    IFS="${oIFS}"
 
-    echo "${tmpAtempts}-${tmpReceived}-${tmpLost}-${tmpPercentSuccess}-${tmpPercentFail}";
-  fi;
+    echo "${tmpAtempts}-${tmpReceived}-${tmpLost}-${tmpPercentSuccess}-${tmpPercentFail}"
+  fi
 }

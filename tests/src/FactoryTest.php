@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Factory as Factory;
 
 require_once __DIR__ . "/../phpunit.php";
-
 
 
 
@@ -69,12 +69,16 @@ class FactoryTest extends TestCase
         $cookies = \AeonDigital\Http\Data\Cookie::fromRawCookieHeader($headers["COOKIE"]);
         $newObj = $nMock->createCookieCollection($cookies);
         $this->assertTrue(
-            in_array("AeonDigital\\Interfaces\\Http\\Data\\iCookieCollection",
-            class_implements($newObj))
+            in_array(
+                "AeonDigital\\Interfaces\\Http\\Data\\iCookieCollection",
+                class_implements($newObj)
+            )
         );
         $this->assertTrue(
-            in_array("AeonDigital\\Interfaces\\Http\\Data\\iCookieCollection",
-            class_implements($newObj))
+            in_array(
+                "AeonDigital\\Interfaces\\Http\\Data\\iCookieCollection",
+                class_implements($newObj)
+            )
         );
         $this->assertTrue($newObj->has("first"));
         $this->assertSame("primeiro%20valor%3A%20rianna%40gmail.com", $newObj->get("first")->getValue(false));
@@ -87,10 +91,12 @@ class FactoryTest extends TestCase
         $this->assertSame("segundo valor: http://aeondigital.com.br", $newObj->get("second")->getValue());
 
 
-        $newObj = $nMock->createCookieCollection(0);
+        $newObj = $nMock->createCookieCollection();
         $this->assertTrue(
-            in_array("AeonDigital\\Interfaces\\Http\\Data\\iCookieCollection",
-            class_implements($newObj))
+            in_array(
+                "AeonDigital\\Interfaces\\Http\\Data\\iCookieCollection",
+                class_implements($newObj)
+            )
         );
         $this->assertSame(0, $newObj->count());
     }
@@ -106,8 +112,10 @@ class FactoryTest extends TestCase
 
         $newObj = $nMock->createQueryStringCollection($headers["QUERY_STRING"]);
         $this->assertTrue(
-            in_array("AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection",
-            class_implements($newObj))
+            in_array(
+                "AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection",
+                class_implements($newObj)
+            )
         );
         $this->assertTrue($newObj->has("qskey1"));
         $this->assertSame("valor%201", $newObj->get("qskey1"));
@@ -118,8 +126,10 @@ class FactoryTest extends TestCase
         $qs = "nparam1=param 1 value set&nparam2=param 2 value set";
         $newObj = $nMock->createQueryStringCollection($qs);
         $this->assertTrue(
-            in_array("AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection",
-            class_implements($newObj))
+            in_array(
+                "AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection",
+                class_implements($newObj)
+            )
         );
         $this->assertTrue($newObj->has("nparam1"));
         $this->assertSame("param%201%20value%20set", $newObj->get("nparam1"));
@@ -130,8 +140,10 @@ class FactoryTest extends TestCase
         $qs = ["aparam1" => "param 1 value set", "aparam2" => "param 2 value set"];
         $newObj = $nMock->createQueryStringCollection($qs);
         $this->assertTrue(
-            in_array("AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection",
-            class_implements($newObj))
+            in_array(
+                "AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection",
+                class_implements($newObj)
+            )
         );
         $this->assertTrue($newObj->has("aparam1"));
         $this->assertSame("param%201%20value%20set", $newObj->get("aparam1"));
@@ -139,10 +151,12 @@ class FactoryTest extends TestCase
         $this->assertSame("param%202%20value%20set", $newObj->get("aparam2"));
 
 
-        $newObj = $nMock->createQueryStringCollection(0);
+        $newObj = $nMock->createQueryStringCollection();
         $this->assertTrue(
-            in_array("AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection",
-            class_implements($newObj))
+            in_array(
+                "AeonDigital\\Interfaces\\Http\\Data\\iQueryStringCollection",
+                class_implements($newObj)
+            )
         );
         $this->assertSame(0, $newObj->count());
     }
@@ -253,7 +267,8 @@ class FactoryTest extends TestCase
         $nMock = prov_instanceOf_Http_Factory();
 
         $useBody = "Test Body";
-        $useStream = fopen("data://text/plain;base64,", "r+");
+        $testFile = realpath(to_system_path(__DIR__ . "/../resources/streamDataFile.txt"));
+        $useStream = fopen($testFile, "w+");
         fwrite($useStream, $useBody);
 
         $newObj = $nMock->createStreamFromResource($useStream);

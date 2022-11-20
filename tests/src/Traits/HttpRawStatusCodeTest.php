@@ -1,11 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Traits\HttpRawStatusCode as HttpRawStatusCode;
 
 require_once __DIR__ . "/../../phpunit.php";
-
 
 
 
@@ -45,7 +45,8 @@ class HttpRawStatusCodeMockClass
 {
     use HttpRawStatusCode;
 
-    public function getReasonPhrase(int $code) : ?string {
+    public function getReasonPhrase(int $code): ?string
+    {
         return ((isset(self::$rawStatusCode[$code]) === true) ? self::$rawStatusCode[$code] : null);
     }
 }

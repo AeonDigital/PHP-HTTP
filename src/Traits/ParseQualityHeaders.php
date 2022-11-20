@@ -1,8 +1,8 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Traits;
-
 
 
 
@@ -35,7 +35,7 @@ trait ParseQualityHeaders
      * Retorna um ``array`` ordenado dos dados encontrados em ordem de preferência.
      * Valores em igual nível de preferência serão retornados alfabeticamente.
      *
-     * ``` php
+     * ```php
      *      $headers = [
      *          "text/html",
      *          "application/xhtml+xml",
@@ -53,14 +53,14 @@ trait ParseQualityHeaders
      *      ];
      * ```
      *
-     * @param       ?array $headers
-     *              Valores do header em formato de ``array``.
+     * @param ?array $headers
+     * Valores do header em formato de ``array``.
      *
-     * @return      ?array
-     *              O objeto de retorno é um **array de arrays associativos** conforme
-     *              exemplificado acima.
+     * @return ?array
+     * O objeto de retorno é um **array de arrays associativos** conforme
+     * exemplificado acima.
      */
-    public function parseArrayOfQualityHeaders(?array $headers) : ?array
+    public function parseArrayOfQualityHeaders(?array $headers): ?array
     {
         $r = null;
 
@@ -98,7 +98,7 @@ trait ParseQualityHeaders
      * Retorna um ``array`` ordenado dos dados encontrados em ordem de preferência.
      * Valores em igual nível de preferência serão retornados alfabeticamente.
      *
-     * ``` php
+     * ```php
      *      $headers = "text/html,application/xhtml+xml,application/xml;q=0.9,* /*;q=0.8";
      *
      *      $return = [
@@ -111,14 +111,14 @@ trait ParseQualityHeaders
      *      ];
      * ```
      *
-     * @param       ?string $headers
-     *              Versão bruta do ``header``.
+     * @param ?string $headers
+     * Versão bruta do ``header``.
      *
-     * @return      ?array
-     *              O objeto de retorno é um **array de arrays associativos** conforme
-     *              exemplificado acima.
+     * @return ?array
+     * O objeto de retorno é um **array de arrays associativos** conforme
+     * exemplificado acima.
      */
-    public function parseRawLineOfQualityHeaders(?string $headers) : ?array
+    public function parseRawLineOfQualityHeaders(?string $headers): ?array
     {
         $r = null;
 
@@ -143,7 +143,7 @@ trait ParseQualityHeaders
      *
      * Os valores serão retornados todos em ``lowercase``.
      *
-     * ``` php
+     * ```php
      *      $headers = [
      *          "pt-BR",
      *          "pt;q=0.8",
@@ -159,12 +159,12 @@ trait ParseQualityHeaders
      *      ];
      * ```
      *
-     * @param       ?array $headers
-     *              Valores do ``header`` em formato de ``array``.
+     * @param ?array $headers
+     * Valores do ``header`` em formato de ``array``.
      *
-     * @return      ?array
+     * @return ?array
      */
-    public function parseArrayOfHeaderAcceptLanguage(?array $headers) : ?array
+    public function parseArrayOfHeaderAcceptLanguage(?array $headers): ?array
     {
         $r = null;
 
@@ -210,7 +210,7 @@ trait ParseQualityHeaders
      *
      * Os valores serão retornados todos em ``lowercase``.
      *
-     * ``` php
+     * ```php
      *      $headers = "pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3";
      *
      *      $return = [
@@ -221,12 +221,12 @@ trait ParseQualityHeaders
      *      ];
      * ```
      *
-     * @param       ?string $headers
-     *              Versão bruta do ``header``.
+     * @param ?string $headers
+     * Versão bruta do ``header``.
      *
-     * @return      ?array
+     * @return ?array
      */
-    public function parseRawLineOfHeaderAcceptLanguage(?string $headers) : ?array
+    public function parseRawLineOfHeaderAcceptLanguage(?string $headers): ?array
     {
         $r = null;
 

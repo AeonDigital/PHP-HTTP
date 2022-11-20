@@ -1,23 +1,17 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+# myShellEnv v 1.0 [aeondigital.com.br]
+
+
+
+
+
+
 
 #
-# Carrega dependencias
-source "${PWD}/make/modules/makeEnvironment.sh"
-source "${MK_ROOT_PATH}/make/modules/makeTools.sh"
-source "${MK_ROOT_PATH}/make/mseStandAlone/loadScripts.sh";
-
-#
-# Se quiser,
-# defina um arquivo em 'make/makeEnvironment.sh' e use-o para
-# suas configurações personalizadas.
-if [ -f "${MK_MY_ENVIRONMENT_FILE}" ]; then
-  source "${MK_MY_ENVIRONMENT_FILE}"
-fi;
-
-
-
-
-
+# Carrega as ferramentas de uso geral
+. "${PWD}/make/standalone.sh"
+. "${PWD}/make/makeEnvironment.sh"
+. "${PWD}/make/makeTools.sh"
 
 
 
@@ -39,26 +33,28 @@ fi;
 dataBaseExecuteCommand() {
   #
   # Resgata os dados de acesso ao banco de dados alvo.
-  local DATABASE_TYPE=$(mcfPrintVariableValue "DATABASE_TYPE" "${MK_WEB_SERVER_ENV_FILE}");
-  local DATABASE_HOST=$(mcfPrintVariableValue "DATABASE_HOST" "${MK_WEB_SERVER_ENV_FILE}");
-  local DATABASE_PORT=$(mcfPrintVariableValue "DATABASE_PORT" "${MK_WEB_SERVER_ENV_FILE}");
-  local DATABASE_NAME=$(mcfPrintVariableValue "DATABASE_NAME" "${MK_WEB_SERVER_ENV_FILE}");
-  local DATABASE_USER=$(mcfPrintVariableValue "DATABASE_USER" "${MK_WEB_SERVER_ENV_FILE}");
-  local DATABASE_PASS=$(mcfPrintVariableValue "DATABASE_PASS" "${MK_WEB_SERVER_ENV_FILE}");
+  local DATABASE_TYPE=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_TYPE")
+  local DATABASE_HOST=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_HOST")
+  local DATABASE_PORT=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_PORT")
+  local DATABASE_NAME=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_NAME")
+  local DATABASE_USER=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_USER")
+  local DATABASE_PASS=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_PASS")
 
-  local tmpDocker=$(echo "docker exec -it ${CONTAINER_WEBSERVER_NAME}");
-  local tmpConnection=$(echo "mysql --host=${DATABASE_HOST} --port=${DATABASE_PORT} --user=${DATABASE_USER} --password=${DATABASE_PASS}");
+  #
+  # Utiliza o container de servidor web pois ele possui um client MySql
+  local tmpDocker=$(echo "docker exec -it ${CONTAINER_WEBSERVER_NAME}")
+  local tmpConnection=$(echo "mysql --host=${DATABASE_HOST} --port=${DATABASE_PORT} --user=${DATABASE_USER} --password=${DATABASE_PASS}")
 
   if [ "$1" == "" ]; then
-    tmpConnection=$(echo "${tmpConnection} --execute=");
-  elif [ "$1" == "1" ]; then
-    tmpConnection=$(echo "${tmpConnection} --database=${DATABASE_NAME} --execute=");
+    tmpConnection=$(echo "${tmpConnection} --execute=")
+  elif [ "$1" == "1" ] || [ "$1" == "\"\"" ]; then
+    tmpConnection=$(echo "${tmpConnection} --database=${DATABASE_NAME} --execute=")
   else
-    tmpConnection=$(echo "${tmpConnection} --database=${1} --execute=");
+    tmpConnection=$(echo "${tmpConnection} --database=${1} --execute=")
   fi;
 
-  local tmpExecuteSQL=$(echo "${tmpDocker} ${tmpConnection}");
-  echo "${tmpExecuteSQL}";
+  local tmpExecuteSQL=$(echo "${tmpDocker} ${tmpConnection}")
+  echo "${tmpExecuteSQL}"
 }
 
 
@@ -85,12 +81,12 @@ dataBaseExecuteCommand() {
 dataBaseDumpCommand() {
   #
   # Resgata os dados de acesso ao banco de dados alvo.
-  local DATABASE_TYPE=$(mcfPrintVariableValue "DATABASE_TYPE" "${MK_WEB_SERVER_ENV_FILE}")
-  local DATABASE_HOST=$(mcfPrintVariableValue "DATABASE_HOST" "${MK_WEB_SERVER_ENV_FILE}")
-  local DATABASE_PORT=$(mcfPrintVariableValue "DATABASE_PORT" "${MK_WEB_SERVER_ENV_FILE}")
-  local DATABASE_NAME=$(mcfPrintVariableValue "DATABASE_NAME" "${MK_WEB_SERVER_ENV_FILE}")
-  local DATABASE_USER=$(mcfPrintVariableValue "DATABASE_USER" "${MK_WEB_SERVER_ENV_FILE}")
-  local DATABASE_PASS=$(mcfPrintVariableValue "DATABASE_PASS" "${MK_WEB_SERVER_ENV_FILE}")
+  local DATABASE_TYPE=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_TYPE")
+  local DATABASE_HOST=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_HOST")
+  local DATABASE_PORT=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_PORT")
+  local DATABASE_NAME=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_NAME")
+  local DATABASE_USER=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_USER")
+  local DATABASE_PASS=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_PASS")
 
   local tmpDocker=$(echo "docker exec -it ${CONTAINER_WEBSERVER_NAME}");
   local tmpConnection=""
@@ -117,7 +113,7 @@ dataBaseDumpCommand() {
 
   else
     setIMessage "" 1;
-    setIMessage "Argumento ${LPURPLE}1${NONE} inválido.";
+    setIMessage "Argumento \"1\" inválido.";
     alertUser;
   fi;
 
@@ -141,9 +137,14 @@ dataBaseDumpCommand() {
 # @return
 #
 dataBaseExecuteInstruction() {
-  local tmpResult=$(${1}"$2");
-  echo "${tmpResult}";
+  local tmpResult=$(${1}"$2")
+  echo "${tmpResult}"
 }
+
+
+
+
+
 
 
 
@@ -152,35 +153,26 @@ dataBaseExecuteInstruction() {
 #
 # Verifica se há comunicação com o servidor do banco de dados.
 dataBaseCheckPing() {
-  local DATABASE_HOST=$(mcfPrintVariableValue "DATABASE_HOST" "${MK_WEB_SERVER_ENV_FILE}");
-  local pingResult=$(checkServerWithPing "${DATABASE_HOST}" "1" "1");
+  local DATABASE_HOST=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_HOST")
+  local pingResult=$(checkServerWithPing "${DATABASE_HOST}" "1" "1")
+
 
   if [ "${pingResult}" == "" ]; then
-    errorAlert ${FUNCNAME[0]} "Falha do 'ping"
+    mse_inter_showError "${FUNCNAME[0]}::Falha do 'ping'"
   else
-    local pingProccess=$(proccessPingStringResult "${pingResult}");
-    local arrResult=(${pingProccess//-/ });
+    local pingProccess=$(proccessPingStringResult "${pingResult}")
+    local arrResult=(${pingProccess//-/ })
 
-    if [ ${#arrResult[@]}  != 5 ]; then
-      errorAlert ${FUNCNAME[0]} "Falha do 'ping"
+    if [ ${#arrResult[@]} != 5 ]; then
+      mse_inter_showError "${FUNCNAME[0]}::Falha do 'ping'"
     else
       if [ "${arrResult[3]}" == "100" ]; then
-        setIMessage "${LPURPLE}Servidor encontrado${NONE}.";
-        alertUser;
+        mse_inter_showAlert "s" "Servidor encontrado."
       else
-        setIMessage "${LPURPLE}Servidor não encontrado${NONE}.";
-        alertUser;
-
-        setIMessage "" 1;
-        setIMessage "Deseja retestar?";
-        promptUser;
-
-        if [ "$MSE_GB_PROMPT_RESULT" == "1" ]; then
-          dataBaseCheckPing
-        fi;
-      fi;
-    fi;
-  fi;
+        mse_inter_showAlert "f" "Servidor não encontrado."
+      fi
+    fi
+  fi
 }
 
 
@@ -189,31 +181,34 @@ dataBaseCheckPing() {
 # Verifica a qualidade da rede com o banco de dados efetuando um teste
 # de 'ping' com 10 tentativas.
 dataBaseCheckNetwork() {
-  setIMessage "${LPURPLE}Iniciando teste${NONE} (ping x 10)" "1";
-  alertUser;
+  declare -a arrMessage=()
+  arrMessage+=("O teste completo leva alguns segundos...")
+  mse_inter_showAlert "a" "Iniciando teste [ ping x 10 ]" "arrMessage"
+  mse_inter_setCursorPosition "top" "1"
 
-  local DATABASE_HOST=$(mcfPrintVariableValue "DATABASE_HOST" "${MK_WEB_SERVER_ENV_FILE}");
-  local pingResult=$(checkServerWithPing "${DATABASE_HOST}" "10" "1");
+  local DATABASE_HOST=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_HOST")
+  local pingResult=$(checkServerWithPing "${DATABASE_HOST}" "10" "1")
 
   if [ "${pingResult}" == "" ]; then
-    errorAlert ${FUNCNAME[0]} "Falha do 'ping"
+    mse_inter_showError "${FUNCNAME[0]}::Falha do 'ping'"
   else
-    local pingProccess=$(proccessPingStringResult "${pingResult}");
-    local arrResult=(${pingProccess//-/ });
+    local pingProccess=$(proccessPingStringResult "${pingResult}")
+    local arrResult=(${pingProccess//-/ })
 
     if [ ${#arrResult[@]}  != 5 ]; then
-      errorAlert ${FUNCNAME[0]} "Falha do 'ping"
+      mse_inter_showError "${FUNCNAME[0]}::Falha do 'ping'"
     else
-      setIMessage "${LPURPLE}Resultados:${NONE}" "1";
-      setIMessage "Tentativas: ${LPURPLE}${arrResult[0]}${NONE} pacotes enviados.";
-      setIMessage "            ${LPURPLE}${arrResult[1]}${NONE} pacotes recebidos.";
-      setIMessage "            ${LPURPLE}${arrResult[2]}${NONE} pacotes perdidos.";
-      setIMessage "";
-      setIMessage "Sucesso: ${LPURPLE}${arrResult[3]}%%${NONE}";
-      setIMessage "Falha  : ${LPURPLE}${arrResult[4]}%%${NONE}";
-      alertUser;
-    fi;
-  fi;
+      declare -a arrMessage=()
+      arrMessage+=("${mseNONE}Tentativas: ${mseDPURPLE}${arrResult[0]}${mseNONE} pacotes enviados.")
+      arrMessage+=("${mseNONE}            ${mseDPURPLE}${arrResult[1]}${mseNONE} pacotes recebidos.")
+      arrMessage+=("${mseNONE}            ${mseDPURPLE}${arrResult[2]}${mseNONE} pacotes perdidos.")
+      arrMessage+=("")
+      arrMessage+=("${mseNONE}Sucesso: ${mseDGREEN}${arrResult[3]}%%${mseNONE}")
+      arrMessage+=("${mseNONE}Falha  : ${mseDRED}${arrResult[4]}%%${mseNONE}")
+
+      mse_inter_showAlert "a" "Resultado:" "arrMessage"
+    fi
+  fi
 }
 
 
@@ -233,21 +228,20 @@ dataBaseCheckNetwork() {
 #       Se $1 for "1" e a conexão for bem sucedida, retornará uma mensagem
 #       amigável;
 dataBaseCheckCredentials() {
-  local tmpConn=$(dataBaseExecuteCommand "");
-  local tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" ";");
+  local tmpConn=$(dataBaseExecuteCommand "")
+  local tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" ";")
+  declare -a arrMessage=()
 
   if [ "${tmpResult}" != "" ]; then
-    setIMessage "${LPURPLE}Credenciais não aceitas${NONE}" "1";
-    setIMessage "${tmpResult}";
-    alertUser;
+    arrMessage+=("${tmpResult}")
+    mse_inter_showAlert "f" "Credenciais não aceitas" "arrMessage"
   else
     if [ "$1" != "1" ]; then
-      echo "1";
+      echo "1"
     else
-      setIMessage "${LPURPLE}Credenciais aceitas${NONE}" "1";
-      alertUser;
-    fi;
-  fi;
+      mse_inter_showAlert "s" "Credenciais aceitas" "arrMessage"
+    fi
+  fi
 }
 
 
@@ -258,20 +252,16 @@ dataBaseCheckCredentials() {
 # Expõe para o usuário o valor definido para as configuração de variáveis
 # do tipo 'character-set'
 dataBaseShowCharacterSet() {
-  local tmpConn=$(dataBaseExecuteCommand "");
-  local tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "SHOW VARIABLES LIKE '%character_set%';");
+  local tmpConn=$(dataBaseExecuteCommand "")
+  local tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "SHOW VARIABLES LIKE '%character_set%';")
+  declare -a arrMessage=()
 
   if [ "${tmpResult}" == "" ]; then
-    setIMessage "" 1;
-    setIMessage "${LPURPLE}Falha na execução:${NONE}";
-    alertUser;
+    mse_inter_showAlert "f" "Falha na execução" "arrMessage"
   else
-    setIMessage "" 1;
-    setIMessage "${LPURPLE}Configurações 'character_set'${NONE}";
-    alertUser;
-
-    echo "${tmpResult}";
-  fi;
+    mse_inter_showAlert "s" "Configurações 'character_set'" "arrMessage"
+    echo "${tmpResult}"
+  fi
 }
 
 
@@ -280,21 +270,22 @@ dataBaseShowCharacterSet() {
 # Expõe para o usuário o valor definido para as configuração de variáveis
 # do tipo 'collation'
 dataBaseShowCollation() {
-  local tmpConn=$(dataBaseExecuteCommand "");
-  local tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "SHOW VARIABLES LIKE '%collation%';");
+  local tmpConn=$(dataBaseExecuteCommand "")
+  local tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "SHOW VARIABLES LIKE '%collation%';")
+  declare -a arrMessage=()
 
   if [ "${tmpResult}" == "" ]; then
-    setIMessage "" 1;
-    setIMessage "${LPURPLE}Falha na execução:${NONE}";
-    alertUser;
+    mse_inter_showAlert "f" "Falha na execução" "arrMessage"
   else
-    setIMessage "" 1;
-    setIMessage "${LPURPLE}Configurações 'collation'${NONE}";
-    alertUser;
-
-    echo "${tmpResult}";
-  fi;
+    mse_inter_showAlert "s" "Configurações 'collation'" "arrMessage"
+    echo "${tmpResult}"
+  fi
 }
+
+
+
+
+
 
 
 
@@ -320,101 +311,106 @@ dataBaseShowCollation() {
 #   inicial do banco de dados (se existir).
 #
 dataBaseStart() {
-  local tmpConn=$(dataBaseExecuteCommand "");
-  local tmpSQL="";
-  local tmpResult="";
+  local tmpConn=$(dataBaseExecuteCommand "")
+  local tmpSQL=""
+  local tmpResult=""
   local ISOK="1"
+  local tmpMsgTitle=""
 
-  tmpResult=$(dataBaseCheckCredentials "0");
+  tmpResult=$(dataBaseCheckCredentials "0")
   if [ "${tmpResult}" != "1" ]; then
     echo "${tmpResult}"
   else
-    local DATABASE_NAME=$(mcfPrintVariableValue "DATABASE_NAME" "${MK_WEB_SERVER_ENV_FILE}")
+    local DATABASE_NAME=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_NAME")
 
     #
     # Identifica se o banco de dados alvo existe
-    tmpSQL="SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='${DATABASE_NAME}';";
-    tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "${tmpSQL}");
+    tmpSQL="SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='${DATABASE_NAME}';"
+    tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "${tmpSQL}")
     if [ "${tmpResult}" != "" ]; then
+      tmpMsgTitle="ATENÇÃO"
+      declare -a arrMessage=()
+      arrMessage+=("O atual banco de dados \"${DATABASE_NAME}\" será totalmente perdido.")
+      mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
 
-      setIMessage "" 1;
-      setIMessage "${LPURPLE}ATENÇÃO${NONE}";
-      setIMessage "O atual banco de dados ${LPURPLE}${DATABASE_NAME}${NONE} será totalmente perdido.";
-      setIMessage "Você confirma esta ação?";
-      promptUser;
+      mse_inter_showPrompt "" "ca" "Você confirma esta ação?" "bool"
+      if [ "$MSE_GLOBAL_PROMPT_RESULT" == "0" ]; then
+        tmpMsgTitle="Ação abortada pelo usuário"
+        declare -a arrMessage=()
 
-      if [ "$MSE_GB_PROMPT_RESULT" == "0" ]; then
+        mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
         ISOK="0"
-
-        setIMessage "" 1;
-        setIMessage "Ação abortada pelo usuário";
-        alertUser;
       else
-        tmpSQL="DROP DATABASE ${DATABASE_NAME};";
-        tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "${tmpSQL}");
+        tmpSQL="DROP DATABASE ${DATABASE_NAME};"
+        tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "${tmpSQL}")
         if [ "${tmpResult}" != "" ]; then
-          ISOK="0"
+          tmpMsgTitle="Falha de execução"
+          declare -a arrMessage=()
+          arrMessage+=("${tmpResult}")
 
-          setIMessage "" 1;
-          setIMessage "${LPURPLE}Falha de execução:${NONE}";
-          setIMessage "${tmpResult}";
-          alertUser;
-        fi;
-      fi;
-    fi;
+          mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
+          ISOK="0"
+        fi
+      fi
+    fi
 
 
     if [ "$ISOK" == "1" ]; then
-      tmpSQL="CREATE DATABASE ${DATABASE_NAME};";
-      tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "${tmpSQL}");
-      if [ "${tmpResult}" != "" ]; then
-        setIMessage "" 1;
-        setIMessage "${LPURPLE}Falha de execução:${NONE}";
-        setIMessage "${tmpResult}";
-        alertUser;
-      else
-        setIMessage "" 1;
-        setIMessage "Banco de dados ${LPURPLE}${DATABASE_NAME}${NONE} criado com sucesso.";
-        alertUser;
+      tmpSQL="CREATE DATABASE ${DATABASE_NAME};"
+      tmpResult=$(dataBaseExecuteInstruction "${tmpConn}" "${tmpSQL}")
 
+      if [ "${tmpResult}" != "" ]; then
+        tmpMsgTitle="Falha de execução"
+        declare -a arrMessage=()
+        arrMessage+=("${tmpResult}")
+
+        mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
+      else
+        tmpMsgTitle="Banco de dados \"${DATABASE_NAME}\" criado com sucesso."
+        declare -a arrMessage=()
+
+        mse_inter_showAlert "s" "${tmpMsgTitle}" "arrMessage"
         if [ "$1" == "1" ]; then
           if [ ! -f "${MK_LOCAL_BOOTSTRAP_FILE}" ]; then
-            setIMessage "" 1;
-            setIMessage "O arquivo ${LPURPLE}bootstrap.sql${NONE} não foi encontrado.";
-            alertUser;
+            tmpMsgTitle="O arquivo \"bootstrap.sql\" não foi encontrado."
+            declare -a arrMessage=()
+
+            mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
           else
-            setIMessage "" 1;
-            setIMessage "Iniciando ${LPURPLE}bootstrap${NONE} do banco de dados.";
-            setIMessage "Esta ação pode levar alguns minutos.";
-            alertUser;
+            tmpMsgTitle="Iniciando \"bootstrap\" do banco de dados."
+            declare -a arrMessage=()
+            arrMessage+=("Esta ação pode levar alguns minutos.")
 
+            mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
             if [ ! -s "${MK_LOCAL_BOOTSTRAP_FILE}" ]; then
-              setIMessage "" 1;
-              setIMessage "O arquivo de instruções ${LPURPLE}bootstrap${NONE} está vazio.";
-              setIMessage "Execução abortada";
-              alertUser;
+              tmpMsgTitle="O arquivo de instruções \"bootstrap\" está vazio."
+              declare -a arrMessage=()
+              arrMessage+=("Execução abortada.")
+
+              mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
             else
-              local tmpDump=$(dataBaseDumpCommand "import" "1");
+              local tmpDump=$(dataBaseDumpCommand "import" "1")
 
-              tmpSQL="SOURCE ${MK_WEB_SERVER_DATABASE_BOOTSTRAP_FILE};";
-              tmpResult=$(dataBaseExecuteInstruction "${tmpDump}" "${tmpSQL}");
+              tmpSQL="SOURCE ${MK_WEB_SERVER_DATABASE_BOOTSTRAP_FILE};"
+              tmpResult=$(dataBaseExecuteInstruction "${tmpDump}" "${tmpSQL}")
               if [ "${tmpResult}" == "" ]; then
-                setIMessage "" 1;
-                setIMessage "${LPURPLE}bootstrap${NONE} instalado com sucesso.";
-                alertUser;
-              else
-                setIMessage "" 1;
-                setIMessage "Falha ao instalar o ${LPURPLE}bootstrap${NONE}.";
-                alertUser;
+                tmpMsgTitle="\"bootstrap\" instalado com sucesso."
+                declare -a arrMessage=()
 
-                echo "${tmpResult}";
-              fi;
-            fi;
-          fi;
-        fi;
-      fi;
-    fi;
-  fi;
+                mse_inter_showAlert "s" "${tmpMsgTitle}" "arrMessage"
+              else
+                tmpMsgTitle="Falha ao instalar o \"bootstrap\"."
+                declare -a arrMessage=()
+
+                mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
+                echo "${tmpResult}"
+              fi
+            fi
+          fi
+        fi
+      fi
+    fi
+  fi
 }
 
 
@@ -435,99 +431,106 @@ dataBaseStart() {
 #
 dataBaseExport() {
 
-  local tmpYear=$(date +"%Y");
-  local tmpMonth=$(date +"%m");
+  local tmpMsgTitle=""
+  local tmpYear=$(date +"%Y")
+  local tmpMonth=$(date +"%m")
 
-  local tmpContainerDir="/etc/database/backup/${tmpYear}/${tmpMonth}/";
-  local tmpHostDir="${MK_LOCAL_CONTAINER_ROOT_DIR}${tmpContainerDir}";
+  local tmpContainerDir="/etc/database/backup/${tmpYear}/${tmpMonth}/"
+  local tmpHostDir="${MK_LOCAL_CONTAINER_ROOT_DIR}${tmpContainerDir}"
 
-  local DATABASE_NAME=$(mcfPrintVariableValue "DATABASE_NAME" "${MK_WEB_SERVER_ENV_FILE}");
+  local DATABASE_NAME=$(mse_config_showVariableValue "${MK_WEB_SERVER_ENV_FILE}" "" "DATABASE_NAME")
 
-  setIMessage "" 1;
-  setIMessage "${LPURPLE}ATENÇÃO${NONE}";
-  setIMessage "Uma cópia da versão atual do banco de dados ${LPURPLE}${DATABASE_NAME}${NONE} será criada.";
+
+  tmpMsgTitle="ATENÇÃO"
+  declare -a arrMessage=()
+  arrMessage+=("Uma cópia da versão atual do banco de dados \"${DATABASE_NAME}\" será criada.")
   if [ "$1" == "1" ]; then
-    setIMessage "A versão atual do arquivo ${LPURPLE}bootstrap.sql${NONE} será totalmente substituída.";
-  fi;
-  setIMessage "Você confirma esta ação?";
-  promptUser;
+    arrMessage+=("A versão atual do arquivo \"bootstrap.sql\" será totalmente substituída.")
+  fi
+  mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
 
-  if [ "$MSE_GB_PROMPT_RESULT" == "0" ]; then
-    setIMessage "" 1;
-    setIMessage "Ação abortada pelo usuário";
-    alertUser;
+
+  mse_inter_showPrompt "" "ca" "Você confirma esta ação?" "bool"
+  if [ "$MSE_GLOBAL_PROMPT_RESULT" == "0" ]; then
+    tmpMsgTitle="Ação abortada pelo usuário"
+    declare -a arrMessage=()
+
+    mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
   else
     mkdir -p "${tmpHostDir}";
     if [ ! -d "${tmpHostDir}" ]; then
-      setIMessage "" 1;
-      setIMessage "Não foi possível criar o diretório alvo";
-      setIMessage "${LPURPLE}${tmpHostDir}${NONE}";
-      setIMessage "  mapeado para ";
-      setIMessage "${LPURPLE}${tmpContainerDir}${NONE}";
-      setIMessage "";
-      setIMessage "Execução abortada";
-      alertUser;
+      tmpMsgTitle="ERRO"
+      declare -a arrMessage=()
+      arrMessage+=("Não foi possível criar o diretório alvo.")
+      arrMessage+=("> ${tmpHostDir}")
+      arrMessage+=("  mapeado para")
+      arrMessage+=("> ${tmpContainerDir}")
+      arrMessage+=("")
+      arrMessage+=("Execução abortada")
+
+      mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
     else
-      local tmpDump=$(dataBaseDumpCommand "export" "1");
+      local tmpDump=$(dataBaseDumpCommand "export" "1")
 
-      local tmpResultFile=$(date +'%Y-%m-%d-%H-%M-%S');
-      tmpResultFile=$(echo "${tmpResultFile}-${DATABASE_NAME}");
+      local tmpResultFile=$(date +'%Y-%m-%d-%H-%M-%S')
+      tmpResultFile=$(echo "${tmpResultFile}-${DATABASE_NAME}")
 
-      setIMessage "" 1;
-      setIMessage "Iniciando a exportação do banco de dados.";
-      setIMessage "Esta ação pode levar alguns minutos.";
-      setIMessage "";
-      alertUser;
+
+      tmpMsgTitle="Iniciando a exportação do banco de dados."
+      declare -a arrMessage=()
+      arrMessage+=("Esta ação pode levar alguns minutos.")
+
+      mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
 
       tmpResult=$(dataBaseExecuteInstruction "${tmpDump}" "${tmpContainerDir}${tmpResultFile}.sql");
       if [ "${tmpResult}" != "" ]; then
-        setIMessage "" 1;
-        setIMessage "Falha ao exportar o banco de dados";
-        alertUser;
+        tmpMsgTitle="Falha ao exportar o banco de dados"
+        declare -a arrMessage=()
 
-        echo "${tmpResult}";
+        mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
+        echo "${tmpResult}"
       else
 
         if [ ! -f "${tmpHostDir}${tmpResultFile}.sql" ]; then
-          setIMessage "" 1;
-          setIMessage "Uma falha inesperada ocorreu e não foi possível criar o arquivo de DUMP em";
-          setIMessage "${LPURPLE}${tmpHostDir}${tmpResultFile}.sql${NONE}";
-          setIMessage "  mapeado para ";
-          setIMessage "${LPURPLE}${tmpContainerDir}${tmpResultFile}.sql${NONE}";
-          setIMessage "";
-          setIMessage "Execução abortada";
-          alertUser;
+          tmpMsgTitle="ERRO"
+          declare -a arrMessage=()
+          arrMessage+=("Uma falha inesperada ocorreu e não foi possível criar o arquivo de DUMP em")
+          arrMessage+=("> ${tmpHostDir}${tmpResultFile}.sql")
+          arrMessage+=("  mapeado para")
+          arrMessage+=("> ${tmpContainerDir}${tmpResultFile}.sql")
+          arrMessage+=("")
+          arrMessage+=("Execução abortada")
+
+          mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
         else
-          echo "zip ${tmpContainerDir}${tmpResultFile}.zip ${tmpContainerDir}${tmpResultFile}.sql";
-          docker exec -it ${CONTAINER_WEBSERVER_NAME} zip -j "${tmpContainerDir}${tmpResultFile}.zip" "${tmpContainerDir}${tmpResultFile}.sql";
+          docker exec -it ${CONTAINER_WEBSERVER_NAME} zip -j "${tmpContainerDir}${tmpResultFile}.zip" "${tmpContainerDir}${tmpResultFile}.sql"
 
           if [ "$1" == "1" ]; then
-            docker exec -it ${CONTAINER_WEBSERVER_NAME} cp "${tmpContainerDir}${tmpResultFile}.sql" "/etc/database/bootstrap.sql";
+            docker exec -it ${CONTAINER_WEBSERVER_NAME} cp "${tmpContainerDir}${tmpResultFile}.sql" "/etc/database/bootstrap.sql"
           fi;
 
+
+          local useExt=""
+
+          tmpMsgTitle="SUCESSO"
+          declare -a arrMessage=()
           if [ -f "${tmpHostDir}${tmpResultFile}.zip" ]; then
-            docker exec -it ${CONTAINER_WEBSERVER_NAME} rm "${tmpContainerDir}${tmpResultFile}.sql";
-
-            setIMessage "" 1;
-            setIMessage "Base de dados exportada com sucesso";
-            setIMessage "Uma versão zipada do mesmo foi salva em";
-            setIMessage "${LPURPLE}${tmpHostDir}${tmpResultFile}.zip${NONE}";
-            setIMessage "  mapeado para ";
-            setIMessage "${LPURPLE}${tmpContainerDir}${tmpResultFile}.zip${NONE}";
-            alertUser;
+            docker exec -it ${CONTAINER_WEBSERVER_NAME} rm "${tmpContainerDir}${tmpResultFile}.sql"
+            useExt=".zip"
+            arrMessage+=("Uma versão zipada do mesmo foi salva em")
           else
-            setIMessage "" 1;
-            setIMessage "Base de dados exportada com sucesso";
-            setIMessage "No entanto, não foi possível zipar o arquivo final";
-            setIMessage "${LPURPLE}${tmpHostDir}${tmpResultFile}.sql${NONE}";
-            setIMessage "  mapeado para ";
-            setIMessage "${LPURPLE}${tmpContainerDir}${tmpResultFile}.sql${NONE}";
-            alertUser;
-          fi;
-        fi;
-      fi;
-    fi;
-  fi;
+            useExt=".sql"
+            arrMessage+=("No entanto, não foi possível zipar o arquivo final")
+          fi
+          arrMessage+=("> ${tmpHostDir}${tmpResultFile}${useExt}")
+          arrMessage+=("  mapeado para")
+          arrMessage+=("> ${tmpContainerDir}${tmpResultFile}${useExt}")
+
+          mse_inter_showAlert "s" "${tmpMsgTitle}" "arrMessage"
+        fi
+      fi
+    fi
+  fi
 }
 
 
@@ -543,56 +546,65 @@ dataBaseExport() {
 # portanto você precisa informar apenas o caminho relativo até o mesmo.
 #
 dataBaseExecutePatch() {
+  local tmpMsgTitle=""
+
   if [ -z ${file+x} ]; then
-    setIMessage "" 1;
-    setIMessage "Você precisa indicar o parametro ${LPURPLE}file${NONE} para executar esta ação.";
-    setIMessage "ex: make db-patch file='/target-patch.sql'";
-    setIMessage ""
-    alertUser;
+    tmpMsgTitle="ERRO"
+    declare -a arrMessage=()
+    arrMessage+=("Você precisa indicar o parametro \"file\" para executar esta ação.")
+    arrMessage+=("ex: make db-patch file='target-patch.sql'")
+
+    mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
   else
     local tmpContainerPatch="/etc/database/patch/${file}";
     local tmpHostPatch="${MK_LOCAL_CONTAINER_ROOT_DIR}${tmpContainerPatch}";
 
     if [ ! -f "${tmpHostPatch}" ]; then
-      setIMessage "" 1;
-      setIMessage "O arquivo de patch indicado não existe:";
-      setIMessage "${LPURPLE}${tmpHostPatch}${NONE}";
-      setIMessage "  mapeado para ";
-      setIMessage "${LPURPLE}${tmpContainerPatch}${NONE}";
-      alertUser;
+      tmpMsgTitle="ERRO"
+      declare -a arrMessage=()
+      arrMessage+=("O arquivo de patch indicado não existe:")
+      arrMessage+=("> ${tmpHostPatch}")
+      arrMessage+=("> mapeado para")
+      arrMessage+=("> ${tmpContainerPatch}")
+
+      mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
     else
 
       if [ ! -s "${tmpHostPatch}" ]; then
-        setIMessage "" 1;
-        setIMessage "O arquivo de patch está vazio.";
-        setIMessage "Execução abortada";
-        alertUser;
+        tmpMsgTitle="ERRO"
+        declare -a arrMessage=()
+        arrMessage+=("O arquivo de patch está vazio.")
+        arrMessage+=("Execução abortada")
+
+        mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
       else
+        tmpMsgTitle="Iniciando a execução do patch"
+        declare -a arrMessage=()
+        arrMessage+=("> ${tmpContainerPatch}")
 
-        setIMessage "" 1;
-        setIMessage "Iniciando a execução do patch.";
-        setIMessage "${LPURPLE}${tmpContainerPatch}${NONE}";
-        alertUser;
+        mse_inter_showAlert "a" "${tmpMsgTitle}" "arrMessage"
 
-        local tmpDump=$(dataBaseDumpCommand "patch" "1");
 
-        tmpSQL="SOURCE ${tmpContainerPatch};";
-        tmpResult=$(dataBaseExecuteInstruction "${tmpDump}" "${tmpSQL}");
+
+        local tmpDump=$(dataBaseDumpCommand "patch" "1")
+
+        tmpSQL="SOURCE ${tmpContainerPatch};"
+        tmpResult=$(dataBaseExecuteInstruction "${tmpDump}" "${tmpSQL}")
         if [ "${tmpResult}" == "" ]; then
-          setIMessage "" 1;
-          setIMessage "Execução do patch realizada com sucesso";
-          alertUser;
+          tmpMsgTitle="Execução do patch realizada com sucesso"
+          declare -a arrMessage=()
+
+          mse_inter_showAlert "s" "${tmpMsgTitle}" "arrMessage"
         else
-          setIMessage "" 1;
-          setIMessage "Falha ao executar o patch.";
-          alertUser;
+          tmpMsgTitle="Falha ao executar o patch"
+          declare -a arrMessage=()
 
-          echo "${tmpResult}";
-        fi;
-      fi;
-
-    fi;
-  fi;
+          mse_inter_showAlert "f" "${tmpMsgTitle}" "arrMessage"
+          echo "${tmpResult}"
+        fi
+      fi
+    fi
+  fi
 }
 
 

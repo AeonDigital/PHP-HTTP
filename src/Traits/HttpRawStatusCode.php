@@ -1,8 +1,8 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Traits;
-
 
 
 
@@ -33,7 +33,7 @@ trait HttpRawStatusCode
      * Nesta coleção há apenas os status declarados no documento
      * **Hypertext Transfer Protocol (Http) Status Code Registry** do **http://www.iana.org**.
      *
-     * ``` php
+     * ```php
      *      $arr = [
      *          // int      "key"       Código Http.
      *          // string   "value"     Mensagem.
@@ -41,9 +41,9 @@ trait HttpRawStatusCode
      *      ];
      * ```
      *
-     * @var         array
+     * @var array
      *
-     * @see         http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      */
     static protected array $rawStatusCode = [
         // 1xx : Informativo

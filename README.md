@@ -1,8 +1,11 @@
  PHP-Http
 ==========
 
-> [Aeon Digital](http://aeondigital.com.br)
+> [Aeon Digital](http://www.aeondigital.com.br)
+>
 > rianna@aeondigital.com.br
+
+&nbsp;
 
 Implementação das interfaces **Psr/Http/Message{...}**.
 

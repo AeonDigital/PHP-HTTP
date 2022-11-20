@@ -75,6 +75,14 @@ db-export:
 	make/makeActions.sh makeExecuteAfter "$@"
 
 #
+# Exporta o backup do banco de dados da aplicação e
+# substitui o atual arquivo bootstrap.
+db-bootstrap:
+	make/makeActions.sh makeExecuteBefore "$@"
+	make/modules/database/makeActions.sh dataBaseExport "1"
+	make/makeActions.sh makeExecuteAfter "$@"
+
+#
 # Executa um patch de correção ou atualização para o banco de dados.
 #
 # Informe o parametro 'file' para indicar qual arquivo de patch deverá ser
@@ -84,12 +92,4 @@ db-export:
 db-patch:
 	make/makeActions.sh makeExecuteBefore "$@"
 	make/modules/database/makeActions.sh dataBaseExecutePatch "${MAKECMDGOALS}"
-	make/makeActions.sh makeExecuteAfter "$@"
-
-#
-# Exporta o backup do banco de dados da aplicação e
-# substitui o atual bootstrap.
-db-bootstrap:
-	make/makeActions.sh makeExecuteBefore "$@"
-	make/modules/database/makeActions.sh dataBaseExport "1"
 	make/makeActions.sh makeExecuteAfter "$@"

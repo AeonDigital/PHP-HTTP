@@ -1,12 +1,12 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Stream\Stream as Stream;
+use AeonDigital\Http\Stream\PSRStream as PSRStream;
 
 require_once __DIR__ . "/../../phpunit.php";
-
-
 
 
 
@@ -38,6 +38,7 @@ class StreamTest extends TestCase
         $obj = new Stream($fileTest);
 
         $this->assertTrue(is_a($obj, Stream::class));
+        $this->assertTrue(is_a($obj->toPSR(), PSRStream::class));
     }
 
 

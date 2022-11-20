@@ -1,10 +1,10 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http;
 
 use AeonDigital\Interfaces\Http\iExecute as iExecute;
-
 
 
 
@@ -30,16 +30,16 @@ class Execute implements iExecute
      * Armazena o status de erro ocorrido após a última requisição.
      * O Valor vazio "" indica que nenhum erro ocorreu.
      *
-     * @var         string
+     * @var string
      */
     private static string $lastRequestError = "";
     /**
      * Retorna o status do último erro ocorrido após o a última requisição executada.
      * O Valor vazio "" indica que nenhum erro ocorreu.
      *
-     * @return      string
+     * @return string
      */
-    public static function getLastError() : string
+    public static function getLastError(): string
     {
         return self::$lastRequestError;
     }
@@ -51,25 +51,25 @@ class Execute implements iExecute
     /**
      * Efetua uma requisição ``Http`` e retorna uma string correspondente
      * ao conteúdo da URL que foi requisitada.
-     * 
+     *
      * Qualquer tipo de falha encontrada fará retornar ``null``.
      *
-     * @param       string $method
-     *              Método ``Http`` que será executado.
+     * @param string $method
+     * Método ``Http`` que será executado.
      *
-     * @param       string $absoluteURL
-     *              ``URL`` alvo.
+     * @param string $absoluteURL
+     * ``URL`` alvo.
      *
-     * @param       array $content
-     *              Array associativo com as chaves e valores que serão enviados.
+     * @param array $content
+     * Array associativo com as chaves e valores que serão enviados.
      *
-     * @param       array $headers
-     *              Array associativo com cabeçalhos ``Http`` para serem enviados na requisição.
+     * @param array $headers
+     * Array associativo com cabeçalhos ``Http`` para serem enviados na requisição.
      *
-     * @param       ?string $absolutePathToUploadFile
-     *              Caminho absoluto até um arquivo que se deseja efetuar o upload.
+     * @param ?string $absolutePathToUploadFile
+     * Caminho absoluto até um arquivo que se deseja efetuar o upload.
      *
-     * @return      ?string
+     * @return ?string
      */
     protected static function mainRequest(
         string $method,
@@ -77,7 +77,7 @@ class Execute implements iExecute
         array $content = [],
         array $headers = [],
         ?string $absolutePathToUploadFile = null
-    ) : ?string {
+    ): ?string {
         $r = null;
         $method = (($method === "") ? "GET" : \strtoupper($method));
 
@@ -109,7 +109,7 @@ class Execute implements iExecute
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        
+
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
@@ -145,26 +145,26 @@ class Execute implements iExecute
      * Efetua uma requisição ``Http``.
      * Qualquer tipo de falha encontrada fará retornar ``null``.
      *
-     * @param       string $method
-     *              Método ``Http`` que será executado.
+     * @param string $method
+     * Método ``Http`` que será executado.
      *
-     * @param       string $absoluteURL
-     *              ``URL`` alvo.
+     * @param string $absoluteURL
+     * ``URL`` alvo.
      *
-     * @param       array $content
-     *              Array associativo com as chaves e valores que serão enviados.
+     * @param array $content
+     * Array associativo com as chaves e valores que serão enviados.
      *
-     * @param       array $headers
-     *              Array associativo com cabeçalhos ``Http`` para serem enviados na requisição.
+     * @param array $headers
+     * Array associativo com cabeçalhos ``Http`` para serem enviados na requisição.
      *
-     * @return      ?string
+     * @return ?string
      */
     public static function request(
         string $method,
         string $absoluteURL,
         array $content = [],
         array $headers = []
-    ) : ?string {
+    ): ?string {
         return self::mainRequest($method, $absoluteURL, $content, $headers);
     }
 
@@ -176,23 +176,23 @@ class Execute implements iExecute
      * Efetua o download de um arquivo a partir de uma ``URL`` e salva-o no diretório indicado
      * com o nome escolhido.
      *
-     * @param       string $absoluteURL
-     *              ``URL`` de onde o arquivo será resgatado.
+     * @param string $absoluteURL
+     * ``URL`` de onde o arquivo será resgatado.
      *
-     * @param       string $absoluteSystemPathToDir
-     *              Diretório da aplicação onde o arquivo será salvo.
+     * @param string $absoluteSystemPathToDir
+     * Diretório da aplicação onde o arquivo será salvo.
      *
-     * @param       string $fileName
-     *              Nome usado para salvar o arquivo.
-     *              Se não informado será usado o nome original do mesmo.
+     * @param string $fileName
+     * Nome usado para salvar o arquivo.
+     * Se não informado será usado o nome original do mesmo.
      *
-     * @return      bool
+     * @return bool
      */
     public static function download(
         string $absoluteURL,
         string $absoluteSystemPathToDir,
         string $fileName = ""
-    ) : bool {
+    ): bool {
         $rBool = false;
 
         // Efetua o download do arquivo

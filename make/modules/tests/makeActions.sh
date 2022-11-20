@@ -1,23 +1,17 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+# myShellEnv v 1.0 [aeondigital.com.br]
+
+
+
+
+
+
 
 #
-# Carrega dependencias
-source "${PWD}/make/modules/makeEnvironment.sh"
-source "${MK_ROOT_PATH}/make/modules/makeTools.sh"
-source "${MK_ROOT_PATH}/make/mseStandAlone/loadScripts.sh";
-
-#
-# Se quiser,
-# defina um arquivo em 'make/makeEnvironment.sh' e use-o para
-# suas configurações personalizadas.
-if [ -f "${MK_MY_ENVIRONMENT_FILE}" ]; then
-  source "${MK_MY_ENVIRONMENT_FILE}"
-fi;
-
-
-
-
-
+# Carrega as ferramentas de uso geral
+. "${PWD}/make/standalone.sh"
+. "${PWD}/make/makeEnvironment.sh"
+. "${PWD}/make/makeTools.sh"
 
 
 
@@ -37,12 +31,12 @@ fi;
 # > make test file="path/to/tgtFile.php" method="tgtMethodName"
 performUnitTests() {
   if [ -z ${file+x} ]; then
-    docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --verbose --debug;
+    docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --verbose --debug
   else
     if [ -z ${method+x} ]; then
-      docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --colors=always --verbose --debug;
+      docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --colors=always --verbose --debug
     else
-      docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --filter "::${method}\$" "tests/src/${file}" --colors=always --verbose --debug;
+      docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --filter "::${method}\$" "tests/src/${file}" --colors=always --verbose --debug
     fi;
   fi;
 }
@@ -69,23 +63,23 @@ performUnitTests() {
 # > make test-cover file="path/to/tgtFile.php" output="html"
 performUnitCoverTests() {
   if [ -z ${file+x} ] && [ -z ${output+x} ]; then
-    docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-text;
+    docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-text
   else
     if [ -z ${file+x} ]; then
       if [ -z ${output+x} ] || [ ${output} == "text" ]; then
-        docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-text;
+        docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-text
       elif [ "${output}" == "html" ]; then
-        docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-html "tests/cover";
+        docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit --configuration "tests/phpunit.xml" --colors=always --coverage-html "tests/cover"
       else
-        echo "Parametro 'output' inválido. Use apenas 'text' ou 'html'.";
+        mse_inter_showAlert "f" "Parametro 'output' inválido. Use apenas 'text' ou 'html'."
       fi;
     else
       if [ -z ${output+x} ] || [ ${output} == "text" ]; then
-        docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --whitelist="tests/src/${file}" --colors=always --coverage-text;
+        docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --whitelist="tests/src/${file}" --colors=always --coverage-text
       elif [ "${output}" == "html" ]; then
-        docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --whitelist="tests/src/${file}" --coverage-html "tests/cover-file";
+        docker exec -it ${CONTAINER_WEBSERVER_NAME} vendor/bin/phpunit "tests/src/${file}" --whitelist="tests/src/${file}" --coverage-html "tests/cover-file"
       else
-        echo "Parametro 'output' inválido. Use apenas 'text' ou 'html'.";
+        mse_inter_showAlert "f" "Parametro 'output' inválido. Use apenas 'text' ou 'html'."
       fi;
     fi;
   fi;
