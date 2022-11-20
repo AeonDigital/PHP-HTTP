@@ -619,7 +619,6 @@ class Stream extends BObject implements iStream
 
 
 
-
     /**
      * Retorna uma instância deste mesmo objeto, porém, compatível com a interface
      * original ``Psr\Http\Message\StreamInterface``.
