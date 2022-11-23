@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AeonDigital\Http\Data;
 
-use AeonDigital\Interfaces\Http\Data\iFile as iFile;
-use AeonDigital\Interfaces\Http\Data\iFileCollection as iFileCollection;
+use AeonDigital\Interfaces\Http\Data\iUploadedFile as iUploadedFile;
+use AeonDigital\Interfaces\Http\Data\iUploadedFileCollection as iUploadedFileCollection;
 use AeonDigital\Http\Data\Abstracts\aHttpDataCollection as aHttpDataCollection;
 
 
@@ -24,7 +24,7 @@ use AeonDigital\Http\Data\Abstracts\aHttpDataCollection as aHttpDataCollection;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-class FileCollection extends aHttpDataCollection implements iFileCollection
+class UploadedFileCollection extends aHttpDataCollection implements iUploadedFileCollection
 {
 
 
@@ -107,14 +107,14 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
     {
         if (\is_array($value) === false) {
             $r = ($value === null ||
-                (\is_object($value) === true && \in_array(iFile::class, \class_implements($value)) === true)
+                (\is_object($value) === true && \in_array(iUploadedFile::class, \class_implements($value)) === true)
             );
         } else {
             $c = 0;
             foreach ($value as $v) {
                 if (
                     $v === null ||
-                    (\is_object($v) === true && \in_array(iFile::class, \class_implements($v)) === true)
+                    (\is_object($v) === true && \in_array(iUploadedFile::class, \class_implements($v)) === true)
                 ) {
                     $c++;
                 }
@@ -124,7 +124,7 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
 
 
         if ($r === false) {
-            $this->messageInvalidValue = "Invalid value. Expected instances need to implements interface " . iFile::class . ".";
+            $this->messageInvalidValue = "Invalid value. Expected instances need to implements interface " . iUploadedFile::class . ".";
         }
 
         return $r;
@@ -142,8 +142,6 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
     /**
      * Utiliza as informações da string indicada para iniciar uma nova coleção de dados.
      *
-     * @codeCoverageIgnore
-     *
      * @param string $str
      * String que será convertida em uma nova coleção.
      *
@@ -152,6 +150,8 @@ class FileCollection extends aHttpDataCollection implements iFileCollection
      * @throws \InvalidArgumentException
      * Caso a string passada seja inválida para construção de
      * uma nova coleção.
+     *
+     * @codeCoverageIgnore
      */
     public static function fromString(string $str): FileCollection
     {

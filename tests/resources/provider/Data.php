@@ -129,12 +129,12 @@ function prov_instanceOf_Http_CookieCollection_autoSet_02()
 
 
 
-function prov_instanceOf_Http_File(
+function prov_instanceOf_Http_UploadedFile(
     $fileStream,
     ?string $clientFilename = null,
     int $uploadError = UPLOAD_ERR_OK
 ) {
-    return new \AeonDigital\Http\Data\File(
+    return new \AeonDigital\Http\Data\UploadedFile(
         $fileStream,
         $clientFilename,
         $uploadError
@@ -143,16 +143,16 @@ function prov_instanceOf_Http_File(
 function prov_instanceOf_Http_File_fromFileName($fileName)
 {
     $fileStream = prov_instanceOf_Http_FileStream_fromFile($fileName);
-    return prov_instanceOf_Http_File($fileStream);
+    return prov_instanceOf_Http_UploadedFile($fileStream);
 }
 
 
 
-function prov_instanceOf_Http_FileCollection_01($fileStreams = null)
+function prov_instanceOf_Http_UploadedFileCollection_01($fileStreams = null)
 {
-    return new \AeonDigital\Http\Data\FileCollection($fileStreams);
+    return new \AeonDigital\Http\Data\UploadedFileCollection($fileStreams);
 }
-function prov_instanceOf_Http_FileCollection_02($fileNames = null)
+function prov_instanceOf_Http_UploadedFileCollection_02($fileNames = null)
 {
     $r = [];
     $counter = 1;
@@ -165,7 +165,7 @@ function prov_instanceOf_Http_FileCollection_02($fileNames = null)
         }
     }
 
-    return new \AeonDigital\Http\Data\FileCollection($r);
+    return new \AeonDigital\Http\Data\UploadedFileCollection($r);
 }
 
 
@@ -198,7 +198,7 @@ function prov_instanceOf_Http_QueryStringCollection_02($useQS = null)
         return new \AeonDigital\Http\Data\QueryStringCollection($baseQS);
     } else {
         if (is_array($useQS) === true) {
-            return new \AeonDigital\Http\Data\QueryStringCollection($baseQS);
+            return new \AeonDigital\Http\Data\QueryStringCollection($useQS);
         }
         elseif (is_string($useQS) === true) {
             return \AeonDigital\Http\Data\QueryStringCollection::fromString($useQS);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AeonDigital\Http\Data;
 
 use Psr\Http\Message\UploadedFileInterface as UploadedFileInterface;
-use AeonDigital\Interfaces\Http\Data\iFile as iFile;
+use AeonDigital\Interfaces\Http\Data\iUploadedFile as iUploadedFile;
 use AeonDigital\Interfaces\Stream\iFileStream as iFileStream;
 use AeonDigital\BObject as BObject;
 
@@ -25,7 +25,7 @@ use AeonDigital\BObject as BObject;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-class File extends BObject implements iFile
+class UploadedFile extends BObject implements iUploadedFile
 {
     use \AeonDigital\Http\Traits\MimeTypeData;
 
@@ -294,14 +294,53 @@ class File extends BObject implements iFile
 
     /**
      * Retorna uma instância deste mesmo objeto, porém, compatível com a interface
-     * original ``Psr\Http\Message\UploadedFileInterface``.
+     * em que foi baseada ``Psr\Http\Message\UploadedFileInterface``.
      */
     public function toPSR(): UploadedFileInterface
     {
-        return new \AeonDigital\Http\Data\PSRFile(
+        return new \AeonDigital\Http\Data\PSRUploadedFile(
             $this->getPathToFile(),
             $this->clientFilename,
             $this->uploadError
         );
+    }
+    /**
+     * A partir de um objeto ``Psr\Http\Message\UploadedFileInterface``, retorna um novo que implementa
+     * a interface ``AeonDigital\Interfaces\Http\Data\iUploadedFile``.
+     *
+     * Efetuará o ``detach`` do stream usado na instância passada para criar
+     * esta nova instância.
+     *
+     * @param UploadedFileInterface $obj
+     * Instância original.
+     *
+     * @return static
+     * Nova instância, sob nova interface.
+     *
+     * @throws \InvalidArgumentException
+     * Se por qualquer motivo não for possível retornar uma nova instância a partir da
+     * que foi passada
+     */
+    public static function fromPSR(UploadedFileInterface $obj): static
+    {
+        $wrapperData = $obj->getStream()->getMetadata();
+
+        if ($wrapperData !== null && \key_exists("uri", $wrapperData) === true) {
+            $fileStream = new \AeonDigital\Http\Stream\FileStream(
+                $wrapperData["uri"],
+                $wrapperData["mode"]
+            );
+
+            $obj->getStream()->detach();
+
+            return new \AeonDigital\Http\Data\UploadedFile(
+                $fileStream,
+                $obj->getClientFilename(),
+                $obj->getError()
+            );
+        }
+        else {
+            throw new \InvalidArgumentException("Cannot find the path to the original stream resource.");
+        }
     }
 }

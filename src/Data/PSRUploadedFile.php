@@ -6,8 +6,8 @@ namespace AeonDigital\Http\Data;
 
 use Psr\Http\Message\UploadedFileInterface as UploadedFileInterface;
 use Psr\Http\Message\StreamInterface as StreamInterface;
-use AeonDigital\Interfaces\Stream\iFileStream as iFileStream;
 use AeonDigital\BObject as BObject;
+
 
 
 
@@ -24,7 +24,7 @@ use AeonDigital\BObject as BObject;
  *
  * @codeCoverageIgnore
  */
-class PSRFile extends BObject implements UploadedFileInterface
+class PSRUploadedFile extends BObject implements UploadedFileInterface
 {
 
 
@@ -34,9 +34,9 @@ class PSRFile extends BObject implements UploadedFileInterface
     /**
      * Objeto principal.
      *
-     * @var AeonDigital\Http\Data\File
+     * @var AeonDigital\Http\Data\UploadedFile
      */
-    private \AeonDigital\Http\Data\File $file;
+    private \AeonDigital\Http\Data\UploadedFile $uFile;
 
 
 
@@ -62,7 +62,7 @@ class PSRFile extends BObject implements UploadedFileInterface
         string $clientFilename = "",
         int $uploadError = \UPLOAD_ERR_OK
     ) {
-        $this->file = new \AeonDigital\Http\Data\File(
+        $this->uFile = new \AeonDigital\Http\Data\UploadedFile(
             new \AeonDigital\Http\Stream\FileStream($absolutePathToFile),
             $clientFilename,
             $uploadError
@@ -84,7 +84,7 @@ class PSRFile extends BObject implements UploadedFileInterface
     public function getStream()
     {
         return new \AeonDigital\Http\Stream\PSRStream(
-            \fopen($this->file->getPathToFile(), "r")
+            \fopen($this->uFile->getPathToFile(), "r")
         );
     }
 
@@ -105,7 +105,7 @@ class PSRFile extends BObject implements UploadedFileInterface
      */
     public function moveTo($targetPath)
     {
-        $this->file->moveTo($targetPath);
+        $this->uFile->moveTo($targetPath);
     }
 
     /**
@@ -116,7 +116,7 @@ class PSRFile extends BObject implements UploadedFileInterface
      */
     public function getSize()
     {
-        return $this->file->getSize();
+        return $this->uFile->getSize();
     }
 
     /**
@@ -127,7 +127,7 @@ class PSRFile extends BObject implements UploadedFileInterface
      */
     public function getError()
     {
-        return $this->file->getError();
+        return $this->uFile->getError();
     }
 
     /**
@@ -137,7 +137,7 @@ class PSRFile extends BObject implements UploadedFileInterface
      */
     public function getClientFilename()
     {
-        return $this->file->getClientFilename();
+        return $this->uFile->getClientFilename();
     }
 
     /**
@@ -147,6 +147,6 @@ class PSRFile extends BObject implements UploadedFileInterface
      */
     public function getClientMediaType()
     {
-        return $this->file->getClientMediaType();
+        return $this->uFile->getClientMediaType();
     }
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use AeonDigital\Http\Data\File as File;
+use AeonDigital\Http\Data\UploadedFile as UploadedFile;
 
 require_once __DIR__ . "/../../phpunit.php";
 
@@ -12,7 +12,7 @@ require_once __DIR__ . "/../../phpunit.php";
 
 
 
-class FileTest extends TestCase
+class UploadedFileTest extends TestCase
 {
 
 
@@ -20,23 +20,23 @@ class FileTest extends TestCase
     public function test_constructor_ok()
     {
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
-        $obj = prov_instanceOf_Http_File($fileStream);
-        $this->assertTrue(is_a($obj, File::class));
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream);
+        $this->assertTrue(is_a($obj, UploadedFile::class));
     }
 
 
     public function test_method_get_stream()
     {
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
-        $obj = prov_instanceOf_Http_File($fileStream);
-        $this->assertTrue(is_a($obj, File::class));
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream);
+        $this->assertTrue(is_a($obj, UploadedFile::class));
     }
 
 
     public function test_method_get_client_filename()
     {
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
-        $obj = prov_instanceOf_Http_File($fileStream, "another-name.jpg");
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream, "another-name.jpg");
         $this->assertSame("another-name.jpg", $obj->getClientFilename());
     }
 
@@ -44,7 +44,7 @@ class FileTest extends TestCase
     public function test_method_get_size()
     {
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
-        $obj = prov_instanceOf_Http_File($fileStream);
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream);
         $this->assertSame(10552, $obj->getSize());
     }
 
@@ -55,7 +55,7 @@ class FileTest extends TestCase
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
 
         $expected = to_system_path($dirFiles . "/image-resource.jpg");
-        $obj = prov_instanceOf_Http_File($fileStream);
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream);
         $this->assertSame($expected, $obj->getPathToFile());
     }
 
@@ -63,7 +63,7 @@ class FileTest extends TestCase
     public function test_method_get_client_file_name()
     {
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
-        $obj = prov_instanceOf_Http_File($fileStream);
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream);
         $this->assertSame("image-resource.jpg", $obj->getClientFilename());
     }
 
@@ -72,10 +72,10 @@ class FileTest extends TestCase
     {
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
 
-        $obj = prov_instanceOf_Http_File($fileStream);
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream);
         $this->assertSame("image/jpeg", $obj->getClientMediaType());
 
-        $obj = prov_instanceOf_Http_File($fileStream, "another-extension.txt");
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream, "another-extension.txt");
         $this->assertSame("text/plain", $obj->getClientMediaType());
     }
 
@@ -83,7 +83,7 @@ class FileTest extends TestCase
     public function test_method_get_error()
     {
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
-        $obj = prov_instanceOf_Http_File($fileStream, "another-name.jpg", 10);
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream, "another-name.jpg", 10);
         $this->assertSame(10, $obj->getError());
     }
 
@@ -92,7 +92,7 @@ class FileTest extends TestCase
     {
         global $dirFiles;
         $fileStream = prov_instanceOf_Http_FileStream_fromFile("image-resource.jpg");
-        $obj = prov_instanceOf_Http_File($fileStream);
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream);
 
         $expected = to_system_path($dirFiles . "/image-resource.jpg");
         $this->assertSame($fileStream, $obj->getStream());
@@ -119,7 +119,7 @@ class FileTest extends TestCase
 
         $expected1 = to_system_path($dirFiles . "/image-resource.jpg");
 
-        $obj = prov_instanceOf_Http_File($fileStream);
+        $obj = prov_instanceOf_Http_UploadedFile($fileStream);
         $this->assertSame($expected1, $obj->getPathToFile());
 
 

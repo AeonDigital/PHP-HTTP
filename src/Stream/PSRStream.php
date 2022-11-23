@@ -304,8 +304,6 @@ class PSRStream extends BObject implements StreamInterface
      * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
      *
      * @return string
-     *
-     * @codeCoverageIgnore
      */
     public function __toString()
     {
