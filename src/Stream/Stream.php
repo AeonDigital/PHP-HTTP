@@ -530,21 +530,24 @@ class Stream extends BObject implements iStream
      *
      * @return ?resource
      */
-    public function detach()
+    public function detach(): mixed
     {
-        $stream = $this->stream;
+        if ($this->stream !== null) {
+            $stream = $this->stream;
 
-        $this->stream = null;
-        $this->isPipe = false;
-        $this->size = null;
+            $this->stream = null;
+            $this->isPipe = false;
+            $this->size = null;
 
-        $this->metaData = null;
+            $this->metaData = null;
 
-        $this->seekable = false;
-        $this->writable = false;
-        $this->readable = false;
+            $this->seekable = false;
+            $this->writable = false;
+            $this->readable = false;
 
-        return $stream;
+            return $stream;
+        }
+        return null;
     }
 
 
@@ -621,10 +624,27 @@ class Stream extends BObject implements iStream
 
     /**
      * Retorna uma instância deste mesmo objeto, porém, compatível com a interface
-     * original ``Psr\Http\Message\StreamInterface``.
+     * em que foi baseada ``Psr\Http\Message\StreamInterface``.
      */
     public function toPSR(): StreamInterface
     {
         return new \AeonDigital\Http\Stream\PSRStream($this->stream);
+    }
+    /**
+     * A partir de um objeto ``Psr\Http\Message\StreamInterface``, retorna um novo que implementa
+     * a interface ``AeonDigital\Interfaces\Stream\iStream``.
+     *
+     * Efetuará o ``detach`` do stream usado na instância passada para criar
+     * esta nova instância.
+     *
+     * @param StreamInterface $obj
+     * Instância original.
+     *
+     * @return static
+     * Nova instância, sob nova interface.
+     */
+    public static function fromPSR(StreamInterface $obj): static
+    {
+        return new \AeonDigital\Http\Stream\Stream($obj->detach());
     }
 }

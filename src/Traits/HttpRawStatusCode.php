@@ -35,9 +35,9 @@ trait HttpRawStatusCode
      *
      * ```php
      *      $arr = [
-     *          // int      "key"       Código Http.
-     *          // string   "value"     Mensagem.
      *          "key" => "value"
+     *          // "key"    (int)       Código Http.
+     *          // "value"  (string)    Mensagem.
      *      ];
      * ```
      *
@@ -45,7 +45,7 @@ trait HttpRawStatusCode
      *
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      */
-    static protected array $rawStatusCode = [
+    protected static array $rawStatusCode = [
         // 1xx : Informativo
         100 => "Continue",
         101 => "Switching Protocols",

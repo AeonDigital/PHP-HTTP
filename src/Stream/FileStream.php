@@ -146,7 +146,8 @@ class FileStream extends Stream implements iFileStream
      * @return void
      *
      * @throws \InvalidArgumentException
-     * Caso o arquivo indicado não exista.
+     * Caso o arquivo indicado não exista ou se o modo de abertura do novo stream
+     * não for válido.
      */
     public function setFileStream(string $pathToFile, ?string $openMode = null): void
     {
