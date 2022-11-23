@@ -32,7 +32,7 @@ class aAbsoluteUriTest extends TestCase
         $this->assertTrue(is_a($nMock, AbsoluteUri::class));
 
 
-        $nURL = new AeonDigital\Http\Uri\Url(
+        $nURI = new AeonDigital\Http\Uri\Uri(
             "https",
             "username",
             "pass1@234",
@@ -42,7 +42,7 @@ class aAbsoluteUriTest extends TestCase
             "par1=val#lue&PAR2=m!sturall",
             "sam3d^oc§s"
         );
-        $this->assertTrue(is_a($nURL, AeonDigital\Http\Uri\Url::class));
+        $this->assertTrue(is_a($nURI, AeonDigital\Http\Uri\Uri::class));
     }
 
 

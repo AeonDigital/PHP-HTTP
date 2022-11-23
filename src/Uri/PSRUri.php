@@ -13,7 +13,7 @@ use AeonDigital\BObject as BObject;
 
 
 /**
- * Classe concreta de uma Url.
+ * Classe concreta de uma Uri.
  *
  * Esta classe implementa a interface ``Psr\Http\Message\UriInterface``.
  *
@@ -24,7 +24,7 @@ use AeonDigital\BObject as BObject;
  *
  * @codeCoverageIgnore
  */
-class PSRUrl extends BObject implements UriInterface
+class PSRUri extends BObject implements UriInterface
 {
 
 
@@ -34,14 +34,14 @@ class PSRUrl extends BObject implements UriInterface
     /**
      * Objeto principal.
      *
-     * @var AeonDigital\Http\Uri\Url
+     * @var AeonDigital\Http\Uri\Uri
      */
-    private \AeonDigital\Http\Uri\Url $url;
+    private \AeonDigital\Http\Uri\Uri $uri;
 
 
 
     /**
-     * Inicia uma instância ``Url``.
+     * Inicia uma instância ``Uri``.
      *
      * @param string $scheme
      * Define o ``scheme`` usado pelo ``URI``.
@@ -82,7 +82,7 @@ class PSRUrl extends BObject implements UriInterface
         string $query = "",
         string $fragment = ""
     ) {
-        $this->stream = new \AeonDigital\Http\Uri\Url(
+        $this->stream = new \AeonDigital\Http\Uri\Uri(
             $scheme,
             $user,
             $password,
@@ -105,7 +105,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function getScheme()
     {
-        return $this->url->getScheme();
+        return $this->uri->getScheme();
     }
 
     /**
@@ -128,7 +128,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function getAuthority()
     {
-        return $this->url->getAuthority();
+        return $this->uri->getAuthority();
     }
 
     /**
@@ -147,7 +147,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function getUserInfo()
     {
-        return $this->url->getUserInfo();
+        return $this->uri->getUserInfo();
     }
 
     /**
@@ -157,7 +157,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function getHost()
     {
-        return $this->url->getHost();
+        return $this->uri->getHost();
     }
 
     /**
@@ -168,7 +168,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function getPort()
     {
-        return $this->url->getPort();
+        return $this->uri->getPort();
     }
 
     /**
@@ -179,7 +179,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function getPath()
     {
-        return $this->url->getPath();
+        return $this->uri->getPath();
     }
 
     /**
@@ -194,7 +194,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function getQuery()
     {
-        return $this->url->getQuery();
+        return $this->uri->getQuery();
     }
 
     /**
@@ -209,7 +209,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function getFragment()
     {
-        return $this->url->getFragment();
+        return $this->uri->getFragment();
     }
 
     /**
@@ -226,7 +226,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function withScheme($scheme)
     {
-        return $this->url->withScheme();
+        return $this->uri->withScheme();
     }
 
     /**
@@ -246,7 +246,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function withUserInfo($user, $password = null)
     {
-        return $this->url->withUserInfo($user, $password);
+        return $this->uri->withUserInfo($user, $password);
     }
 
     /**
@@ -263,7 +263,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function withHost($host)
     {
-        return $this->url->withHost($host);
+        return $this->uri->withHost($host);
     }
 
     /**
@@ -280,7 +280,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function withPort($port)
     {
-        return $this->url->withPort($port);
+        return $this->uri->withPort($port);
     }
 
     /**
@@ -297,7 +297,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function withPath($path)
     {
-        return $this->url->withPath($path);
+        return $this->uri->withPath($path);
     }
 
     /**
@@ -314,7 +314,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function withQuery($query)
     {
-        return $this->url->withQuery($query);
+        return $this->uri->withQuery($query);
     }
 
     /**
@@ -331,7 +331,7 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function withFragment($fragment)
     {
-        return $this->url->withFragment($fragment);
+        return $this->uri->withFragment($fragment);
     }
 
     /**
@@ -341,6 +341,6 @@ class PSRUrl extends BObject implements UriInterface
      */
     public function __toString()
     {
-        return (string)$this->url;
+        return (string)$this->uri;
     }
 }
