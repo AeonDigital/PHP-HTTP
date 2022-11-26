@@ -15,5 +15,6 @@ require_once "provider/Data.php";
 require_once "provider/Message.php";
 require_once "class/Message/Message.php";
 
-
+/*
 require_once "provider/Factory.php";
+*/

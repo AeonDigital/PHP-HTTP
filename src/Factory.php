@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace AeonDigital\Http;
 
 use AeonDigital\Interfaces\Http\iFactory as iFactory;
-use AeonDigital\Interfaces\Http\Uri\iUrl as iUrl;
+use AeonDigital\Interfaces\Http\Uri\iUri as iUri;
 use AeonDigital\Interfaces\Http\Message\iRequest as iRequest;
 use AeonDigital\Interfaces\Http\Message\iResponse as iResponse;
 use AeonDigital\Interfaces\Http\Message\iServerRequest as iServerRequest;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 use AeonDigital\Interfaces\Http\Data\iCookieCollection as iCookieCollection;
 use AeonDigital\Interfaces\Http\Data\iQueryStringCollection as iQueryStringCollection;
-use AeonDigital\Interfaces\Http\Data\iFileCollection as iFileCollection;
+use AeonDigital\Interfaces\Http\Data\iUploadedFileCollection as iUploadedFileCollection;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\Interfaces\Stream\iFileStream as iFileStream;
 use AeonDigital\Interfaces\Collection\iCollection as iCollection;
@@ -94,14 +94,14 @@ class Factory extends BObject implements iFactory
     /**
      * Retorna uma coleção de headers baseado nos valores passados.
      *
-     * O objeto retornado deve implementar a interface ``AeonDigital\Interfaces\Http\Data\iFileCollection``.
+     * O objeto retornado deve implementar a interface ``AeonDigital\Interfaces\Http\Data\iUploadedFileCollection``.
      *
      * @param ?array $initialValues
      * Valores iniciais para a coleção de cookies.
      *
-     * @return iFileCollection
+     * @return iUploadedFileCollection
      */
-    public function createFileCollection(?array $initialValues = null): iFileCollection
+    public function createUploadedFileCollection(?array $initialValues = null): iUploadedFileCollection
     {
         return new \AeonDigital\Http\Data\FileCollection($initialValues);
     }
@@ -134,19 +134,19 @@ class Factory extends BObject implements iFactory
 
 
     /**
-     * Retorna um objeto que implemente a interface ``AeonDigital\Interfaces\Http\Uri\iUrl``.
+     * Retorna um objeto que implemente a interface ``AeonDigital\Interfaces\Http\Uri\iUri``.
      *
      * @param string $uri
      * Uri.
      *
-     * @return iUrl
+     * @return iUri
      *
      * @throws \InvalidArgumentException
      * Caso a ``uri`` passada seja inválida.
      */
-    public function createUri(string $uri = ""): iUrl
+    public function createUri(string $uri = ""): iUri
     {
-        return \AeonDigital\Http\Uri\Url::fromString($uri);
+        return \AeonDigital\Http\Uri\Uri::fromString($uri);
     }
 
 
@@ -293,8 +293,8 @@ class Factory extends BObject implements iFactory
      * @param ?iQueryStringCollection $queryStrings
      * Objeto que implementa ``iQueryStringCollection`` cotendo os queryStrings da ``URI``.
      *
-     * @param ?iFileCollection $files
-     * Objeto que implementa ``iFileCollection`` cotendo os arquivos enviados nesta
+     * @param ?iUploadedFileCollection $files
+     * Objeto que implementa ``iUploadedFileCollection`` cotendo os arquivos enviados nesta
      * requisição.
      *
      * @param ?array $serverParans
@@ -322,7 +322,7 @@ class Factory extends BObject implements iFactory
         ?iStream $body = null,
         ?iCookieCollection $cookies = null,
         ?iQueryStringCollection $queryStrings = null,
-        ?iFileCollection $files = null,
+        ?iUploadedFileCollection $files = null,
         ?array $serverParans = null,
         ?iCollection $attributes = null,
         ?iCollection $bodyParsers = null
@@ -334,7 +334,7 @@ class Factory extends BObject implements iFactory
         $body = (($body === null) ? $this->createStreamFromBodyRequest() : $body);
         $cookies = (($cookies === null) ? $this->createCookieCollection() : $cookies);
         $queryStrings = (($queryStrings === null) ? $this->createQueryStringCollection() : $queryStrings);
-        $files = (($files === null) ? $this->createFileCollection() : $files);
+        $files = (($files === null) ? $this->createUploadedFileCollection() : $files);
         $serverParans = (($serverParans === null) ? [] : $serverParans);
         $attributes = (($attributes === null) ? $this->createCollection() : $attributes);
         $bodyParsers = (($bodyParsers === null) ? $this->createCollection() : $bodyParsers);

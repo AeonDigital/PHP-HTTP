@@ -27,7 +27,6 @@ use AeonDigital\BObject as BObject;
  */
 class UploadedFile extends BObject implements iUploadedFile
 {
-    use \AeonDigital\Http\Traits\MimeTypeData;
 
 
 
@@ -120,7 +119,8 @@ class UploadedFile extends BObject implements iUploadedFile
     public function getClientMediaType(): string
     {
         if ($this->clientFilename !== $this->fileStream->getFilename()) {
-            return $this->retrieveFileMimeType($this->clientFilename);
+            $tmpMimes = \file_get_mimetypes($this->clientFilename) ?? ["application/octet-stream"];
+            return $tmpMimes[0];
         } else {
             return $this->fileStream->getMimeType();
         }

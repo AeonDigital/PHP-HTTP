@@ -16,8 +16,6 @@ use Psr\Http\Server\MiddlewareInterface as MiddlewareInterface;
  * Responsável por coordenar e executar uma lista de processos (Middlewares) a serem efetuados
  * para uma requisição e ao fim, executar o próprio manipulador da requisição realizada pelo ``UA``.
  *
- * @codeCoverageIgnore
- *
  * @package     AeonDigital\EnGarde
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
  * @copyright   2020, Rianna Cantarelli

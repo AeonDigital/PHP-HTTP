@@ -66,7 +66,7 @@ class FileStreamTest extends TestCase
     public function test_method_getMimeType()
     {
         $obj = prov_instanceOf_Http_FileStream_fromFile("original-resource.md");
-        $this->assertSame("text/markdown", $obj->getMimeType());
+        $this->assertSame("application/octet-stream", $obj->getMimeType());
     }
 
 
@@ -78,7 +78,7 @@ class FileStreamTest extends TestCase
         $correctPath = to_system_path($dirFiles . "/original-resource.md");
         $this->assertSame($correctPath, $obj->getPathToFile());
         $this->assertSame("original-resource.md", $obj->getFilename());
-        $this->assertSame("text/markdown", $obj->getMimeType());
+        $this->assertSame("application/octet-stream", $obj->getMimeType());
 
 
         $obj->setFileStream($dirFiles . "/test-image.jpg");

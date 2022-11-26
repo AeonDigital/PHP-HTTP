@@ -267,14 +267,17 @@ class FactoryTest extends TestCase
         $nMock = prov_instanceOf_Http_Factory();
 
         $useBody = "Test Body";
-        $testFile = realpath(to_system_path(__DIR__ . "/../resources/streamDataFile.txt"));
-        $useStream = fopen($testFile, "w+");
+        $useFilePath = realpath(to_system_path(__DIR__ . "/../resources/streamDataFile.txt"));
+        $useStream = fopen($useFilePath, "w+");
         fwrite($useStream, $useBody);
 
         $newObj = $nMock->createStreamFromResource($useStream);
 
         $this->assertTrue(in_array("AeonDigital\\Interfaces\\Stream\\iStream", class_implements($newObj)));
         $this->assertSame($useBody, (string)$newObj);
+
+        fclose($useStream);
+        unlink($useFilePath);
     }
 
 

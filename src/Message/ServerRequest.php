@@ -36,7 +36,6 @@ use AeonDigital\Http\Message\Request as Request;
 class ServerRequest extends Request implements iServerRequest
 {
     use \AeonDigital\Http\Traits\ParseQualityHeaders;
-    use \AeonDigital\Http\Traits\MimeTypeData;
 
 
 

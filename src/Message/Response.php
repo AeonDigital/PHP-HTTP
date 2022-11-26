@@ -7,6 +7,7 @@ use AeonDigital\Interfaces\Http\Message\iResponse as iResponse;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 use AeonDigital\Http\Message\Abstracts\aMessage as aMessage;
+use AeonDigital\Iana\Iana as Iana;
 
 
 
@@ -28,7 +29,6 @@ use AeonDigital\Http\Message\Abstracts\aMessage as aMessage;
  */
 class Response extends aMessage implements iResponse
 {
-    use \AeonDigital\Http\Traits\HttpRawStatusCode;
 
 
 
@@ -191,8 +191,8 @@ class Response extends aMessage implements iResponse
         $clone->reasonPhrase = $reasonPhrase;
 
 
-        if ($reasonPhrase === "" && isset(self::$rawStatusCode[$code]) === true) {
-            $clone->reasonPhrase = self::$rawStatusCode[$code];
+        if ($reasonPhrase === "" && isset(Iana::HTTPStatusCode[$code]) === true) {
+            $clone->reasonPhrase = Iana::HTTPStatusCode[$code];
         }
 
         return $clone;
@@ -426,8 +426,8 @@ class Response extends aMessage implements iResponse
         $this->viewData     = $viewData;
         $this->viewConfig   = $viewConfig;
 
-        if ($reasonPhrase === "" && isset(self::$rawStatusCode[$statusCode]) === true) {
-            $this->reasonPhrase = self::$rawStatusCode[$statusCode];
+        if ($reasonPhrase === "" && isset(Iana::HTTPStatusCode[$statusCode]) === true) {
+            $this->reasonPhrase = Iana::HTTPStatusCode[$statusCode];
         }
     }
 }

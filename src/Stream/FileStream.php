@@ -23,7 +23,6 @@ use AeonDigital\Http\Stream\Stream as Stream;
  */
 class FileStream extends Stream implements iFileStream
 {
-    use \AeonDigital\Http\Traits\MimeTypeData;
 
 
 
@@ -188,6 +187,8 @@ class FileStream extends Stream implements iFileStream
         $this->openMode = $openMode;
         $this->pathToFile = $pathToFile;
         $this->fileName = \basename($pathToFile);
-        $this->mimeType = $this->retrieveFileMimeType($pathToFile);
+
+        $tmpMimes = \file_get_mimetypes($pathToFile) ?? ["application/octet-stream"];
+        $this->mimeType = $tmpMimes[0];
     }
 }

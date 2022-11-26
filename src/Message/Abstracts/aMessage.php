@@ -1,10 +1,10 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Message\Abstracts;
 
-use Psr\Http\Message\MessageInterface as MessageInterface;
-use Psr\Http\Message\StreamInterface as StreamInterface;
+use AeonDigital\Interfaces\Http\Message\iMessage as iMessage;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 use AeonDigital\BObject as BObject;
@@ -19,21 +19,25 @@ use AeonDigital\BObject as BObject;
  * seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
  * instância com a alteração necessária para o novo estado.
  *
- * Esta classe implementa a interface interface
- * ``Psr\Http\Message\MessageInterface``.
+ * Esta classe é compatível com a PSR ``Psr\Http\Message\MessageInterface`` mas não a implementa
+ * de forma direta. Veja mais informações nas classes derivadas:
+ * - ``Request``
+ * - ``Response``
+ * - ``ServerRequest``
  *
- * @see         http://www.php-fig.org/psr/
  *
- * @see         http://www.ietf.org/rfc/rfc7230.txt
+ * @see http://www.php-fig.org/psr/
  *
- * @see         http://www.ietf.org/rfc/rfc7231.txt
+ * @see http://www.ietf.org/rfc/rfc7230.txt
+ *
+ * @see http://www.ietf.org/rfc/rfc7231.txt
  *
  * @package     AeonDigital\Http\Message
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-abstract class aMessage extends BObject implements MessageInterface
+abstract class aMessage extends BObject implements iMessage
 {
     use \AeonDigital\Traits\MainCheckArgumentException;
 
@@ -44,18 +48,18 @@ abstract class aMessage extends BObject implements MessageInterface
      * Retorna um clone da instância atual e toma cuidado para
      * clonar também qualquer objeto interno que ela possua.
      *
-     * @param       ?iHeaderCollection $useHeaders
-     *              Objeto "header" para o clone.
+     * @param ?iHeaderCollection $useHeaders
+     * Objeto "header" para o clone.
      *
-     * @param       ?iStream $useBody
-     *              Objeto "body" para o clone.
+     * @param ?iStream $useBody
+     * Objeto "body" para o clone.
      *
-     * @return      static
+     * @return static
      */
     private function cloneThisInstance(
         ?iHeaderCollection $useHeaders = null,
         ?iStream $useBody = null
-    ) {
+    ): static {
         $clone = clone $this;
 
         $clone->headers = (($useHeaders === null) ? clone $this->headers : $useHeaders);
@@ -76,15 +80,15 @@ abstract class aMessage extends BObject implements MessageInterface
     /**
      * Versão do protocolo Http da mensagem.
      *
-     * @var         string
+     * @var string
      */
     protected $protocolVersion = null;
     /**
      * Retorna a versão do protocolo Http sendo usado.
      *
-     * @return      string
+     * @return string
      */
-    public function getProtocolVersion() : string
+    public function getProtocolVersion(): string
     {
         return $this->protocolVersion;
     }
@@ -96,27 +100,27 @@ abstract class aMessage extends BObject implements MessageInterface
     /**
      * Verifica se o "protocolVersion" indicado é válido.
      *
-     * @param       string $protocolVersion
-     *              Valor que será testado.
+     * @param string $protocolVersion
+     * Valor que será testado.
      *
-     * @param       bool $throw
-     *              Quando "true" irá lançar uma exception em caso de falha.
+     * @param bool $throw
+     * Quando "true" irá lançar uma exception em caso de falha.
      *
-     * @return      bool
+     * @return bool
      *
-     * @throws      \InvalidArgumentException
-     *              Caso o "protocolVersion" definido seja inválido e $throw seja "true".
+     * @throws \InvalidArgumentException
+     * Caso o "protocolVersion" definido seja inválido e $throw seja "true".
      */
-    protected function validateProtocolVersion($protocolVersion, bool $throw = false) : bool
+    protected function validateProtocolVersion(string $protocolVersion, bool $throw = false): bool
     {
         $this->mainCheckForInvalidArgumentException(
-            "protocolVersion", $protocolVersion,
+            "protocolVersion",
+            $protocolVersion,
             [
-                ["validate" => "is string"],
                 [
                     "validate" => "is allowed value",
                     "allowedValues" => ["1.0", "1.1", "2.0", "2"]
-                ],
+                ]
             ],
             $throw
         );
@@ -126,15 +130,15 @@ abstract class aMessage extends BObject implements MessageInterface
      * Este método DEVE manter o estado da instância atual e retornar
      * uma nova instância contendo o "protocolVersion" especificado.
      *
-     * @param       string $protocolVersion
-     *              O novo valor para "protocolVersion" na nova instância.
+     * @param string $protocolVersion
+     * O novo valor para "protocolVersion" na nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para "protocolVersion".
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para "protocolVersion".
      */
-    public function withProtocolVersion($protocolVersion)
+    public function withProtocolVersion(string $protocolVersion): static
     {
         $this->validateProtocolVersion($protocolVersion, true);
 
@@ -156,9 +160,9 @@ abstract class aMessage extends BObject implements MessageInterface
     /**
      * Objeto que implementa "iHeaderCollection".
      *
-     * @var         iHeaderCollection
+     * @var iHeaderCollection
      */
-    protected $headers = null;
+    protected iHeaderCollection $headers;
     /**
      * Retorna um array associativo onde cada chave é um header Http
      * usado na mensagem.
@@ -167,9 +171,9 @@ abstract class aMessage extends BObject implements MessageInterface
      *
      * O formato do nome do header é mantido conforme ele foi definido.
      *
-     * @return      array[][]
+     * @return array[][]
      */
-    public function getHeaders() : array
+    public function getHeaders(): array
     {
         return $this->headers->toArray(true);
     }
@@ -182,12 +186,12 @@ abstract class aMessage extends BObject implements MessageInterface
      * Verifica se um determinado header já existe.
      * Esta método é "case-insensitive".
      *
-     * @param       string $name
-     *              Nome do header alvo.
+     * @param string $name
+     * Nome do header alvo.
      *
-     * @return      bool
+     * @return bool
      */
-    public function hasHeader($name) : bool
+    public function hasHeader(string $name): bool
     {
         return $this->headers->has($name);
     }
@@ -196,12 +200,12 @@ abstract class aMessage extends BObject implements MessageInterface
      * no momento. Um array vazio será retornado caso o header não exista.
      * Esta método é "case-insensitive".
      *
-     * @param       string $name
-     *              Nome do header alvo.
+     * @param string $name
+     * Nome do header alvo.
      *
-     * @return      array
+     * @return array
      */
-    public function getHeader($name) : array
+    public function getHeader(string $name): array
     {
         return (($this->headers->has($name) === true) ? $this->headers->get($name) : []);
     }
@@ -212,12 +216,12 @@ abstract class aMessage extends BObject implements MessageInterface
      *
      * Uma string vazia será retornada caso o header não exista.
      *
-     * @param       string $name
-     *              Nome do header alvo.
+     * @param string $name
+     * Nome do header alvo.
      *
-     * @return      string
+     * @return string
      */
-    public function getHeaderLine($name) : string
+    public function getHeaderLine(string $name): string
     {
         $str = "";
 
@@ -239,21 +243,23 @@ abstract class aMessage extends BObject implements MessageInterface
      * caso já exista um para a chave indicada..
      *
      *
-     * @param       string $name
-     *              Nome do header.
+     * @param string $name
+     * Nome do header.
      *
-     * @param       string|array $value
-     *              Valor do header.
+     * @param string|array $value
+     * Valor do header.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para o nome ou valor do header.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para o nome ou valor do header.
      */
-    public function withHeader($name, $value)
+    public function withHeader(string $name, string|array $value): static
     {
         $this->mainCheckForInvalidArgumentException(
-            "name", $name, ["is string not empty"]
+            "name",
+            $name,
+            ["is string not empty"]
         );
 
         $clone = $this->cloneThisInstance();
@@ -272,21 +278,23 @@ abstract class aMessage extends BObject implements MessageInterface
      * valor informado.
      *
      *
-     * @param       string $name
-     *              Nome do header.
+     * @param string $name
+     * Nome do header.
      *
-     * @param       string|array $value
-     *              Valores a serem adicionados ao header.
+     * @param string|array $value
+     * Valores a serem adicionados ao header.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para o nome ou valor do header.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para o nome ou valor do header.
      */
-    public function withAddedHeader($name, $value)
+    public function withAddedHeader(string $name, string|array $value): static
     {
         $this->mainCheckForInvalidArgumentException(
-            "name", $name, ["is string not empty"]
+            "name",
+            $name,
+            ["is string not empty"]
         );
 
         $clone = $this->cloneThisInstance();
@@ -298,18 +306,20 @@ abstract class aMessage extends BObject implements MessageInterface
      * Este método DEVE manter o estado da instância atual e retornar
      * uma nova instância sem o "header" especificado.
      *
-     * @param       string $name
-     *              Nome do header.
+     * @param string $name
+     * Nome do header.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para o nome do header.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para o nome do header.
      */
-    public function withoutHeader($name)
+    public function withoutHeader(string $name): static
     {
         $this->mainCheckForInvalidArgumentException(
-            "name", $name, ["is string not empty"]
+            "name",
+            $name,
+            ["is string not empty"]
         );
 
         $clone = $this->cloneThisInstance();
@@ -330,18 +340,18 @@ abstract class aMessage extends BObject implements MessageInterface
     /**
      * "Stream" que representa o corpo da mensagem.
      *
-     * @var         iStream
+     * @var iStream
      */
     protected iStream $body;
     /**
      * Retorna o objeto "Stream" que forma o corpo da mensagem Http.
      * O objeto deve implementar a interface "iStream".
      *
-     * @see         http://www.php-fig.org/psr/
+     * @see http://www.php-fig.org/psr/
      *
-     * @return      iStream
+     * @return iStream
      */
-    public function getBody() : iStream
+    public function getBody(): iStream
     {
         return $this->body;
     }
@@ -349,15 +359,15 @@ abstract class aMessage extends BObject implements MessageInterface
      * Este método DEVE manter o estado da instância atual e retornar
      * uma nova instância contendo o "body" especificado.
      *
-     * @param       StreamInterface $body
-     *              Objeto "StreamInterface".
+     * @param iStream $body
+     * Objeto "iStream".
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para o novo "body".
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para o novo "body".
      */
-    public function withBody(StreamInterface $body)
+    public function withBody(iStream $body): static
     {
         return $this->cloneThisInstance(null, $body);
     }
@@ -384,17 +394,17 @@ abstract class aMessage extends BObject implements MessageInterface
     /**
      * Inicia um novo objeto que representa uma mensagem Http.
      *
-     * @param       string $version
-     *              Versão do protocolo Http
+     * @param string $version
+     * Versão do protocolo Http
      *
-     * @param       iHeaderCollection $headers
-     *              Objeto que implementa "iHeaderCollection"
-     *              cotendo os cabeçalhos da requisição.
+     * @param iHeaderCollection $headers
+     * Objeto que implementa "iHeaderCollection"
+     * cotendo os cabeçalhos da requisição.
      *
-     * @param       iStream $body
-     *              Objeto "Stream" representando o corpo da mensagem.
+     * @param iStream $body
+     * Objeto "Stream" representando o corpo da mensagem.
      *
-     * @throws      \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     function __construct(
         string $version,
@@ -406,26 +416,5 @@ abstract class aMessage extends BObject implements MessageInterface
         $this->protocolVersion = $version;
         $this->headers = $headers;
         $this->body = $body;
-    }
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Desabilita a função mágica "__set" para assegurar a imutabilidade
-     * da instância conforme definido na interface "iUri".
-     *
-     * @codeCoverageIgnore
-     *
-     */
-    public function __set($name, $value)
-    {
-        // Não produz efeito
     }
 }
