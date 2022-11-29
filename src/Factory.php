@@ -393,7 +393,7 @@ class Factory extends BObject implements iFactory
      * @param ?iStream $body
      * Objeto ``stream`` que faz parte do corpo da mensagem.
      *
-     * @param ?\StdClass $viewData
+     * @param ?\stdClass $viewData
      * Objeto ``viewData``.
      *
      * @param ?string $mime
@@ -413,7 +413,7 @@ class Factory extends BObject implements iFactory
         ?string $httpVersion = null,
         ?iHeaderCollection $headers = null,
         ?iStream $body = null,
-        ?\StdClass $viewData = null,
+        ?\stdClass $viewData = null,
         ?string $mime = null,
         ?string $locale = null
     ): iResponse {

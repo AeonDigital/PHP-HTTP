@@ -63,10 +63,10 @@ class PSRResponse implements ResponseInterface
      * @param StreamInterface $body
      * Objeto ``stream`` que faz parte do corpo da mensagem.
      *
-     * @param ?\StdClass $viewData
+     * @param ?\stdClass $viewData
      * Objeto ``viewData``.
      *
-     * @param ?\StdClass $viewConfig
+     * @param ?\stdClass $viewConfig
      * Objeto ``viewConfig``.
      *
      * @throws \InvalidArgumentException
@@ -77,8 +77,8 @@ class PSRResponse implements ResponseInterface
         string $httpVersion,
         iHeaderCollection $headers,
         StreamInterface $body,
-        ?\StdClass $viewData = null,
-        ?\StdClass $viewConfig = null
+        ?\stdClass $viewData = null,
+        ?\stdClass $viewConfig = null
     ) {
         $this->mainObj = new \AeonDigital\Http\Message\Response(
             $statusCode,

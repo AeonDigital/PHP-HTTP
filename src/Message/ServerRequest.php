@@ -147,7 +147,7 @@ class ServerRequest extends Request implements iServerRequest
      * tem capacidade de tratar ``bodys`` que venham em ``json``, ``urlencode`` e ``xml``.
      *
      * As Closures da coleção precisam ser compativel com o seguinte esquema:
-     * ``` php
+     * ```php
      *  function $closure (string $body) : mixed
      * ```
      *

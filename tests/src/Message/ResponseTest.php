@@ -95,7 +95,7 @@ class ResponseTest extends TestCase
         $viewData = (object)["key1" => "val1", "key2" => "val2"];
 
         $res1 = $res->withViewData($viewData);
-        $this->assertTrue(is_a($res1->getViewData(), "StdClass"));
+        $this->assertTrue(is_a($res1->getViewData(), "stdClass"));
         $this->assertSame("val1", $res1->getViewData()->key1);
         $this->assertSame("val2", $res1->getViewData()->key2);
     }
@@ -109,7 +109,7 @@ class ResponseTest extends TestCase
         $viewConfig = (object)["key1" => "val1", "key2" => "val2", "responseMime" => "text/plain"];
 
         $res1 = $res->withViewConfig($viewConfig);
-        $this->assertTrue(is_a($res1->getViewConfig(), "StdClass"));
+        $this->assertTrue(is_a($res1->getViewConfig(), "stdClass"));
         $this->assertSame("val1", $res1->getViewConfig()->key1);
         $this->assertSame("val2", $res1->getViewConfig()->key2);
         $this->assertSame("text/plain", $res1->getViewConfig()->responseMime);
@@ -199,11 +199,11 @@ class ResponseTest extends TestCase
             $oHeaders02->toArray()
         );
 
-        $this->assertTrue(is_a($res1->getViewData(), "StdClass"));
+        $this->assertTrue(is_a($res1->getViewData(), "stdClass"));
         $this->assertSame("val1", $res1->getViewData()->key1);
         $this->assertSame("val2", $res1->getViewData()->key2);
 
-        $this->assertTrue(is_a($res1->getViewConfig(), "StdClass"));
+        $this->assertTrue(is_a($res1->getViewConfig(), "stdClass"));
         $this->assertSame("val1", $res1->getViewConfig()->key1);
         $this->assertSame("val2", $res1->getViewConfig()->key2);
         $this->assertSame("text/plain", $res1->getViewConfig()->responseMime);

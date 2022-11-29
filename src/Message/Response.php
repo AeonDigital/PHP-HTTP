@@ -49,10 +49,10 @@ class Response extends aMessage implements iResponse
      * @param ?iStream $useBody
      * Objeto ``body`` para o clone.
      *
-     * @param ?\StdClass $useViewData
+     * @param ?\stdClass $useViewData
      * Objeto ``viewData`` para o clone.
      *
-     * @param ?\StdClass $useViewConfig
+     * @param ?\stdClass $useViewConfig
      * Objeto ``viewConfig`` para o clone.
      *
      * @return static
@@ -60,8 +60,8 @@ class Response extends aMessage implements iResponse
     private function cloneThisInstance(
         ?iHeaderCollection $useHeaders = null,
         ?iStream $useBody = null,
-        ?\StdClass $useViewData = null,
-        ?\StdClass $useViewConfig = null
+        ?\stdClass $useViewData = null,
+        ?\stdClass $useViewConfig = null
     ) {
         $clone = clone $this;
 
@@ -241,18 +241,18 @@ class Response extends aMessage implements iResponse
     /**
      * Objeto ``viewData`` contendo as informações obtidas durante o processamento da rota alvo.
      *
-     * @var ?\StdClass
+     * @var ?\stdClass
      */
-    protected ?\StdClass $viewData = null;
+    protected ?\stdClass $viewData = null;
     /**
      * Retorna o objeto ``viewData`` contendo as informações obtidas durante o processamento da
      * rota alvo.
      *
      * Este objeto traz dados a serem usados no corpo da view.
      *
-     * @return ?\StdClass
+     * @return ?\stdClass
      */
-    public function getViewData(): ?\StdClass
+    public function getViewData(): ?\stdClass
     {
         return $this->viewData;
     }
@@ -282,18 +282,18 @@ class Response extends aMessage implements iResponse
     /**
      * Objeto ``viewConfig`` contendo as informações obtidas durante o processamento da rota alvo.
      *
-     * @var ?\StdClass
+     * @var ?\stdClass
      */
-    protected ?\StdClass $viewConfig = null;
+    protected ?\stdClass $viewConfig = null;
     /**
      * Retorna o objeto ``viewConfig`` contendo as informações obtidas durante o processamento da
      * rota alvo.
      *
      * Este objeto traz dados que orientam a criação da view.
      *
-     * @return ?\StdClass
+     * @return ?\stdClass
      */
-    public function getViewConfig(): ?\StdClass
+    public function getViewConfig(): ?\stdClass
     {
         return $this->viewConfig;
     }
@@ -306,7 +306,7 @@ class Response extends aMessage implements iResponse
      *
      * @return static
      */
-    public function withViewConfig(?\StdClass $viewConfig): static
+    public function withViewConfig(?\stdClass $viewConfig): static
     {
         return $this->cloneThisInstance(null, null, null, $viewConfig);
     }
@@ -351,10 +351,10 @@ class Response extends aMessage implements iResponse
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo o ``viewData`` e o ``viewConfig`` especificados.
      *
-     * @param ?\StdClass $viewData
+     * @param ?\stdClass $viewData
      * Objeto ``viewData``.
      *
-     * @param ?\StdClass $viewConfig
+     * @param ?\stdClass $viewConfig
      * Objeto ``viewConfig``.
      *
      * @param ?array $headers
@@ -364,8 +364,8 @@ class Response extends aMessage implements iResponse
      * @return iResponse
      */
     function withActionProperties(
-        ?\StdClass $viewData,
-        ?\StdClass $viewConfig,
+        ?\stdClass $viewData,
+        ?\stdClass $viewConfig,
         ?array $headers
     ): static {
         return $this->cloneThisInstance(
@@ -406,10 +406,10 @@ class Response extends aMessage implements iResponse
      * @param iStream $body
      * Objeto ``stream`` que faz parte do corpo da mensagem.
      *
-     * @param ?\StdClass $viewData
+     * @param ?\stdClass $viewData
      * Objeto ``viewData``.
      *
-     * @param ?\StdClass $viewConfig
+     * @param ?\stdClass $viewConfig
      * Objeto ``viewConfig``.
      *
      * @throws \InvalidArgumentException
@@ -420,8 +420,8 @@ class Response extends aMessage implements iResponse
         string $httpVersion,
         iHeaderCollection $headers,
         iStream $body,
-        ?\StdClass $viewData = null,
-        ?\StdClass $viewConfig = null
+        ?\stdClass $viewData = null,
+        ?\stdClass $viewConfig = null
     ) {
         parent::__construct($httpVersion, $headers, $body);
 
