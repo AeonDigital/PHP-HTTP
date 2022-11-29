@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace AeonDigital\Http\Server;
 
-use AeonDigital\Interfaces\Http\Server\iRequestHandler as iRequestHandler;
+use AeonDigital\Interfaces\Http\Server\iRequestHandlerMiddleware as iRequestHandlerMiddleware;
 use AeonDigital\Interfaces\Http\Message\iServerRequest as iServerRequest;
-use AeonDigital\Interfaces\Http\Message\iResponse as iResponse;
+use AeonDigital\Interfaces\Http\Server\iRequestHandler as iRequestHandler;
 use AeonDigital\Interfaces\Http\Server\iMiddleware as iMiddleware;
-use Psr\Http\Server\MiddlewareInterface as MiddlewareInterface;
-
+use AeonDigital\Interfaces\Http\Message\iResponse as iResponse;
 
 
 
@@ -17,12 +16,16 @@ use Psr\Http\Server\MiddlewareInterface as MiddlewareInterface;
  * Responsável por coordenar e executar uma lista de processos (Middlewares) a serem efetuados
  * para uma requisição e ao fim, executar o próprio manipulador da requisição realizada pelo ``UA``.
  *
+ * Esta classe é compatível com a PSR ``Psr\Http\Server\RequestHandlerInterface`` mas não a implementa
+ * de forma direta.
+ *
+ *
  * @package     AeonDigital\EnGarde
  * @author      Rianna Cantarelli <rianna@aeondigital.com.br>
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-final class RequestHandler implements iRequestHandler
+final class RequestHandler implements iRequestHandlerMiddleware
 {
 
 
@@ -34,21 +37,16 @@ final class RequestHandler implements iRequestHandler
      * da requisição.
      * Os Middlewares são executados em ordem de registro.
      *
-     * @var         iMiddleware[]|MiddlewareInterface[]
+     * @var array
      */
     private array $middlewares = [];
 
     /**
      * Manipulador que executará a action alvo.
      *
-     * @var         iRequestHandler
+     * @var iRequestHandler
      */
     private iRequestHandler $actionHandler;
-
-
-
-
-
 
 
 
@@ -57,10 +55,10 @@ final class RequestHandler implements iRequestHandler
     /**
      * Inicia um gerenciador de processos para requisições.
      *
-     * @param       iRequestHandler $actionHandler
-     *              Manipulador da action alvo.
-     *              Será executado sempre ao finalizar a lista de Middlewares programados para a
-     *              requisição.
+     * @param iRequestHandler $actionHandler
+     * Manipulador da action alvo.
+     * Será executado sempre ao finalizar a lista de Middlewares programados para a
+     * requisição.
      */
     public function __construct(iRequestHandler $actionHandler)
     {
@@ -74,33 +72,27 @@ final class RequestHandler implements iRequestHandler
     /**
      * Adiciona um novo Middleware na lista de processos da requisição.
      *
-     * @param       iMiddleware|MiddlewareInterface $middleware
-     *              Objeto Middleware a ser adicionado na lista de tarefas.
+     * @param iMiddleware $middleware
+     * Objeto Middleware a ser adicionado na lista de tarefas a serem
+     * executadas antes de entregar o resultado final com o método ``handle``.
      *
-     * @return      void
+     * @return void
      */
-    public function add($middleware)
+    public function add(iMiddleware $middleware): void
     {
-        if (
-            $middleware instanceof MiddlewareInterface ||
-            $middleware instanceof iMiddleware
-        ) {
-            $this->middlewares[] = $middleware;
-        }
+        $this->middlewares[] = $middleware;
     }
 
 
 
-
-
     /**
-     * Processa a lista de Middlewares e após o próprio manipulador da requisição e produz uma
-     * resposta.
+     * Processa a lista de Middlewares e após o próprio manipulador da
+     * requisição e produz uma resposta.
      *
-     * @param       iServerRequest $request
-     *              Requisição que está sendo executada.
+     * @param iServerRequest $request
+     * Requisição que está sendo executada.
      *
-     * @return      iResponse
+     * @return iResponse
      */
     public function handle(iServerRequest $request): iResponse
     {
