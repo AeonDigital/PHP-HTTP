@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AeonDigital\Http\Message;
 
 use Psr\Http\Message\RequestInterface as RequestInterface;
+use Psr\Http\Message\ServerRequestInterface as ServerRequestInterface;
 use AeonDigital\Interfaces\Http\Message\iRequest as iRequest;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\Interfaces\Http\Uri\iUri as iUri;
@@ -39,30 +40,19 @@ class Request extends aMessage implements iRequest
 
 
     /**
-     * Coleção de valores possíveis para ``method``.
-     *
-     * @var     array
-     */
-    protected array $validMethod = [
-        "GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS", "TRACE", "DEV", "CONNECT"
-    ];
-
-
-
-    /**
      * Retorna um clone da instância atual e toma cuidado para clonar também qualquer objeto
      * interno que ela possua.
      *
-     * @param       ?iUri $useUri
-     *              Objeto ``iUri`` para o clone.
+     * @param ?iUri $useUri
+     * Objeto ``iUri`` para o clone.
      *
-     * @param       ?iHeaderCollection $useHeaders
-     *              Objeto ``header`` para o clone.
+     * @param ?iHeaderCollection $useHeaders
+     * Objeto ``header`` para o clone.
      *
-     * @param       ?iStream $useBody
-     *              Objeto ``body`` para o clone.
+     * @param ?iStream $useBody
+     * Objeto ``body`` para o clone.
      *
-     * @return      static
+     * @return static
      */
     private function cloneThisInstance(
         ?iUri $useUri = null,
@@ -89,15 +79,15 @@ class Request extends aMessage implements iRequest
     /**
      * Método ``Http`` que está sendo usado na requisição.
      *
-     * @var         string
+     * @var string
      */
     protected string $method = "";
     /**
      * Retorna o método ``Http`` que está sendo usado na requisição.
      *
-     * @link        http://tools.ietf.org/html/rfc3986#section-4.3
+     * @link http://tools.ietf.org/html/rfc3986#section-4.3
      *
-     * @return      string
+     * @return string
      */
     public function getMethod(): string
     {
@@ -112,13 +102,13 @@ class Request extends aMessage implements iRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo o ``method`` especificado.
      *
-     * @param       string $method
-     *              O ``method`` que será usado na nova instância.
+     * @param string $method
+     * O ``method`` que será usado na nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``method``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``method``.
      */
     public function withMethod(string $method): static
     {
@@ -140,15 +130,15 @@ class Request extends aMessage implements iRequest
     /**
      * Instância que implementa a interface ``iUri``.
      *
-     * @var         iUri
+     * @var iUri
      */
     protected iUri $uri;
     /**
      * Retorna a instância ``iUri`` que está sendo executada.
      *
-     * @link        http://tools.ietf.org/html/rfc3986#section-4.3
+     * @link http://tools.ietf.org/html/rfc3986#section-4.3
      *
-     * @return      iUri
+     * @return iUri
      */
     public function getUri(): iUri
     {
@@ -163,13 +153,13 @@ class Request extends aMessage implements iRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo o objeto ``iUri`` especificado.
      *
-     * @param       iUri $uri
-     *              O objeto ``uri`` que será usado na nova instância.
+     * @param iUri $uri
+     * O objeto ``uri`` que será usado na nova instância.
      *
-     * @param       bool $preserveHost
-     *              Preserva o estado original do Header ``Host``.
+     * @param bool $preserveHost
+     * Preserva o estado original do Header ``Host``.
      *
-     * @return      static
+     * @return static
      */
     public function withUri(iUri $uri, bool $preserveHost = false): static
     {
@@ -203,7 +193,7 @@ class Request extends aMessage implements iRequest
      *  [ "/" path ][ "?" query ][ "#" fragment ]
      * ```
      *
-     * @return      string
+     * @return string
      */
     public function getRequestTarget(): string
     {
@@ -218,13 +208,13 @@ class Request extends aMessage implements iRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo o ``requestTarget`` especificado.
      *
-     * @param       string $requestTarget
-     *              Valor de ``requestTarget`` que será usado na nova instância.
+     * @param string $requestTarget
+     * Valor de ``requestTarget`` que será usado na nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``requestTarget``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``requestTarget``.
      */
     public function withRequestTarget(string $requestTarget): static
     {
@@ -251,24 +241,24 @@ class Request extends aMessage implements iRequest
     /**
      * Inicia um novo objeto Request.
      *
-     * @param       string $httpMethod
-     *              Método ``Http`` que está sendo usado para a requisição.
+     * @param string $httpMethod
+     * Método ``Http`` que está sendo usado para a requisição.
      *
-     * @param       iUri $uri
-     *              Objeto que implementa a interface ``iUri`` configurado com a ``URI`` que
-     *              está sendo requisitada pelo UA.
+     * @param iUri $uri
+     * Objeto que implementa a interface ``iUri`` configurado com a ``URI`` que
+     * está sendo requisitada pelo UA.
      *
-     * @param       string $httpVersion
-     *              Versão do protocolo ``Http``.
+     * @param string $httpVersion
+     * Versão do protocolo ``Http``.
      *
-     * @param       iHeaderCollection $headers
-     *              Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da
-     *              requisição.
+     * @param iHeaderCollection $headers
+     * Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da
+     * requisição.
      *
-     * @param       iStream $body
-     *              Objeto stream que faz parte do corpo da mensagem.
+     * @param iStream $body
+     * Objeto stream que faz parte do corpo da mensagem.
      *
-     * @throws      \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     function __construct(
         string $httpMethod,
@@ -294,12 +284,12 @@ class Request extends aMessage implements iRequest
      * Verifica se o ``method`` indicado é válido.
      * Retornará o valor do ``method`` normalizado para uso ou irá jogar uma exception caso falhe.
      *
-     * @param       string $method
-     *              Valor que será verificado.
+     * @param string $method
+     * Valor que será verificado.
      *
-     * @return      string
+     * @return string
      *
-     * @throws      \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function checkMethod(string $method): string
     {
@@ -309,7 +299,7 @@ class Request extends aMessage implements iRequest
             [
                 [
                     "validate" => "is allowed value",
-                    "allowedValues" => $this->validMethod,
+                    "allowedValues" => \array_keys(\AeonDigital\Http\Const\HTTPMethod),
                     "caseInsensitive" => true,
                     "executeBeforeReturn" => function ($args) {
                         return \mb_strtoupper($args["argValue"]);
@@ -327,7 +317,7 @@ class Request extends aMessage implements iRequest
      * Retorna uma instância deste mesmo objeto, porém, compatível com a interface
      * em que foi baseada ``Psr\Http\Message\RequestInterface``.
      */
-    public function toPSR(): RequestInterface
+    public function toPSR(): RequestInterface|ServerRequestInterface
     {
         return new \AeonDigital\Http\Message\PSRRequest(
             $this->method,
@@ -341,7 +331,7 @@ class Request extends aMessage implements iRequest
      * A partir de um objeto ``Psr\Http\Message\RequestInterface``, retorna um novo que implementa
      * a interface ``AeonDigital\Interfaces\Http\Message\iRequest``.
      *
-     * @param RequestInterface $obj
+     * @param RequestInterface|ServerRequestInterface $obj
      * Instância original.
      *
      * @return static
@@ -351,7 +341,7 @@ class Request extends aMessage implements iRequest
      * Se por qualquer motivo não for possível retornar uma nova instância a partir da
      * que foi passada
      */
-    public static function fromPSR(RequestInterface $obj): static
+    public static function fromPSR(RequestInterface|ServerRequestInterface $obj): static
     {
         $lineHeaders = [];
         foreach ($obj->getHeaders() as $name => $values) {

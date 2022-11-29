@@ -1,5 +1,6 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Message\Request as Request;
@@ -25,7 +26,7 @@ class RequestTest extends TestCase
 
     public function test_constructor_http_version_fail()
     {
-        $oUri       = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri       = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $headers    = prov_assocArray_to_Http_Header_01();
         $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
         $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
@@ -43,7 +44,7 @@ class RequestTest extends TestCase
 
     public function test_constructor_ok()
     {
-        $oUri       = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri       = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $headers    = prov_assocArray_to_Http_Header_01();
         $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
         $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
@@ -62,7 +63,7 @@ class RequestTest extends TestCase
 
     public function test_method_get_uri()
     {
-        $oUri       = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri       = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $headers    = prov_assocArray_to_Http_Header_01();
         $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
         $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
@@ -95,7 +96,7 @@ class RequestTest extends TestCase
 
     public function test_method_clone_with_uri()
     {
-        $oUri       = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri       = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $headers    = prov_assocArray_to_Http_Header_01();
         $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
         $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
@@ -104,7 +105,7 @@ class RequestTest extends TestCase
         $this->assertSame("GET", $req->getMethod());
 
 
-        $oUri1 = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest02);
+        $oUri1 = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest02);
         $req1 = $req->withUri($oUri1);
         $this->assertSame($oUri, $req->getUri());
         $this->assertSame($oUri1, $req1->getUri());
@@ -117,7 +118,7 @@ class RequestTest extends TestCase
 
     public function test_method_clone_with_uri_preserve_host()
     {
-        $oUri       = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri       = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $headers    = prov_assocArray_to_Http_Header_01();
         $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
         $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");
@@ -126,7 +127,7 @@ class RequestTest extends TestCase
         $this->assertSame("GET", $req->getMethod());
 
 
-        $oUri1 = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest02);
+        $oUri1 = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest02);
         $req1 = $req->withUri($oUri1, true);
         $this->assertSame($oUri, $req->getUri());
         $this->assertSame($oUri1, $req1->getUri());
@@ -138,7 +139,7 @@ class RequestTest extends TestCase
 
     public function test_method_clone_with_request_target()
     {
-        $oUri       = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri       = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $headers    = prov_assocArray_to_Http_Header_01();
         $oHeaders   = prov_instanceOf_Http_HeaderCollection_01($headers);
         $oBody      = prov_instanceOf_Http_Stream_fromString("Test stream object");

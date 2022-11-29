@@ -34,7 +34,6 @@ class UploadedFileCollection extends aHttpDataCollection implements iUploadedFil
     /**
      * Inicia um novo objeto ``FileCollection``.
      *
-     *
      * @param ?array $initialValues
      * Valores com os quais a instância deve iniciar.
      *
@@ -153,7 +152,7 @@ class UploadedFileCollection extends aHttpDataCollection implements iUploadedFil
      *
      * @codeCoverageIgnore
      */
-    public static function fromString(string $str): FileCollection
+    public static function fromString(string $str): static
     {
         throw new \RuntimeException("Not implemented.");
     }

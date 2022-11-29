@@ -22,6 +22,11 @@
         "aeondigital/phpdoc-to-rst": "master"
     },
     "autoload": {
+        "files": [
+            "src/Const/HTTPMethod.php",
+            "src/Const/HTTPMimeExtension.php",
+            "src/Const/HTTPMimeType.php"
+        ],
         "classmap": [
             "src/"
         ]

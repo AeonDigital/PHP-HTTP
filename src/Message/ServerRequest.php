@@ -1,20 +1,21 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Message;
 
+use Psr\Http\Message\RequestInterface as RequestInterface;
+use Psr\Http\Message\ServerRequestInterface as ServerRequestInterface;
 use AeonDigital\Interfaces\Http\Message\iServerRequest as iServerRequest;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
-use AeonDigital\Interfaces\Http\Uri\iUrl as iUrl;
+use AeonDigital\Interfaces\Http\Uri\iUri as iUri;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
-use AeonDigital\Interfaces\Http\Data\iFileCollection as iFileCollection;
+use AeonDigital\Interfaces\Http\Data\iUploadedFileCollection as iUploadedFileCollection;
 use AeonDigital\Interfaces\Http\Data\iCookieCollection as iCookieCollection;
 use AeonDigital\Interfaces\Http\Data\iCookie as iCookie;
 use AeonDigital\Interfaces\Http\Data\iQueryStringCollection as iQueryStringCollection;
 use AeonDigital\Interfaces\Collection\iCollection as iCollection;
 use AeonDigital\Http\Message\Request as Request;
-
-
 
 
 /**
@@ -24,7 +25,10 @@ use AeonDigital\Http\Message\Request as Request;
  * seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
  * instância com a alteração necessária para o novo estado.
  *
- * Implementação AeonDigital da interface ``Psr\Http\Message\ServerRequestInterface``.
+ * Esta classe é compatível com a PSR ``Psr\Http\Message\ServerRequestInterface`` mas não a implementa
+ * de forma direta. Use a classe ``PSRServerRequest`` ou o método ``toPSR`` para obter uma instância
+ * que implemente tal interface.
+ *
  *
  * @see         http://www.php-fig.org/psr/
  *
@@ -44,7 +48,7 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Data e hora do instante da criação desta instância.
      *
-     * @var         \DateTime
+     * @var \DateTime
      */
     protected \DateTime $now;
 
@@ -53,7 +57,7 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Informações do servidor.
      *
-     * @var         array
+     * @var array
      */
     protected array $serverParans = [];
 
@@ -62,7 +66,7 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Coleção de cookies enviados pelo ``UA``.
      *
-     * @var         iCookieCollection
+     * @var iCookieCollection
      */
     protected iCookieCollection $cookies;
 
@@ -71,7 +75,7 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Coleção de querystrings enviados pelo ``UA``.
      *
-     * @var         iQueryStringCollection
+     * @var iQueryStringCollection
      */
     protected iQueryStringCollection $queryStrings;
 
@@ -80,16 +84,16 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Coleção de arquivos enviados pelo ``UA``.
      *
-     * @var         iFileCollection
+     * @var iUploadedFileCollection
      */
-    protected iFileCollection $files;
+    protected iUploadedFileCollection $files;
 
 
 
     /**
      * Tipo de valor definido para o ``body`` da requisição.
      *
-     * @var         ?string
+     * @var ?string
      */
     protected ?string $contentType = null;
 
@@ -99,7 +103,7 @@ class ServerRequest extends Request implements iServerRequest
      * Este valor será usado para separar cada campo enviado em formulários
      * ``multipart/form-data``;
      *
-     * @var         ?string
+     * @var ?string
      */
     protected ?string $boundary = null;
 
@@ -108,16 +112,16 @@ class ServerRequest extends Request implements iServerRequest
      * Coleção de valores submetidos via body.
      * O valor ``null`` indica que nenhum foi enviado
      *
-     * @var         ?array
+     * @var null|array|object
      */
-    protected $parsedBody = null;
+    protected null|array|object $parsedBody = null;
 
 
 
     /**
      * Indica quando o ``body`` da instância já foi submetido ao processo de ``parse``.
      *
-     * @var         bool
+     * @var bool
      */
     protected bool $hasParsedBody = false;
 
@@ -126,7 +130,7 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Coleção de atributos personalizados para a requisição.
      *
-     * @var         iCollection
+     * @var iCollection
      */
     protected iCollection $attributes;
 
@@ -148,7 +152,7 @@ class ServerRequest extends Request implements iServerRequest
      *  function $closure (string $body) : mixed
      * ```
      *
-     * @var         ?iCollection
+     * @var ?iCollection
      */
     protected ?iCollection $bodyParsers;
 
@@ -159,9 +163,9 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Retorna a data e hora do instante em que a instância foi criada.
      *
-     * @return      \DateTime
+     * @return \DateTime
      */
-    public function getNow() : \DateTime
+    public function getNow(): \DateTime
     {
         return $this->now;
     }
@@ -179,40 +183,40 @@ class ServerRequest extends Request implements iServerRequest
      * Retorna um clone da instância atual e toma cuidado para clonar também qualquer objeto
      * interno que ela possua.
      *
-     * @param       ?iUrl $useUri
-     *              Objeto ``iUrl`` para o clone.
+     * @param ?iUri $useUri
+     * Objeto ``iUri`` para o clone.
      *
-     * @param       ?iHeaderCollection $useHeaders
-     *              Objeto ``header`` para o clone.
+     * @param ?iHeaderCollection $useHeaders
+     * Objeto ``header`` para o clone.
      *
-     * @param       ?iStream $useBody
-     *              Objeto ``body`` para o clone.
+     * @param ?iStream $useBody
+     * Objeto ``body`` para o clone.
      *
-     * @param       ?iCookieCollection $useCookies
-     *              Objeto ``cookies`` para o clone.
+     * @param ?iCookieCollection $useCookies
+     * Objeto ``cookies`` para o clone.
      *
-     * @param       ?iQueryStringCollection $useQuery
-     *              Objeto ``queryStrings`` para o clone.
+     * @param ?iQueryStringCollection $useQuery
+     * Objeto ``queryStrings`` para o clone.
      *
-     * @param       ?iFileCollection $useFiles
-     *              Objeto ``files`` para o clone.
+     * @param ?iUploadedFileCollection $useFiles
+     * Objeto ``files`` para o clone.
      *
-     * @param       ?iCollection $useAttributes
-     *              Objeto ``attributes`` para o clone.
+     * @param ?iCollection $useAttributes
+     * Objeto ``attributes`` para o clone.
      *
-     * @param       ?iCollection $useBodyParsers
-     *              Objeto que implementa ``iCollection`` cotendo os closures que podem efetuar o
-     *              processamento do body da requisição.
+     * @param ?iCollection $useBodyParsers
+     * Objeto que implementa ``iCollection`` cotendo os closures que podem efetuar o
+     * processamento do body da requisição.
 
-     * @return      static
+     * @return static
      */
     protected function cloneThisInstance(
-        ?iUrl $useUri = null,
+        ?iUri $useUri = null,
         ?iHeaderCollection $useHeaders = null,
         ?iStream $useBody = null,
         ?iCookieCollection $useCookies = null,
         ?iQueryStringCollection $useQuery = null,
-        ?iFileCollection $useFiles = null,
+        ?iUploadedFileCollection $useFiles = null,
         ?iCollection $useAttributes = null,
         ?iCollection $useBodyParsers = null
     ) {
@@ -240,9 +244,9 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Retorna os parametros de configuração do servidor para a requisição atual.
      *
-     * @return      array
+     * @return array
      */
-    public function getServerParams() : array
+    public function getServerParams(): array
     {
         return $this->serverParans;
     }
@@ -261,9 +265,9 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Será retornado um array associativo contendo chave/valor de cada cookie recebido.
      *
-     * @return      array
+     * @return array
      */
-    public function getCookieParams() : array
+    public function getCookieParams(): array
     {
         $r = [];
         foreach ($this->cookies->toArray(false) as $k => $v) {
@@ -275,15 +279,15 @@ class ServerRequest extends Request implements iServerRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo os objetos ``cookies`` especificado.
      *
-     * @param       array $cookies
-     *              Array associativo de cookies para serem usados pela nova instância.
+     * @param array $cookies
+     * Array associativo de cookies para serem usados pela nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``cookies``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``cookies``.
      */
-    public function withCookieParams(array $cookies)
+    public function withCookieParams(array $cookies): static
     {
         $clone = $this->cloneThisInstance();
         $clone->cookies->clean();
@@ -307,9 +311,9 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Será retornado um array associativo contendo chave/valor de cada querystring recebido.
      *
-     * @return      array
+     * @return array
      */
-    public function getQueryParams() : array
+    public function getQueryParams(): array
     {
         $this->queryStrings->usePercentEncode(false);
         $r = $this->queryStrings->toArray(true);
@@ -321,12 +325,12 @@ class ServerRequest extends Request implements iServerRequest
      * Retorna o valor da querystring de nome indicado.
      * Retornará ``null`` caso ela não exista.
      *
-     * @param       string $name
-     *              Nome da querystring alvo.
+     * @param string $name
+     * Nome da querystring alvo.
      *
-     * @return      ?string
+     * @return ?string
      */
-    public function getQueryString(string $name) : ?string
+    public function getQueryString(string $name): ?string
     {
         return $this->queryStrings->get($name);
     }
@@ -334,15 +338,15 @@ class ServerRequest extends Request implements iServerRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo os objetos ``querystrings`` especificado.
      *
-     * @param       array $query
-     *              Array associativo de querystrings para serem usados pela nova instância.
+     * @param array $query
+     * Array associativo de querystrings para serem usados pela nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``query``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``query``.
      */
-    public function withQueryParams(array $query)
+    public function withQueryParams(array $query): static
     {
         $cloneUri = $this->uri->withQuery(\http_build_query($query));
 
@@ -366,9 +370,9 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Retorna os arquivos enviados pelo ``UA``.
      *
-     * @return      array
+     * @return array
      */
-    public function getUploadedFiles() : ?array
+    public function getUploadedFiles(): array
     {
         return $this->files->toArray(true);
     }
@@ -376,15 +380,15 @@ class ServerRequest extends Request implements iServerRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo os arquivos especificado.
      *
-     * @param       array $uploadedFiles
-     *              Array associativo de arquivos para serem usados pela nova instância.
+     * @param array $uploadedFiles
+     * Array associativo de arquivos para serem usados pela nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``uploadedFiles``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``uploadedFiles``.
      */
-    public function withUploadedFiles(array $uploadedFiles)
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         $clone = $this->cloneThisInstance();
         $clone->files->clean();
@@ -407,9 +411,9 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Trata-se de um alias para o método ``getParsedBody``.
      *
-     * @return      ?array
+     * @return ?array
      */
-    public function getPostedFields() : ?array
+    public function getPostedFields(): ?array
     {
         return $this->getParsedBody();
     }
@@ -418,19 +422,22 @@ class ServerRequest extends Request implements iServerRequest
 
     /**
      * Retorna o valor do campo de nome indicado.
-     * Retornará ``null`` caso ele não exista.
      *
-     * @param       string $name
-     *              Nome do campo alvo.
+     * @param string $name
+     * Nome do campo alvo.
      *
-     * @return      ?string
+     * @return null|string|array
+     * Retornará ``null`` caso ele não exista ou o valor correspondente
+     * à chave indicada.
      */
-    public function getPost(string $name)
+    public function getField(string $name): null|string|array
     {
         $r = null;
-        if ($this->contentType === "multipart/form-data" ||
-            $this->contentType === "application/x-www-form-urlencoded") {
-            $r = ((isset($this->parsedBody[$name]) === true) ? $this->parsedBody[$name] : null);
+        if (
+            \array_is_assoc($this->parsedBody) &&
+            ($this->contentType === "multipart/form-data" || $this->contentType === "application/x-www-form-urlencoded")
+        ) {
+            $r = ((key_exists($name, $this->parsedBody) === true) ? $this->parsedBody[$name] : null);
         }
         return $r;
     }
@@ -448,12 +455,12 @@ class ServerRequest extends Request implements iServerRequest
      * Retorna o objeto ``iCookie`` correspondente ao cookie de nome indicado.
      * Retornará ``null`` caso ele não exista.
      *
-     * @param       string $name
-     *              Nome do cookie alvo.
+     * @param string $name
+     * Nome do cookie alvo.
      *
-     * @return      ?iCookie
+     * @return ?iCookie
      */
-    public function getCookie(string $name) : ?iCookie
+    public function getCookie(string $name): ?iCookie
     {
         return (($this->cookies->has($name) === true) ? $this->cookies->get($name) : null);
     }
@@ -464,12 +471,12 @@ class ServerRequest extends Request implements iServerRequest
      * Retorna o valor do cookie de nome indicado.
      * Retornará ``null`` caso ele não exista.
      *
-     * @param       string $name
-     *              Nome do cookie alvo.
+     * @param string $name
+     * Nome do cookie alvo.
      *
-     * @return      ?string
+     * @return ?string
      */
-    public function getCookieValue(string $name) : ?string
+    public function getCookieValue(string $name): ?string
     {
         return (($this->cookies->has($name) === true) ? $this->cookies->get($name)->getValue() : null);
     }
@@ -498,14 +505,16 @@ class ServerRequest extends Request implements iServerRequest
      * Redefine a propriedade ``parans`` para estar de acordo com os dados definidos para a
      * instância.
      *
-     * @return      void
+     * @return void
      */
-    private function redefineParans() :void
+    private function redefineParans(): void
     {
         $postDataArr = [];
-        if ($this->contentType === "multipart/form-data" ||
-            $this->contentType === "application/x-www-form-urlencoded") {
-            $postDataArr = ((\is_array($this->parsedBody) === true) ? $this->parsedBody : []);
+        if (
+            $this->contentType === "multipart/form-data" ||
+            $this->contentType === "application/x-www-form-urlencoded"
+        ) {
+            $postDataArr = $this->parsedBody ?? [];
         }
 
 
@@ -529,17 +538,17 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Retornará ``null`` caso o nome da chave não seja encontrado.
      *
-     * @param       string $name
-     *              Nome do campo que está sendo requerido.
+     * @param string $name
+     * Nome do campo que está sendo requerido.
      *
-     * @return      ?string
+     * @return ?string
      */
-    public function getParam(string $name)
+    public function getParam(string $name): ?string
     {
         if ($this->parans === null) {
             $this->redefineParans();
         }
-        return ((isset($this->parans[$name]) === true) ? $this->parans[$name] : null);
+        return ((key_exists($name, $this->parans) === true) ? $this->parans[$name] : null);
     }
 
 
@@ -554,60 +563,60 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Inicia um novo objeto ``ServerRequest``.
      *
-     * @param       string $httpMethod
-     *              Método ``Http`` que está sendo usado para a requisição.
-     *              Este valor será substituido caso um parametro ``_method`` seja enviado em
-     *              algum parametro da requisição (seja via GET, POST ou outra forma).
+     * @param string $httpMethod
+     * Método ``Http`` que está sendo usado para a requisição.
+     * Este valor será substituido caso um parametro ``_method`` seja enviado em
+     * algum parametro da requisição (seja via GET, POST ou outra forma).
      *
-     * @param       iUrl $uri
-     *              Objeto que implementa a interface ``iUrl`` configurado com a ``URI`` que está
-     *              sendo requisitada pelo ``UA``.
+     * @param iUri $uri
+     * Objeto que implementa a interface ``iUri`` configurado com a ``URI`` que está
+     * sendo requisitada pelo ``UA``.
      *
-     * @param       string $httpVersion
-     *              Versão do protocolo ``Http``.
+     * @param string $httpVersion
+     * Versão do protocolo ``Http``.
      *
-     * @param       iHeaderCollection $headers
-     *              Objeto que implementa ``iHeaderCollection``
-     *              cotendo os cabeçalhos da requisição.
+     * @param iHeaderCollection $headers
+     * Objeto que implementa ``iHeaderCollection``
+     * cotendo os cabeçalhos da requisição.
      *
-     * @param       iStream $body
-     *              Objeto ``stream`` que faz parte do corpo da mensagem.
+     * @param iStream $body
+     * Objeto ``stream`` que faz parte do corpo da mensagem.
      *
-     * @param       iCookieCollection $cookies
-     *              Objeto que implementa ``iCookieCollection`` cotendo os cookies da requisição.
+     * @param iCookieCollection $cookies
+     * Objeto que implementa ``iCookieCollection`` cotendo os cookies da requisição.
      *
-     * @param       iQueryStringCollection $queryStrings
-     *              Objeto que implementa ``iQueryStringCollection`` cotendo os queryStrings.
+     * @param iQueryStringCollection $queryStrings
+     * Objeto que implementa ``iQueryStringCollection`` cotendo os queryStrings.
      *
-     * @param       iFileCollection $files
-     *              Objeto que implementa ``iFileCollection`` cotendo os arquivos enviados nesta
-     *              requisição.
+     * @param iUploadedFileCollection $files
+     * Objeto que implementa ``iUploadedFileCollection`` cotendo os arquivos enviados nesta
+     * requisição.
      *
-     * @param       array $serverParans
-     *              Coleção de parametros definidos pelo servidor sobre o ambiente e requisição
-     *              atual.
+     * @param array $serverParans
+     * Coleção de parametros definidos pelo servidor sobre o ambiente e requisição
+     * atual.
      *
-     * @param       iCollection $attributes
-     *              Objeto que implementa ``iCollection`` contendo atributos personalizados para
-     *              esta requisição.
+     * @param iCollection $attributes
+     * Objeto que implementa ``iCollection`` contendo atributos personalizados para
+     * esta requisição.
      *
-     * @param       ?iCollection $bodyParsers
-     *              Objeto que implementa ``iCollection`` cotendo os closures que podem efetuar
-     *              o processamento do body da requisição.
+     * @param ?iCollection $bodyParsers
+     * Objeto que implementa ``iCollection`` cotendo os closures que podem efetuar
+     * o processamento do body da requisição.
      *
-     * @throws      \InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
-     * @throws      \RuntimeException
+     * @throws \RuntimeException
      */
     function __construct(
         string $httpMethod,
-        iUrl $uri,
+        iUri $uri,
         string $httpVersion,
         iHeaderCollection $headers,
         iStream $body,
         iCookieCollection $cookies,
         iQueryStringCollection $queryStrings,
-        iFileCollection $files,
+        iUploadedFileCollection $files,
         array $serverParans,
         iCollection $attributes,
         ?iCollection $bodyParsers = null
@@ -645,10 +654,7 @@ class ServerRequest extends Request implements iServerRequest
 
         $this->getParsedBody();
 
-        $useHttpMethod = (
-            $this->getParam("_method") ??
-            ((isset($_REQUEST["_method"]) === true) ? $_REQUEST["_method"] : null)
-        );
+        $useHttpMethod = ($this->getParam("_method") ?? ((\key_exists("_method", $_REQUEST) === true) ? $_REQUEST["_method"] : null));
         if ($useHttpMethod !== null) {
             $this->method = $this->checkMethod($useHttpMethod);
         }
@@ -667,19 +673,19 @@ class ServerRequest extends Request implements iServerRequest
      * Esta função é acionada quando nenhuma closure existente na coleção ``$this->bodyParsers``
      * corresponde ao mimetype requerido ou quando a própria coleção é ``null``.
      *
-     * @param       string $body
-     *              String representando o ``body`` da requisição em seu formato ``raw``.
+     * @param string $body
+     * String representando o ``body`` da requisição em seu formato ``raw``.
      *
-     * @param       string $mime
-     *              Mimetype do conteúdo.
+     * @param string $mime
+     * Mimetype do conteúdo.
      *
-     * @param       string $boundary
-     *              String que define o limite de campos enviados por formulários
-     *              ``multipart/form-data``
+     * @param string $boundary
+     * String que define o limite de campos enviados por formulários
+     * ``multipart/form-data``
      *
-     * @return      null|array|object
+     * @return null|array|object
      */
-    protected function internalParseBody(string $body, string $mime, string $boundary)
+    protected function internalParseBody(string $body, string $mime, string $boundary): null|array|object
     {
         $r = null;
         $useType = $mime;
@@ -706,10 +712,8 @@ class ServerRequest extends Request implements iServerRequest
                 break;
 
             case "xml":
-                $backup = \libxml_disable_entity_loader(true);
                 $backup_errors = \libxml_use_internal_errors(true);
                 $r = \simplexml_load_string($body);
-                \libxml_disable_entity_loader($backup);
                 \libxml_clear_errors();
                 \libxml_use_internal_errors($backup_errors);
 
@@ -723,11 +727,12 @@ class ServerRequest extends Request implements iServerRequest
             case "x-www-form-urlencoded":
                 if ($boundary === "") {
                     \parse_str($body, $r);
-                }
-                else {
+                } else {
 
                     $multipartDataFields = \preg_split("/-+$boundary/", $body);
                     \array_pop($multipartDataFields);
+
+                    $tmpParams = [];
                     $selectedUploadedFiles = [];
 
                     foreach ($multipartDataFields as $i => $rawFieldData) {
@@ -737,24 +742,24 @@ class ServerRequest extends Request implements iServerRequest
                             \extract($fieldData);
 
                             if ($fieldFile === null) {
-                                if (\mb_str_ends_with($fieldName, "[]") === true) {
-                                    if (isset($r[$fieldName]) === false) { $r[$fieldName] = []; }
-                                    $r[$fieldName][] = $fieldValue;
+                                if (\str_ends_with($fieldName, "[]") === true) {
+                                    if (\key_exists($fieldName, $tmpParams) === false) {
+                                        $tmpParams[$fieldName] = [];
+                                    }
+                                    $tmpParams[$fieldName][] = $fieldValue;
+                                } else {
+                                    $tmpParams[$fieldName] = $fieldValue;
                                 }
-                                else {
-                                    $r[$fieldName] = $fieldValue;
-                                }
-                            }
-                            else {
+                            } else {
                                 // prosseguir daqui e ver o que fazer quando um arquivo vier vazio.
                                 $tempFile = \tempnam(\ini_get("upload_tmp_dir"), "tmp");
                                 $bytes = \file_put_contents($tempFile, $fieldValue);
                                 if ($bytes !== false) {
-                                    if (isset($selectedUploadedFiles[$fieldName]) === false) {
+                                    if (\key_exists($fieldName, $selectedUploadedFiles) === false) {
                                         $selectedUploadedFiles[$fieldName] = [];
                                     }
 
-                                    $selectedUploadedFiles[$fieldName][] = new \AeonDigital\Http\Data\File(
+                                    $selectedUploadedFiles[$fieldName][] = new \AeonDigital\Http\Data\UploadedFile(
                                         new \AeonDigital\Http\Stream\FileStream($tempFile),
                                         $fieldFile,
                                         UPLOAD_ERR_OK
@@ -768,6 +773,7 @@ class ServerRequest extends Request implements iServerRequest
                     foreach ($selectedUploadedFiles as $fieldName => $files) {
                         $this->files->set($fieldName, $files);
                     }
+                    $r = (($tmpParams === []) ? null : $tmpParams);
                 }
                 break;
         }
@@ -782,12 +788,12 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Efetua o parse de campo postado em formulário ``multipart/form-data``.
      *
-     * @param       string $rawFieldData
-     *              Versão bruta dos dados do campo que será serializado.
+     * @param string $rawFieldData
+     * Versão bruta dos dados do campo que será serializado.
      *
-     * @return      ?array
+     * @return ?array
      */
-    private function parseMultipartField(string $rawFieldData) : ?array
+    private function parseMultipartField(string $rawFieldData): ?array
     {
         $r = null;
         $lineSep = "\r\n";
@@ -806,8 +812,7 @@ class ServerRequest extends Request implements iServerRequest
             $endOfFirstLine = \strpos($rawFieldData, $lineSep);
             if ($endOfFirstLine === false) {
                 $contentDisposition = $rawFieldData;
-            }
-            else {
+            } else {
                 $contentDisposition = \substr($rawFieldData, 0, $endOfFirstLine);
             }
 
@@ -818,8 +823,7 @@ class ServerRequest extends Request implements iServerRequest
 
                 if ($fieldName === "") {
                     $fieldName = null;
-                }
-                else {
+                } else {
                     $fieldFile = (\count($cdMatches) === 5) ? \trim($cdMatches[4]) : null;
                     if ($fieldFile === null && \strpos($contentDisposition, "; filename=\"") !== false) {
                         $fieldFile = "";
@@ -828,8 +832,7 @@ class ServerRequest extends Request implements iServerRequest
                     $c = 1;
                     if ($fieldFile === null) {
                         $fieldValue = \str_replace($contentDisposition . $lineSep . $lineSep, "", $rawFieldData, $c);
-                    }
-                    else {
+                    } else {
                         $rawFieldData = \str_replace($contentDisposition . $lineSep, "", $rawFieldData, $c);
                         $endOfSecondLine = \strpos($rawFieldData, $lineSep);
 
@@ -871,9 +874,9 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Retornará ``null`` caso nenhum valor tenha sido submetido.
      *
-     * @return      null|array|object
+     * @return null|array|object
      */
-    public function getParsedBody()
+    public function getParsedBody(): null|array|object
     {
         if ($this->hasParsedBody === false) {
             $this->hasParsedBody = true;
@@ -897,22 +900,24 @@ class ServerRequest extends Request implements iServerRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo os arquivos especificado.
      *
-     * @param       array $data
-     *              Array associativo de arquivos para serem usados pela nova instância.
+     * @param null|array|object $data
+     * Array associativo de arquivos para serem usados pela nova instância.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``uploadedFiles``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``uploadedFiles``.
      */
-    public function withParsedBody($data)
+    public function withParsedBody(null|array|object $data): static
     {
         $this->mainCheckForInvalidArgumentException(
-            "data", $data, [
+            "data",
+            $data,
+            [
                 [
                     "validate" => "closure",
-                    "closure" => function($arg) {
-                        return ($arg === null || \is_array($arg) === true || \is_object($arg) === true);
+                    "closure" => function ($arg) {
+                        return ($arg === null || \array_is_assoc($arg) === true || \is_object($arg) === true);
                     },
                     "customErrorMessage" => "Invalid value defined for \"data\". Expected an array assoc, object or ``null``.",
                     "showArgumentInMessage" => false
@@ -941,7 +946,7 @@ class ServerRequest extends Request implements iServerRequest
     /**
      * Coleção qualitativa de mimetypes que podem ser usados para responder a esta requisição.
      *
-     * @var         ?array
+     * @var ?array
      */
     protected ?array $responseMimes = null;
     /**
@@ -955,17 +960,16 @@ class ServerRequest extends Request implements iServerRequest
      * Os valores retornados estarão na ordem de qualificação dos itens encontrados no Header
      * ``accept``.
      *
-     * @return      ?array
+     * @return ?array
      * ``` php
      *  $arr = [
      *      ["mime" => "html", "mimetype" => "text/html"]
      *  ];
      * ```
      */
-    public function getResponseMimes() : ?array
+    public function getResponseMimes(): ?array
     {
         if ($this->responseMimes === null) {
-            $rMimes     = \array_flip($this->responseMimeTypes);
             $qMimes     = $this->parseRawLineOfQualityHeaders($this->getHeaderLine("accept"));
             $useMimes   = [];
 
@@ -977,11 +981,10 @@ class ServerRequest extends Request implements iServerRequest
                             "mime"      => "*/*",
                             "mimetype"  => "*/*"
                         ];
-                    }
-                    else {
-                        if (isset($rMimes[$mt]) === true) {
+                    } else {
+                        if (\key_exists($mt, \AeonDigital\Http\Const\HTTPMimeType) === true) {
                             $useMimes[] = [
-                                "mime"      => $rMimes[$mt],
+                                "mime"      => \AeonDigital\Http\Const\HTTPMimeType[$mt],
                                 "mimetype"  => $mt
                             ];
                         }
@@ -1008,7 +1011,7 @@ class ServerRequest extends Request implements iServerRequest
      * Coleção qualificada de locales e languages que o ``UA`` definiu como aqueles que ele
      * prefere receber como resposta.
      *
-     * @var         ?array
+     * @var ?array
      */
     protected ?array $responseAcceptLanguage = null;
     /**
@@ -1022,9 +1025,9 @@ class ServerRequest extends Request implements iServerRequest
      * Os valores retornados estarão na ordem de qualificação dos itens encontrados no Header
      * ``accept-language``.
      *
-     * @return      ?array
+     * @return ?array
      */
-    public function getResponseLocales() : ?array
+    public function getResponseLocales(): ?array
     {
         if ($this->responseAcceptLanguage === null) {
             $this->responseAcceptLanguage = $this->parseRawLineOfHeaderAcceptLanguage(
@@ -1045,9 +1048,9 @@ class ServerRequest extends Request implements iServerRequest
      * Os valores retornados estarão na ordem de qualificação dos itens encontrados no Header
      * ``accept-language``.
      *
-     * @return      ?array
+     * @return ?array
      */
-    public function getResponseLanguages() : ?array
+    public function getResponseLanguages(): ?array
     {
         if ($this->responseAcceptLanguage === null) {
             $this->responseAcceptLanguage = $this->parseRawLineOfHeaderAcceptLanguage(
@@ -1072,12 +1075,12 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Estes devem ser **SEMPRE** os primeiros atributos a serem definidos para a coleção.
      *
-     * @param       array $attributes
-     *              Array associativo contendo a coleção de atributos que serão definidos.
+     * @param array $attributes
+     * Array associativo contendo a coleção de atributos que serão definidos.
      *
-     * @return      void
+     * @return void
      */
-    public function setInitialAttributes(array $attributes) : void
+    public function setInitialAttributes(array $attributes): void
     {
         if ($this->attributes->count() === 0) {
             foreach ($attributes as $k => $v) {
@@ -1100,9 +1103,9 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Diferente das demais propriedades deste tipo de classe, neste caso atributos **SÃO Mutáveis**!
      *
-     * @return      array
+     * @return array
      */
-    public function getAttributes() : array
+    public function getAttributes(): array
     {
         return $this->attributes->toArray();
     }
@@ -1111,15 +1114,15 @@ class ServerRequest extends Request implements iServerRequest
      *
      * Caso aquele atributo não seja encontrado será retornado o valor definido em ``default``.
      *
-     * @param       string $name
-     *              O nome do atributo a ser retornado.
+     * @param string $name
+     * O nome do atributo a ser retornado.
      *
-     * @param       mixed $default
-     *              Valor padrão para o atributo, caso não exista.
+     * @param mixed $default
+     * Valor padrão para o atributo, caso não exista.
      *
-     * @return      mixed
+     * @return mixed
      */
-    public function getAttribute($name, $default = null)
+    public function getAttribute(string $name, mixed $default = null): mixed
     {
         $r = $default;
         if ($this->attributes->has($name) === true) {
@@ -1131,18 +1134,18 @@ class ServerRequest extends Request implements iServerRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo os ``attributes`` especificados.
      *
-     * @param       string $name
-     *              Nome do atributo que será definido.
+     * @param string $name
+     * Nome do atributo que será definido.
      *
-     * @param       mixed $value
-     *              Valor do atributo.
+     * @param mixed $value
+     * Valor do atributo.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido.
      */
-    public function withAttribute($name, $value)
+    public function withAttribute(string $name, mixed $value): static
     {
         $clone = $this->cloneThisInstance();
         $clone->attributes->set($name, $value);
@@ -1154,17 +1157,78 @@ class ServerRequest extends Request implements iServerRequest
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * sem o ``attribute`` especificado.
      *
-     * @param       string $name
-     *              Nome do atributo que será removido.
+     * @param string $name
+     * Nome do atributo que será removido.
      *
-     * @return      static
+     * @return static
      */
-    public function withoutAttribute($name)
+    public function withoutAttribute(string $name): static
     {
         $clone = $this->cloneThisInstance();
         $clone->attributes->remove($name);
         $clone->redefineParans();
 
         return $clone;
+    }
+
+
+
+
+
+    /**
+     * Retorna uma instância deste mesmo objeto, porém, compatível com a interface
+     * em que foi baseada ``Psr\Http\Message\ServerRequestInterface``.
+     */
+    public function toPSR(): RequestInterface|ServerRequestInterface
+    {
+        return new \AeonDigital\Http\Message\PSRServerRequest(
+            $this->method,
+            $this->uri->toPSR(),
+            $this->protocolVersion,
+            $this->headers,
+            $this->body->toPSR(),
+            $this->cookies,
+            $this->queryStrings,
+            $this->files,
+            $this->serverParans,
+            $this->attributes,
+            $this->bodyParsers
+        );
+    }
+    /**
+     * A partir de um objeto ``Psr\Http\Message\ServerRequestInterface``, retorna um novo que implementa
+     * a interface ``AeonDigital\Interfaces\Http\Message\iServerRequest``.
+     *
+     * @param RequestInterface|ServerRequestInterface $obj
+     * Instância original.
+     *
+     * @return static
+     * Nova instância, sob nova interface.
+     *
+     * @throws \InvalidArgumentException
+     * Se por qualquer motivo não for possível retornar uma nova instância a partir da
+     * que foi passada
+     */
+    public static function fromPSR(RequestInterface|ServerRequestInterface $obj): static
+    {
+        $lineHeaders = [];
+        foreach ($obj->getHeaders() as $name => $values) {
+            $lineHeaders[] = $name . ": " . implode(", ", $values);
+        }
+
+
+        return new \AeonDigital\Http\Message\ServerRequest(
+            $obj->getMethod(),
+            \AeonDigital\Http\Uri\Uri::fromString((string)$obj->getUri()),
+            $obj->getProtocolVersion(),
+            \AeonDigital\Http\Data\HeaderCollection::fromString(\implode("\n", $lineHeaders)),
+            \AeonDigital\Http\Stream\Stream::fromPSR($obj->getBody()),
+            new \AeonDigital\Http\Data\CookieCollection(),
+            new \AeonDigital\Http\Data\QueryStringCollection(),
+            new \AeonDigital\Http\Data\UploadedFileCollection(),
+            $obj->getServerParams(),
+            new \AeonDigital\Collection\Collection($obj->getAttributes()),
+            null
+        );
     }
 }

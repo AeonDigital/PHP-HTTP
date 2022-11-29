@@ -1,5 +1,6 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Message\Tests\Concrete\Message as Message;
@@ -124,21 +125,6 @@ class aMessageTest extends TestCase
     }
 
 
-    public function test_method_clone_with_protocol_version_fail()
-    {
-        $httpMsg = prov_instanceOf_Http_Message();
-
-        $fail = false;
-        try {
-            $httpMsg = $httpMsg->withProtocolVersion(null, "valor");
-        } catch (\Exception $ex) {
-            $fail = true;
-            $this->assertSame("Invalid value defined for \"protocolVersion\". Expected string. Given: [ ``null`` ]", $ex->getMessage());
-        }
-        $this->assertTrue($fail, "Test must fail");
-    }
-
-
     public function test_method_clone_with_header()
     {
         $httpMsg = prov_instanceOf_Http_Message();
@@ -156,10 +142,10 @@ class aMessageTest extends TestCase
 
         $fail = false;
         try {
-            $httpMsg = $httpMsg->withHeader(null, "valor");
+            $httpMsg = $httpMsg->withHeader("", "valor");
         } catch (\Exception $ex) {
             $fail = true;
-            $this->assertSame("Invalid value defined for \"name\". Expected non empty string. Given: [ ``null`` ]", $ex->getMessage());
+            $this->assertSame("Invalid value defined for \"name\". Expected non empty string.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
     }
@@ -249,5 +235,4 @@ class aMessageTest extends TestCase
         $httpMsg1 = $httpMsg->withBody($oStream1);
         $this->assertSame($oStream1, $httpMsg1->getBody());
     }
-
 }

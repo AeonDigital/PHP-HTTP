@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace AeonDigital\Http\Message;
 
-use Psr\Http\Message\RequestInterface as RequestInterface;
-use Psr\Http\Message\UriInterface as UriInterface;
+use Psr\Http\Message\ResponseInterface as ResponseInterface;
 use Psr\Http\Message\StreamInterface as StreamInterface;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 
 
 
 
+
 /**
- * Representa uma requisição ``Http`` feita por um ``UA``.
+ * Representa uma resposta ``Http`` à uma requisição feita por um ``UA``.
  *
  * Instâncias desta classe são consideradas imutáveis; todos os métodos que podem vir a alterar
  * seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
@@ -26,7 +26,7 @@ use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
  * @copyright   2020, Rianna Cantarelli
  * @license     MIT
  */
-class PSRRequest implements RequestInterface
+class PSRResponse implements ResponseInterface
 {
 
 
@@ -36,21 +36,22 @@ class PSRRequest implements RequestInterface
     /**
      * Objeto principal.
      *
-     * @var AeonDigital\Http\Message\Request
+     * @var AeonDigital\Http\Message\Response
      */
-    private \AeonDigital\Http\Message\Request $mainObj;
+    private \AeonDigital\Http\Message\Response $mainObj;
 
 
 
     /**
-     * Inicia um novo objeto Request.
+     * Inicia um novo objeto ``Response``.
      *
-     * @param string $httpMethod
-     * Método ``Http`` que está sendo usado para a requisição.
+     * @param int $statusCode
+     * Código do status ``Http``.
      *
-     * @param UriInterface $uri
-     * Objeto que implementa a interface ``UriInterface`` configurado com a ``URI`` que
-     * está sendo requisitada pelo UA.
+     * @param string $reasonPhrase
+     * Frase razão do status ``Http``.
+     * Se não for definida e o código informado for um código padrão, usará a frase
+     * razão correspondente.
      *
      * @param string $httpVersion
      * Versão do protocolo ``Http``.
@@ -60,23 +61,33 @@ class PSRRequest implements RequestInterface
      * requisição.
      *
      * @param StreamInterface $body
-     * Objeto stream que faz parte do corpo da mensagem.
+     * Objeto ``stream`` que faz parte do corpo da mensagem.
+     *
+     * @param ?\StdClass $viewData
+     * Objeto ``viewData``.
+     *
+     * @param ?\StdClass $viewConfig
+     * Objeto ``viewConfig``.
      *
      * @throws \InvalidArgumentException
      */
     function __construct(
-        string $httpMethod,
-        UriInterface $uri,
+        int $statusCode,
+        string $reasonPhrase,
         string $httpVersion,
         iHeaderCollection $headers,
-        StreamInterface $body
+        StreamInterface $body,
+        ?\StdClass $viewData = null,
+        ?\StdClass $viewConfig = null
     ) {
-        $this->mainObj = new \AeonDigital\Http\Message\Request(
-            $httpMethod,
-            \AeonDigital\Http\Uri\Uri::fromPSR($uri),
+        $this->mainObj = new \AeonDigital\Http\Message\Response(
+            $statusCode,
+            $reasonPhrase,
             $httpVersion,
             $headers,
-            \AeonDigital\Http\Stream\Stream::fromPSR($body)
+            \AeonDigital\Http\Stream\Stream::fromPSR($body),
+            $viewData,
+            $viewConfig
         );
     }
 
@@ -291,124 +302,58 @@ class PSRRequest implements RequestInterface
 
 
     /**
-     * Retrieves the message's request target.
+     * Gets the response status code.
      *
-     * Retrieves the message's request-target either as it will appear (for
-     * clients), as it appeared at request (for servers), or as it was
-     * specified for the instance (see withRequestTarget()).
+     * The status code is a 3-digit integer result code of the server's attempt
+     * to understand and satisfy the request.
      *
-     * In most cases, this will be the origin-form of the composed URI,
-     * unless a value was provided to the concrete implementation (see
-     * withRequestTarget() below).
-     *
-     * If no URI is available, and no request-target has been specifically
-     * provided, this method MUST return the string "/".
-     *
-     * @return string
+     * @return int Status code.
      */
-    public function getRequestTarget()
+    public function getStatusCode()
     {
-        return $this->mainObj->getRequestTarget();
+        return $this->mainObj->getStatusCode();
     }
 
     /**
-     * Return an instance with the specific request-target.
+     * Return an instance with the specified status code and, optionally, reason phrase.
      *
-     * If the request needs a non-origin-form request-target — e.g., for
-     * specifying an absolute-form, authority-form, or asterisk-form —
-     * this method may be used to create an instance with the specified
-     * request-target, verbatim.
+     * If no reason phrase is specified, implementations MAY choose to default
+     * to the RFC 7231 or IANA recommended reason phrase for the response's
+     * status code.
      *
      * This method MUST be implemented in such a way as to retain the
      * immutability of the message, and MUST return an instance that has the
-     * changed request target.
+     * updated status and reason phrase.
      *
-     * @link http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
-     *     request-target forms allowed in request messages)
-     * @param mixed $requestTarget
+     * @link http://tools.ietf.org/html/rfc7231#section-6
+     * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     * @param int $code The 3-digit integer result code to set.
+     * @param string $reasonPhrase The reason phrase to use with the
+     *     provided status code; if none is provided, implementations MAY
+     *     use the defaults as suggested in the HTTP specification.
      * @return static
+     * @throws \InvalidArgumentException For invalid status code arguments.
      */
-    public function withRequestTarget($requestTarget)
+    public function withStatus($code, $reasonPhrase = '')
     {
-        return $this->mainObj->withRequestTarget($requestTarget)->toPSR();
+        return $this->mainObj->withStatus($code, $reasonPhrase)->toPSR();
     }
 
     /**
-     * Retrieves the HTTP method of the request.
+     * Gets the response reason phrase associated with the status code.
      *
-     * @return string Returns the request method.
+     * Because a reason phrase is not a required element in a response
+     * status line, the reason phrase value MAY be null. Implementations MAY
+     * choose to return the default RFC 7231 recommended reason phrase (or those
+     * listed in the IANA HTTP Status Code Registry) for the response's
+     * status code.
+     *
+     * @link http://tools.ietf.org/html/rfc7231#section-6
+     * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     * @return string Reason phrase; must return an empty string if none present.
      */
-    public function getMethod()
+    public function getReasonPhrase()
     {
-        return $this->mainObj->getMethod();
-    }
-
-    /**
-     * Return an instance with the provided HTTP method.
-     *
-     * While HTTP method names are typically all uppercase characters, HTTP
-     * method names are case-sensitive and thus implementations SHOULD NOT
-     * modify the given string.
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * changed request method.
-     *
-     * @param string $method Case-sensitive method.
-     * @return static
-     * @throws \InvalidArgumentException for invalid HTTP methods.
-     */
-    public function withMethod($method)
-    {
-        return $this->mainObj->withMethod($method)->toPSR();
-    }
-
-    /**
-     * Retrieves the URI instance.
-     *
-     * This method MUST return a UriInterface instance.
-     *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
-     * @return UriInterface Returns a UriInterface instance
-     *     representing the URI of the request.
-     */
-    public function getUri()
-    {
-        return $this->mainObj->getUri()->toPSR();
-    }
-
-    /**
-     * Returns an instance with the provided URI.
-     *
-     * This method MUST update the Host header of the returned request by
-     * default if the URI contains a host component. If the URI does not
-     * contain a host component, any pre-existing Host header MUST be carried
-     * over to the returned request.
-     *
-     * You can opt-in to preserving the original state of the Host header by
-     * setting `$preserveHost` to `true`. When `$preserveHost` is set to
-     * `true`, this method interacts with the Host header in the following ways:
-     *
-     * - If the Host header is missing or empty, and the new URI contains
-     *   a host component, this method MUST update the Host header in the returned
-     *   request.
-     * - If the Host header is missing or empty, and the new URI does not contain a
-     *   host component, this method MUST NOT update the Host header in the returned
-     *   request.
-     * - If a Host header is present and non-empty, this method MUST NOT update
-     *   the Host header in the returned request.
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new UriInterface instance.
-     *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
-     * @param UriInterface $uri New request URI to use.
-     * @param bool $preserveHost Preserve the original state of the Host header.
-     * @return static
-     */
-    public function withUri(UriInterface $uri, $preserveHost = false)
-    {
-        return $this->mainObj->withUri($uri, $preserveHost)->toPSR();
+        return $this->mainObj->getReasonPhrase();
     }
 }

@@ -70,10 +70,10 @@ function prov_instanceOf_Http_Request(
 ) {
 
     if ($url === null) {
-        $url = prov_instanceOf_Http_Url_fromString();
+        $url = prov_instanceOf_Http_Uri_fromString("");
     } else {
         if (is_string($url) === true) {
-            $url = prov_instanceOf_Http_Url_fromString($url);
+            $url = prov_instanceOf_Http_Uri_fromString($url);
         }
     }
 
@@ -145,12 +145,12 @@ function prov_instanceOf_Http_ServerRequest_01(
     $withBodyParser = false
 ) {
 
-    $oUri           = prov_instanceOf_Http_Url_fromString($url);
+    $oUri           = prov_instanceOf_Http_Uri_fromString($url);
     $oHeaders       = prov_instanceOf_Http_HeaderCollection_02($contentType);
     $oBody          = prov_instanceOf_Http_Stream_fromString($body);
     $oCookies       = prov_instanceOf_Http_CookieCollection_autoSet_01();
     $oQuery         = prov_instanceOf_Http_QueryStringCollection_02($oUri);
-    $oFiles         = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+    $oFiles         = prov_instanceOf_Http_UploadedFileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
     $oServerParans  = prov_assocArray_to_Http_ServerRequest();
     $oAttr          = prov_instanceOf_Collection_Collection_02();
     $oParsers       = (($withBodyParser === true) ? prov_instanceOf_Collection_Collection_03() : null);
@@ -179,12 +179,12 @@ function prov_instanceOf_Http_ServerRequest_02(
     $withBodyParser = false
 ) {
 
-    $oUri           = prov_instanceOf_Http_Url_fromString($url);
+    $oUri           = prov_instanceOf_Http_Uri_fromString($url);
     $oHeaders       = prov_instanceOf_Http_HeaderCollection_02($contentType);
     $oBody          = prov_instanceOf_Http_Stream_fromString($body);
     $oCookies       = prov_instanceOf_Http_CookieCollection_autoSet_02();
     $oQuery         = prov_instanceOf_Http_QueryStringCollection_02($oUri);
-    $oFiles         = prov_instanceOf_Http_FileCollection_02();
+    $oFiles         = prov_instanceOf_Http_UploadedFileCollection_02();
     $oServerParans  = [];
     $oAttr          = prov_instanceOf_Collection_Collection_01();
     $oParsers       = (($withBodyParser === true) ? prov_instanceOf_Collection_Collection_03() : null);

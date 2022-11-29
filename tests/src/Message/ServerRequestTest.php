@@ -1,5 +1,6 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use AeonDigital\Http\Message\ServerRequest as ServerRequest;
@@ -26,12 +27,12 @@ class ServerRequestTest extends TestCase
 
     protected function retrieveMockClassToTest($body = null, $contentType = null, $withBodyParser = false)
     {
-        $oUri           = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri           = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $oHeaders       = prov_instanceOf_Http_HeaderCollection_02($contentType);
         $oBody          = prov_instanceOf_Http_Stream_fromString($body);
         $oCookies       = prov_instanceOf_Http_CookieCollection_autoSet_01();
         $oQuery         = prov_instanceOf_Http_QueryStringCollection_02($oUri);
-        $oFiles         = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $oFiles         = prov_instanceOf_Http_UploadedFileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
         $oServerParans  = prov_assocArray_to_Http_ServerRequest();
         $oAttr          = prov_instanceOf_Collection_Collection_02();
         $oParsers       = (($withBodyParser === true) ? prov_instanceOf_Collection_Collection_03() : null);
@@ -52,12 +53,12 @@ class ServerRequestTest extends TestCase
 
     public function test_constructor_ok()
     {
-        $oUri           = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri           = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $oHeaders       = prov_instanceOf_Http_HeaderCollection_02();
         $oBody          = prov_instanceOf_Http_Stream_fromString("Test stream object");
         $oCookies       = prov_instanceOf_Http_CookieCollection_autoSet_01();
         $oQuery         = prov_instanceOf_Http_QueryStringCollection_02($oUri);
-        $oFiles         = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $oFiles         = prov_instanceOf_Http_UploadedFileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
         $oServerParans  = prov_assocArray_to_Http_ServerRequest();
         $oAttr          = prov_instanceOf_Collection_Collection_02();
 
@@ -71,12 +72,12 @@ class ServerRequestTest extends TestCase
 
     public function test_constructor_fails_querystring_error()
     {
-        $oUri           = prov_instanceOf_Http_Url_fromString($this->defaultURLToTest01);
+        $oUri           = prov_instanceOf_Http_Uri_fromString($this->defaultURLToTest01);
         $oHeaders       = prov_instanceOf_Http_HeaderCollection_02();
         $oBody          = prov_instanceOf_Http_Stream_fromString("Test stream object");
         $oCookies       = prov_instanceOf_Http_CookieCollection_autoSet_01();
         $oQuery         = prov_instanceOf_Http_QueryStringCollection_02();
-        $oFiles         = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $oFiles         = prov_instanceOf_Http_UploadedFileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
         $oServerParans  = prov_assocArray_to_Http_ServerRequest();
         $oAttr          = prov_instanceOf_Collection_Collection_02();
 
@@ -118,7 +119,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_get_uploaded_files()
     {
-        $oFiles = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $oFiles = prov_instanceOf_Http_UploadedFileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
         $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $result = $req->getUploadedFiles();
 
@@ -242,7 +243,7 @@ class ServerRequestTest extends TestCase
 
     public function test_method_clone_with_uploades_files()
     {
-        $oFiles = prov_instanceOf_Http_FileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
+        $oFiles = prov_instanceOf_Http_UploadedFileCollection_02(["upload-image-1.jpg", "upload-image-2.jpg"]);
         $req = prov_instanceOf_Http_ServerRequest_01("GET", $this->defaultURLToTest01, "Test stream object");
         $result = $req->getUploadedFiles();
 
@@ -254,7 +255,7 @@ class ServerRequestTest extends TestCase
 
 
 
-        $newFiles = prov_instanceOf_Http_FileCollection_02(["upload-image-1-with.jpg", "upload-image-2-with.jpg"]);
+        $newFiles = prov_instanceOf_Http_UploadedFileCollection_02(["upload-image-1-with.jpg", "upload-image-2-with.jpg"]);
         $req1 = $req->withUploadedFiles($newFiles->toArray());
 
         $newResult = $req1->getUploadedFiles();
@@ -301,13 +302,12 @@ class ServerRequestTest extends TestCase
 
         $fail = false;
         try {
-            $req1 = $req->withParsedBody(0);
+            $req1 = $req->withParsedBody([1, 1]);
         } catch (\Exception $ex) {
             $fail = true;
             $this->assertSame("Invalid value defined for \"data\". Expected an array assoc, object or ``null``.", $ex->getMessage());
         }
         $this->assertTrue($fail, "Test must fail");
-
     }
 
 
@@ -385,15 +385,15 @@ class ServerRequestTest extends TestCase
     }
 
 
-    public function test_method_get_post()
+    public function test_method_get_field()
     {
         $req = prov_instanceOf_Http_ServerRequest_02("GET", $this->defaultURlToTest02, $this->defaultBodyValue01, "application/x-www-form-urlencoded; charset=utf-8");
 
-        $this->assertSame("valor 1", $req->getPost("field1"));
-        $this->assertSame("value 2", $req->getPost("field2"));
-        $this->assertSame("value 3", $req->getPost("field3"));
-        $this->assertSame("value 5", $req->getPost("param5"));
-        $this->assertSame(null, $req->getPost("not"));
+        $this->assertSame("valor 1", $req->getField("field1"));
+        $this->assertSame("value 2", $req->getField("field2"));
+        $this->assertSame("value 3", $req->getField("field3"));
+        $this->assertSame("value 5", $req->getField("param5"));
+        $this->assertSame(null, $req->getField("not"));
     }
 
 
@@ -558,10 +558,10 @@ class ServerRequestTest extends TestCase
         $this->assertSame($headerLineAccept, $req->getHeaderLine("accept"));
 
         $expected = [
-            [ "mime" => "html",     "mimetype" => "text/html" ],
-            [ "mime" => "xhtml",    "mimetype" => "application/xhtml+xml" ],
-            [ "mime" => "xml",      "mimetype" => "application/xml" ],
-            [ "mime" => "*/*",      "mimetype" => "*/*" ]
+            ["mime" => "html",     "mimetype" => "text/html"],
+            ["mime" => "xhtml",    "mimetype" => "application/xhtml+xml"],
+            ["mime" => "xml",      "mimetype" => "application/xml"],
+            ["mime" => "*/*",      "mimetype" => "*/*"]
         ];
         $this->assertSame($expected, $req->getResponseMimes());
     }

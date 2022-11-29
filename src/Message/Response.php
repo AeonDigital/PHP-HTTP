@@ -1,14 +1,15 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Message;
 
+use Psr\Http\Message\ResponseInterface as ResponseInterface;
 use AeonDigital\Interfaces\Http\Message\iResponse as iResponse;
 use AeonDigital\Interfaces\Stream\iStream as iStream;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 use AeonDigital\Http\Message\Abstracts\aMessage as aMessage;
 use AeonDigital\Iana\Iana as Iana;
-
 
 
 /**
@@ -18,7 +19,10 @@ use AeonDigital\Iana\Iana as Iana;
  * seu estado **DEVEM** ser implementados de forma a manter seu estado e retornar uma nova
  * instância com a alteração necessária para o novo estado.
  *
- * Implementação AeonDigital da interface ``Psr\Http\Message\ResponseInterface``.
+ * Esta classe é compatível com a PSR ``Psr\Http\Message\ResponseInterface`` mas não a implementa
+ * de forma direta. Use a classe ``PSRResponse`` ou o método ``toPSR`` para obter uma instância
+ * que implemente tal interface.
+ *
  *
  * @see         http://www.php-fig.org/psr/
  *
@@ -39,19 +43,19 @@ class Response extends aMessage implements iResponse
      * Retorna um clone da instância atual e toma cuidado para clonar também qualquer objeto
      * interno que ela possua.
      *
-     * @param       ?iHeaderCollection $useHeaders
-     *              Objeto ``header`` para o clone.
+     * @param ?iHeaderCollection $useHeaders
+     * Objeto ``header`` para o clone.
      *
-     * @param       ?iStream $useBody
-     *              Objeto ``body`` para o clone.
+     * @param ?iStream $useBody
+     * Objeto ``body`` para o clone.
      *
-     * @param       ?\StdClass $useViewData
-     *              Objeto ``viewData`` para o clone.
+     * @param ?\StdClass $useViewData
+     * Objeto ``viewData`` para o clone.
      *
-     * @param       ?\StdClass $useViewConfig
-     *              Objeto ``viewConfig`` para o clone.
+     * @param ?\StdClass $useViewConfig
+     * Objeto ``viewConfig`` para o clone.
      *
-     * @return      static
+     * @return static
      */
     private function cloneThisInstance(
         ?iHeaderCollection $useHeaders = null,
@@ -77,18 +81,18 @@ class Response extends aMessage implements iResponse
     /**
      * Efetua a clonagem da coleção de Headers presentes na presente instancia.
      *
-     * @param       ?array $headers
-     *              Coleção de headers a serem incorporados.
+     * @param ?array $headers
+     * Coleção de headers a serem incorporados.
      *
-     * @param       bool $merge
-     *              Indica se é para mesclar ou substituir os headers presentes no momento.
+     * @param bool $merge
+     * Indica se é para mesclar ou substituir os headers presentes no momento.
      *
-     * @return      ?iHeaderCollection
+     * @return ?iHeaderCollection
      */
     private function cloneHeaders(
         ?array $headers,
         bool $merge = false
-    ) : ?iHeaderCollection {
+    ): ?iHeaderCollection {
         if ($headers === null) {
             return null;
         } else {
@@ -117,15 +121,15 @@ class Response extends aMessage implements iResponse
     /**
      * Código do status ``Http`` desta instância.
      *
-     * @var         int
+     * @var int
      */
     protected int $statusCode;
     /**
      * Retorna o código do status ``Http`` que está definido para esta resposta.
      *
-     * @return      int
+     * @return int
      */
-    public function getStatusCode() : int
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -137,25 +141,27 @@ class Response extends aMessage implements iResponse
     /**
      * Verifica se o ``statusCode`` indicado é válido.
      *
-     * @param       string $statusCode
-     *              Valor que será testado.
+     * @param string $statusCode
+     * Valor que será testado.
      *
-     * @param       bool $throw
-     *              Quando ``true`` irá lançar uma exception em caso de falha.
+     * @param bool $throw
+     * Quando ``true`` irá lançar uma exception em caso de falha.
      *
-     * @return      bool
+     * @return bool
      *
-     * @throws      \InvalidArgumentException
-     *              Caso o ``statusCode`` definido seja inválido e ``$throw`` seja ``true``.
+     * @throws \InvalidArgumentException
+     * Caso o ``statusCode`` definido seja inválido e ``$throw`` seja ``true``.
      */
-    protected function validateStatusCode($statusCode, bool $throw = false) : bool
+    protected function validateStatusCode($statusCode, bool $throw = false): bool
     {
         $this->mainCheckForInvalidArgumentException(
-            "statusCode", $statusCode, [
+            "statusCode",
+            $statusCode,
+            [
                 ["validate" => "is integer"],
                 [
                     "validate" => "closure",
-                    "closure" => function($arg) {
+                    "closure" => function ($arg) {
                         return ($arg >= 100 && $arg <= 599);
                     },
                     "customErrorMessage" => "Invalid value defined for \"statusCode\". Expected an integer between 100 and 599."
@@ -169,20 +175,20 @@ class Response extends aMessage implements iResponse
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo o ``method`` especificado.
      *
-     * @param       int $code
-     *              Código do status ``Http`` a ser definido para a instância.
+     * @param int $code
+     * Código do status ``Http`` a ser definido para a instância.
      *
-     * @param       string $reasonPhrase
-     *              Frase razão do status a ser enviada em conjunto na resposta.
-     *              Se não for definida e o código informado for um código padrão, usará a frase
-     *              razão correspondente.
+     * @param string $reasonPhrase
+     * Frase razão do status a ser enviada em conjunto na resposta.
+     * Se não for definida e o código informado for um código padrão, usará a frase
+     * razão correspondente.
      *
-     * @return      static
+     * @return static
      *
-     * @throws      \InvalidArgumentException
-     *              Caso seja definido um valor inválido para ``code``.
+     * @throws \InvalidArgumentException
+     * Caso seja definido um valor inválido para ``code``.
      */
-    public function withStatus($code, $reasonPhrase = "")
+    public function withStatus(int $code, string $reasonPhrase = ""): static
     {
         $this->validateStatusCode($code, true);
 
@@ -191,7 +197,7 @@ class Response extends aMessage implements iResponse
         $clone->reasonPhrase = $reasonPhrase;
 
 
-        if ($reasonPhrase === "" && isset(Iana::HTTPStatusCode[$code]) === true) {
+        if ($reasonPhrase === "" && \key_exists($code, Iana::HTTPStatusCode) === true) {
             $clone->reasonPhrase = Iana::HTTPStatusCode[$code];
         }
 
@@ -210,15 +216,15 @@ class Response extends aMessage implements iResponse
     /**
      * Frase razão a ser usada ao enviar esta resposta.
      *
-     * @var         string
+     * @var string
      */
     protected string $reasonPhrase = "";
     /**
      * Retorna a ``frase razão`` para o código de status definido nesta instância.
      *
-     * @return      string
+     * @return string
      */
-    public function getReasonPhrase() : string
+    public function getReasonPhrase(): string
     {
         return $this->reasonPhrase;
     }
@@ -235,7 +241,7 @@ class Response extends aMessage implements iResponse
     /**
      * Objeto ``viewData`` contendo as informações obtidas durante o processamento da rota alvo.
      *
-     * @var         ?\StdClass
+     * @var ?\StdClass
      */
     protected ?\StdClass $viewData = null;
     /**
@@ -244,9 +250,9 @@ class Response extends aMessage implements iResponse
      *
      * Este objeto traz dados a serem usados no corpo da view.
      *
-     * @return      ?\StdClass
+     * @return ?\StdClass
      */
-    public function getViewData() : ?\StdClass
+    public function getViewData(): ?\StdClass
     {
         return $this->viewData;
     }
@@ -254,12 +260,12 @@ class Response extends aMessage implements iResponse
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo o ``viewData`` especificado.
      *
-     * @param       ?\StdClass $viewData
-     *              Objeto ``viewData``.
+     * @param ?\stdClass $viewData
+     * Objeto "viewData".
      *
-     * @return      iResponse
+     * @return static
      */
-    public function withViewData(?\StdClass $viewData) : iResponse
+    public function withViewData(?\stdClass $viewData): static
     {
         return $this->cloneThisInstance(null, null, $viewData);
     }
@@ -276,7 +282,7 @@ class Response extends aMessage implements iResponse
     /**
      * Objeto ``viewConfig`` contendo as informações obtidas durante o processamento da rota alvo.
      *
-     * @var         ?\StdClass
+     * @var ?\StdClass
      */
     protected ?\StdClass $viewConfig = null;
     /**
@@ -285,9 +291,9 @@ class Response extends aMessage implements iResponse
      *
      * Este objeto traz dados que orientam a criação da view.
      *
-     * @return      ?\StdClass
+     * @return ?\StdClass
      */
-    public function getViewConfig() : ?\StdClass
+    public function getViewConfig(): ?\StdClass
     {
         return $this->viewConfig;
     }
@@ -295,12 +301,12 @@ class Response extends aMessage implements iResponse
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo o ``viewConfig`` especificado.
      *
-     * @param       ?\StdClass $viewConfig
-     *              Objeto ``viewConfig``.
+     * @param ?\stdClass $viewConfig
+     * Objeto "viewConfig".
      *
-     * @return      iResponse
+     * @return static
      */
-    public function withViewConfig(?\StdClass $viewConfig) : iResponse
+    public function withViewConfig(?\StdClass $viewConfig): static
     {
         return $this->cloneThisInstance(null, null, null, $viewConfig);
     }
@@ -318,16 +324,16 @@ class Response extends aMessage implements iResponse
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo os ``headers`` especificados.
      *
-     * @param       array $headers
-     *              Coleção de headers.
+     * @param array $headers
+     * Coleção de headers.
      *
-     * @param       bool $merge
-     *              Quando ``true`` irá manter os headers já definidos e apenas adicionar ou
-     *              sobrescrever os definidos em ``$headers``.
+     * @param bool $merge
+     * Quando ``true`` irá manter os headers já definidos e apenas adicionar ou
+     * sobrescrever os definidos em ``$headers``.
      *
-     * @return      iResponse
+     * @return static
      */
-    public function withHeaders(array $headers, bool $merge = false) : iResponse
+    public function withHeaders(array $headers, bool $merge = false): static
     {
         return $this->cloneThisInstance($this->cloneHeaders($headers, $merge));
     }
@@ -345,23 +351,23 @@ class Response extends aMessage implements iResponse
      * Este método **DEVE** manter o estado da instância atual e retornar uma nova instância
      * contendo o ``viewData`` e o ``viewConfig`` especificados.
      *
-     * @param       ?\StdClass $viewData
-     *              Objeto ``viewData``.
+     * @param ?\StdClass $viewData
+     * Objeto ``viewData``.
      *
-     * @param       ?\StdClass $viewConfig
-     *              Objeto ``viewConfig``.
+     * @param ?\StdClass $viewConfig
+     * Objeto ``viewConfig``.
      *
-     * @param       ?array $headers
-     *              Coleção de headers.
-     *              Irá executar um Merge com os headers existentes.
+     * @param ?array $headers
+     * Coleção de headers.
+     * Irá executar um Merge com os headers existentes.
      *
-     * @return      iResponse
+     * @return iResponse
      */
     function withActionProperties(
         ?\StdClass $viewData,
         ?\StdClass $viewConfig,
         ?array $headers
-    ) : iResponse {
+    ): static {
         return $this->cloneThisInstance(
             $this->cloneHeaders($headers, true),
             null,
@@ -382,31 +388,31 @@ class Response extends aMessage implements iResponse
     /**
      * Inicia um novo objeto ``Response``.
      *
-     * @param       int $statusCode
-     *              Código do status ``Http``.
+     * @param int $statusCode
+     * Código do status ``Http``.
      *
-     * @param       string $reasonPhrase
-     *              Frase razão do status ``Http``.
-     *              Se não for definida e o código informado for um código padrão, usará a frase
-     *              razão correspondente.
+     * @param string $reasonPhrase
+     * Frase razão do status ``Http``.
+     * Se não for definida e o código informado for um código padrão, usará a frase
+     * razão correspondente.
      *
-     * @param       string $httpVersion
-     *              Versão do protocolo ``Http``.
+     * @param string $httpVersion
+     * Versão do protocolo ``Http``.
      *
-     * @param       iHeaderCollection $headers
-     *              Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da
-     *              requisição.
+     * @param iHeaderCollection $headers
+     * Objeto que implementa ``iHeaderCollection`` cotendo os cabeçalhos da
+     * requisição.
      *
-     * @param       iStream $body
-     *              Objeto ``stream`` que faz parte do corpo da mensagem.
+     * @param iStream $body
+     * Objeto ``stream`` que faz parte do corpo da mensagem.
      *
-     * @param       ?\StdClass $viewData
-     *              Objeto ``viewData``.
+     * @param ?\StdClass $viewData
+     * Objeto ``viewData``.
      *
-     * @param       ?\StdClass $viewConfig
-     *              Objeto ``viewConfig``.
+     * @param ?\StdClass $viewConfig
+     * Objeto ``viewConfig``.
      *
-     * @throws      \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     function __construct(
         int $statusCode,
@@ -426,8 +432,58 @@ class Response extends aMessage implements iResponse
         $this->viewData     = $viewData;
         $this->viewConfig   = $viewConfig;
 
-        if ($reasonPhrase === "" && isset(Iana::HTTPStatusCode[$statusCode]) === true) {
+        if ($reasonPhrase === "" && \key_exists($statusCode, Iana::HTTPStatusCode) === true) {
             $this->reasonPhrase = Iana::HTTPStatusCode[$statusCode];
         }
+    }
+
+
+
+
+
+    /**
+     * Retorna uma instância deste mesmo objeto, porém, compatível com a interface
+     * em que foi baseada ``Psr\Http\Message\ResponseInterface``.
+     */
+    public function toPSR(): ResponseInterface
+    {
+        return new \AeonDigital\Http\Message\PSRResponse(
+            $this->statusCode,
+            $this->reasonPhrase,
+            $this->protocolVersion,
+            $this->headers,
+            $this->body->toPSR(),
+            $this->viewData,
+            $this->viewConfig
+        );
+    }
+    /**
+     * A partir de um objeto ``Psr\Http\Message\ResponseInterface``, retorna um novo que implementa
+     * a interface ``AeonDigital\Interfaces\Http\Message\iResponse``.
+     *
+     * @param ResponseInterface $obj
+     * Instância original.
+     *
+     * @return static
+     * Nova instância, sob nova interface.
+     *
+     * @throws \InvalidArgumentException
+     * Se por qualquer motivo não for possível retornar uma nova instância a partir da
+     * que foi passada
+     */
+    public static function fromPSR(ResponseInterface $obj): static
+    {
+        $lineHeaders = [];
+        foreach ($obj->getHeaders() as $name => $values) {
+            $lineHeaders[] = $name . ": " . implode(", ", $values);
+        }
+
+        return new \AeonDigital\Http\Message\Response(
+            $obj->getStatusCode(),
+            $obj->getReasonPhrase(),
+            $obj->getProtocolVersion(),
+            \AeonDigital\Http\Data\HeaderCollection::fromString(\implode("\n", $lineHeaders)),
+            \AeonDigital\Http\Stream\Stream::fromPSR($obj->getBody())
+        );
     }
 }
