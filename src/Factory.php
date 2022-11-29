@@ -103,7 +103,7 @@ class Factory extends BObject implements iFactory
      */
     public function createUploadedFileCollection(?array $initialValues = null): iUploadedFileCollection
     {
-        return new \AeonDigital\Http\Data\FileCollection($initialValues);
+        return new \AeonDigital\Http\Data\UploadedFileCollection($initialValues);
     }
     /**
      * Retorna um objeto ``iCollection`` vazio.

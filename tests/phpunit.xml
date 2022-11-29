@@ -22,8 +22,8 @@
             <directory>src/Data</directory>
             <directory>src/Message</directory>
 
-            <!--file>src/ExecuteTest.php</file>
-            <file>src/FactoryTest.php</file-->
+            <file>src/ExecuteTest.php</file>
+            <file>src/FactoryTest.php</file>
         </testsuite>
     </testsuites>
 

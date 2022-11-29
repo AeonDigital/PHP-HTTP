@@ -167,8 +167,8 @@ class FactoryTest extends TestCase
     {
         $nMock = prov_instanceOf_Http_Factory();
 
-        $newObj = $nMock->createFileCollection();
-        $this->assertTrue(in_array("AeonDigital\\Interfaces\\Http\\Data\\iFileCollection", class_implements($newObj)));
+        $newObj = $nMock->createUploadedFileCollection();
+        $this->assertTrue(in_array("AeonDigital\\Interfaces\\Http\\Data\\iUploadedFileCollection", class_implements($newObj)));
         $this->assertSame(0, $newObj->count());
 
 
@@ -178,7 +178,7 @@ class FactoryTest extends TestCase
         if (isset($_FILES) === true && count($_FILES) > 0) {
             foreach ($_FILES as $fieldName => $fieldData) {
                 if (is_array($fieldData["error"]) === false) {
-                    $initialValues[$fieldName] = new \AeonDigital\Http\Data\File(
+                    $initialValues[$fieldName] = new \AeonDigital\Http\Data\UploadedFile(
                         new \AeonDigital\Http\Stream\FileStream($fieldData["tmp_name"]),
                         $fieldData["name"],
                         $fieldData["error"]
@@ -187,7 +187,7 @@ class FactoryTest extends TestCase
                     $initialValues[$fieldName] = [];
 
                     foreach ($fieldData["name"] as $i => $v) {
-                        $initialValues[$fieldName][] = new \AeonDigital\Http\Data\File(
+                        $initialValues[$fieldName][] = new \AeonDigital\Http\Data\UploadedFile(
                             new \AeonDigital\Http\Stream\FileStream($fieldData["tmp_name"][$i]),
                             $fieldData["name"][$i],
                             $fieldData["error"][$i]
@@ -198,8 +198,8 @@ class FactoryTest extends TestCase
         }
 
 
-        $newObj = $nMock->createFileCollection($initialValues);
-        $this->assertTrue(in_array("AeonDigital\\Interfaces\\Http\\Data\\iFileCollection", class_implements($newObj)));
+        $newObj = $nMock->createUploadedFileCollection($initialValues);
+        $this->assertTrue(in_array("AeonDigital\\Interfaces\\Http\\Data\\iUploadedFileCollection", class_implements($newObj)));
         $this->assertSame(2, $newObj->count());
 
         $this->assertSame("ua-file-name.png", $newObj->get("fieldOne")->getClientFilename());
@@ -231,7 +231,7 @@ class FactoryTest extends TestCase
         $expected = "http://test.server.com.br?param1=value1&param2=value2";
 
         $newObj = $nMock->createUri($expected);
-        $this->assertTrue(in_array("AeonDigital\\Interfaces\\Http\\Uri\\iUrl", class_implements($newObj)));
+        $this->assertTrue(in_array("AeonDigital\\Interfaces\\Http\\Uri\\iUri", class_implements($newObj)));
         $this->assertSame($expected, $newObj->getAbsoluteUri());
     }
 
@@ -267,7 +267,7 @@ class FactoryTest extends TestCase
         $nMock = prov_instanceOf_Http_Factory();
 
         $useBody = "Test Body";
-        $useFilePath = realpath(to_system_path(__DIR__ . "/../resources/streamDataFile.txt"));
+        $useFilePath = to_system_path(__DIR__ . "/../resources/streamDataFile.txt");
         $useStream = fopen($useFilePath, "w+");
         fwrite($useStream, $useBody);
 
