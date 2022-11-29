@@ -25,7 +25,8 @@
         "files": [
             "src/Const/HTTPMethod.php",
             "src/Const/HTTPMimeExtension.php",
-            "src/Const/HTTPMimeType.php"
+            "src/Const/HTTPMimeType.php",
+            "src/Const/SchemeDefaultPort.php"
         ],
         "classmap": [
             "src/"

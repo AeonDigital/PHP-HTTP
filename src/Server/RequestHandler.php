@@ -1,5 +1,6 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace AeonDigital\Http\Server;
 
@@ -80,9 +81,10 @@ final class RequestHandler implements iRequestHandler
      */
     public function add($middleware)
     {
-        if ($middleware instanceof MiddlewareInterface ||
-            $middleware instanceof iMiddleware)
-        {
+        if (
+            $middleware instanceof MiddlewareInterface ||
+            $middleware instanceof iMiddleware
+        ) {
             $this->middlewares[] = $middleware;
         }
     }
@@ -100,14 +102,13 @@ final class RequestHandler implements iRequestHandler
      *
      * @return      iResponse
      */
-    public function handle(iServerRequest $request) : iResponse
+    public function handle(iServerRequest $request): iResponse
     {
         // Quando não houverem mais Middlewares a serem executados
         // evoca a ação que corresponde a rota alvo.
         if (\count($this->middlewares) === 0) {
             return $this->actionHandler->handle($request);
-        }
-        else {
+        } else {
             $middleware = \array_shift($this->middlewares);
             return $middleware->process($request, $this);
         }

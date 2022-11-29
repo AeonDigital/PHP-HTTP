@@ -28,46 +28,6 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
 
 
     /**
-     * Array associativo contendo cada tipo de ``scheme`` que deve ser aceito pela classe
-     * concreta que herda esta abstração em relação ao valor padrão para o componente
-     * ``port``.
-     *
-     * ```php
-     *  [
-     *      "http"     => 80
-     *      "https"    => 433
-     *      "ftp"      => 21
-     *  ]
-     * ```
-     *
-     * A responsabilidade pelo preenchimento dos dados desta propriedade fica para as classes
-     * concretas que herdarão desta.
-     *
-     * @var array
-     */
-    protected array $defaultSchemePort = [
-        ""              => null,
-        "http"          => 80,
-        "https"         => 433,
-        "ftp"           => 21,
-        "ssh"           => 22,
-        "urn"           => 80,
-        "view-source"   => 80,
-        "ws"            => 80,
-        "wss"           => 433,
-        "file"          => 80
-    ];
-
-
-
-
-
-
-
-
-
-
-    /**
      * Componente ``user`` da ``URI``.
      *
      * @var string
@@ -364,7 +324,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
      */
     public function getDefaultPort(): ?int
     {
-        return $this->defaultSchemePort[$this->getScheme()];
+        return \AeonDigital\Http\Const\SchemeDefaultPort[$this->getScheme()];
     }
     /**
      * Verifica se a ``port`` indicada é válida.
@@ -693,7 +653,7 @@ abstract class aHierPartUri extends aBasicUri implements iHierPartUri
         ?int $port = null,
         string $path = ""
     ) {
-        parent::__construct($scheme, \array_keys($this->defaultSchemePort));
+        parent::__construct($scheme, \array_keys(\AeonDigital\Http\Const\SchemeDefaultPort));
 
         $this->validateUser($user, true);
         $this->validatePassword($password, true);

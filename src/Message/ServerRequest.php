@@ -17,7 +17,6 @@ use AeonDigital\Interfaces\Http\Data\iQueryStringCollection as iQueryStringColle
 use AeonDigital\Interfaces\Collection\iCollection as iCollection;
 use AeonDigital\Http\Message\Request as Request;
 
-
 /**
  * Encapsula todos os objetos que representam na totalidade uma requisição recebida pelo servidor.
  *

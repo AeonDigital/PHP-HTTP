@@ -12,7 +12,6 @@ use AeonDigital\Interfaces\Http\Uri\iUri as iUri;
 use AeonDigital\Interfaces\Http\Data\iHeaderCollection as iHeaderCollection;
 use AeonDigital\Http\Message\Abstracts\aMessage as aMessage;
 
-
 /**
  * Representa uma requisição ``Http`` feita por um ``UA``.
  *

@@ -338,8 +338,7 @@ class UploadedFile extends BObject implements iUploadedFile
                 $obj->getClientFilename(),
                 $obj->getError()
             );
-        }
-        else {
+        } else {
             throw new \InvalidArgumentException("Cannot find the path to the original stream resource.");
         }
     }
