@@ -12,6 +12,7 @@
 up:
 	make/makeActions.sh makeExecuteBefore "$@"
 	docker-compose up -d
+	make php-composer-update
 	make/makeActions.sh makeExecuteAfter "$@"
 
 #

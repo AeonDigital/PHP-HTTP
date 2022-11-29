@@ -24,7 +24,9 @@
 # Recebe o nome do comando que está sendo executado.
 #
 makeExecuteBefore() {
-  local doNothing=""
+  if [ "$1" == "up" ] && [ ! -f "./composer.lock" ]; then
+    echo "{}" > "./composer.lock"
+  fi
 }
 
 
