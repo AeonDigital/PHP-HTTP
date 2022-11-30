@@ -30,4 +30,3 @@ services:
       - ./composer.lock:/var/www/html/composer.lock
     ports:
       - 8080:80
-    #command: bash -c 'composer install --prefer-dist --working-dir="/var/www/html" || /cmd.sh'
