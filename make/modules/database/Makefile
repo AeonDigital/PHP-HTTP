@@ -54,14 +54,14 @@ db-show-collation:
 
 
 #
-# Inicia o banco de dados da aplicação.
+# Remove totalmente o banco de dados da aplicação.
 db-clean:
 	make/makeActions.sh makeExecuteBefore "$@"
 	make/modules/database/makeActions.sh dataBaseStart "0"
 	make/makeActions.sh makeExecuteAfter "$@"
 
 #
-# Inicia o banco de dados da aplicação.
+# Inicia um novo banco de dados para a aplicação.
 db-start:
 	make/makeActions.sh makeExecuteBefore "$@"
 	make/modules/database/makeActions.sh dataBaseStart "1"

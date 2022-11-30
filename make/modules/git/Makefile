@@ -8,7 +8,7 @@
 
 
 #
-# Configura o git para o repositório atual
+# Configura suas credenciais para o repositório atual
 git-config-local:
 	make/makeActions.sh makeExecuteBefore "$@"
 	make/modules/git/makeActions.sh gitConfigLocal
@@ -49,7 +49,7 @@ tag-update:
 	make/makeActions.sh makeExecuteAfter "$@"
 
 #
-# Atualiza o 'minor version'  da tag atualmente definida
+# Atualiza o 'minor version' da tag atualmente definida
 # para a branch principal 'main'.
 tag-update-minor:
 	make/makeActions.sh makeExecuteBefore "$@"
@@ -57,7 +57,7 @@ tag-update-minor:
 	make/makeActions.sh makeExecuteAfter "$@"
 
 #
-# Atualiza o 'major version'  da tag atualmente definida
+# Atualiza o 'major version' da tag atualmente definida
 # para a branch principal 'main'.
 tag-update-major:
 	make/makeActions.sh makeExecuteBefore "$@"

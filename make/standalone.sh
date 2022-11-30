@@ -3625,8 +3625,9 @@ mse_inter_theme_default_showMessage_createMessageBody() {
     local mseBodyLinesBulletColor="${mseTmpThemeArrCreateBody[body_lines_bullet_color]}"
     local mseBodyLinesBulletColorAlt="${mseTmpThemeArrCreateBody[body_lines_bullet_color_alt]}"
     local mseBodyLinesBulletColorize="${mseTmpThemeArrCreateBody[body_lines_bullet_colorize]}"
-    declare -a mseBodyLines=()
-    if [ "${mseTmpThemeArrCreateBody[body_lines]}" != "" ]; then
+    if [ "${mseTmpThemeArrCreateBody[body_lines]}" == "" ]; then
+      declare -a mseBodyLines=()
+    else
       declare -n mseBodyLines="${mseTmpThemeArrCreateBody[body_lines]}"
     fi
     local mseBodyLinesColor="${mseTmpThemeArrCreateBody[body_lines_color]}"
