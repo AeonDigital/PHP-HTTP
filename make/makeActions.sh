@@ -9,9 +9,9 @@
 
 #
 # Carrega as ferramentas de uso geral
-. "${PWD}/make/standalone.sh"
 . "${PWD}/make/makeEnvironment.sh"
-. "${PWD}/make/makeTools.sh"
+. "${PWD}/Shell-Make/assets/standalone.sh"
+. "${PWD}/Shell-Make/assets/makeTools.sh"
 
 
 
